@@ -1,0 +1,6 @@
+with open("c:/Users/adhit/Downloads/Ai_DineIn_Management/backend/apps/reservation/views.py", "r", encoding="utf-8") as f:
+    lines = f.readlines()
+
+for idx, line in enumerate(lines):
+    if "checkout" in line.lower() or "release" in line.lower():
+        print(f"Line {idx+1}: {line.strip()}")

@@ -1,0 +1,809 @@
+const OwnerDashboard = ({ user, navigate, itemVariants, containerVariants }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const activeTab = searchParams.get('tab') || 'dashboard';
+  const { addToast } = useToast();
+
+  // CEO Metrics state
+  const metrics = {
+    companyRevenue: "$2,450,000",
+    profit: "$785,000",
+    loss: "$25,000",
+    totalSales: "$3,210,000",
+    netProfit: "24.4%",
+    expenses: "$1,640,000",
+    todayRevenue: "$24,500",
+    monthlyRevenue: "$480,000",
+    yearlyRevenue: "$5,800,000",
+    cashFlow: "$1,200,000",
+    growth: "+18.2%",
+    totalBranches: 4,
+    totalEmployees: 128,
+    totalCustomers: 15400,
+    activeReservations: 48,
+    activeOrders: 36,
+    inventoryValue: "$85,000",
+    lowStockAlerts: 3,
+    wastageCost: "$1,850",
+    satisfaction: "4.8/5",
+    attendance: "94%",
+    pendingApprovals: 2,
+    systemHealth: "99.9%"
+  };
+
+  // Branch data comparison
+  const [branches, setBranches] = useState([
+    { id: 1, name: "Bangalore Main Branch", code: "BLR-01", manager: "Rajesh Kumar", status: "active", revenue: 850000, profit: 280000, loss: 5000, orders: 12400, reservations: 4200, occupancy: 82, avgBill: 45, customers: 5800, employees: 42, foodCost: 28, wastage: 450, rating: 4.8, growth: 15 },
+    { id: 2, name: "Delhi Connaught Place", code: "DEL-02", manager: "Priya Sharma", status: "active", revenue: 920000, profit: 310000, loss: 8000, orders: 14200, reservations: 5100, occupancy: 88, avgBill: 48, customers: 6400, employees: 48, foodCost: 30, wastage: 600, rating: 4.7, growth: 18 },
+    { id: 3, name: "Mumbai Bandra West", code: "MUM-03", manager: "Amit Patel", status: "active", revenue: 1100000, profit: 380000, loss: 10000, orders: 16800, reservations: 6200, occupancy: 92, avgBill: 55, customers: 7200, employees: 54, foodCost: 29, wastage: 750, rating: 4.9, growth: 22 },
+    { id: 4, name: "Hyderabad Jubilee Hills", code: "HYD-04", manager: "Anil Reddy", status: "active", revenue: 680000, profit: 215000, loss: 4000, orders: 9800, reservations: 3100, occupancy: 78, avgBill: 42, customers: 4100, employees: 36, foodCost: 31, wastage: 380, rating: 4.6, growth: 12 }
+  ]);
+
+  // Pending managers to approve
+  const [pendingManagers, setPendingManagers] = useState([
+    { id: 1, name: "Suresh Raina", email: "suresh@dinein.com", branch: "Chennai Branch (Upcoming)", appliedAt: "2026-07-18" },
+    { id: 2, name: "Karan Johar", email: "karan@dinein.com", branch: "Pune Branch (Upcoming)", appliedAt: "2026-07-19" }
+  ]);
+
+  // Announcements list
+  const [announcements, setAnnouncements] = useState([
+    { id: 1, title: "Q3 Franchise Sales Target Announcement", content: "All branch managers should coordinate shift logs to hit target margins.", date: "2026-07-15", sender: "CEO", readCount: "4/4" },
+    { id: 2, title: "Emergency Safety Protocol Audit", content: "Mandatory fire safety check in Mumbai and Delhi locations this weekend.", date: "2026-07-19", sender: "CEO", readCount: "2/4" }
+  ]);
+
+  // New announcement form
+  const [newAnnouncement, setNewAnnouncement] = useState({ title: '', content: '', schedule: '' });
+  const [broadcastMessage, setBroadcastMessage] = useState('');
+  const [emergencyLevel, setEmergencyLevel] = useState('info'); // info, warning, critical
+
+  // Trigger simulated exports
+  const triggerExport = (reportType, format) => {
+    addToast(`Generating ${reportType.replace('_', ' ')} as ${format.toUpperCase()}...`, 'loading');
+    setTimeout(() => {
+      addToast(`Downloaded ${reportType}_export.${format} successfully!`, 'success');
+    }, 1500);
+  };
+
+  const handleApproveManager = (id, name) => {
+    setPendingManagers(prev => prev.filter(m => m.id !== id));
+    addToast(`Approved ${name} as Branch Manager. Credentials dispatched.`, 'success');
+  };
+
+  const handleRejectManager = (id, name) => {
+    setPendingManagers(prev => prev.filter(m => m.id !== id));
+    addToast(`Rejected Manager Profile for ${name}.`, 'warning');
+  };
+
+  const submitAnnouncement = (e) => {
+    e.preventDefault();
+    if (!newAnnouncement.title || !newAnnouncement.content) {
+      addToast("Announcement title and content are required.", "warning");
+      return;
+    }
+    const added = {
+      id: announcements.length + 1,
+      title: newAnnouncement.title,
+      content: newAnnouncement.content,
+      date: new Date().toISOString().split('T')[0],
+      sender: "CEO",
+      readCount: "0/4"
+    };
+    setAnnouncements(prev => [added, ...prev]);
+    addToast("Announcement broadcasted successfully to all branch managers!", "success");
+    setNewAnnouncement({ title: '', content: '', schedule: '' });
+  };
+
+  const triggerEmergencyAlert = () => {
+    if (!broadcastMessage) {
+      addToast("Emergency broadcast alert text cannot be empty.", "warning");
+      return;
+    }
+    addToast(`EMERGENCY BROADCAST ISSUED (${emergencyLevel.toUpperCase()}): ${broadcastMessage}`, 'error');
+    setBroadcastMessage('');
+  };
+
+  return (
+    <div className="space-y-app-24">
+      {/* 1. CEO HERO HEADER BANNER */}
+      <GlassCard className="relative overflow-hidden flex flex-col lg:flex-row items-start lg:items-center justify-between gap-app-20 border-amber-500/20 bg-gradient-to-r from-app-surface via-app-surface to-amber-500/5 shadow-[0_4px_24px_rgba(245,158,11,0.08)] p-6">
+        <div className="space-y-2 relative z-10">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500/10 text-amber-500 border border-amber-500/20 text-[10px] font-extrabold rounded-full uppercase tracking-wider">
+              👑 CEO Executive Portal Active
+            </span>
+            <Badge status="success">Platform Uptime: {metrics.systemHealth}</Badge>
+          </div>
+          <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+            CEO Command Dashboard 👋
+          </h1>
+          <p className="text-xs text-text-secondary font-medium">
+            Multi-branch consolidated reporting, corporate payroll summary, and enterprise analytics.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 relative z-10">
+          <SecondaryButton onClick={() => triggerExport('consolidated_kpis', 'excel')} icon={Download}>
+            Download Corporate KPIs
+          </SecondaryButton>
+        </div>
+      </GlassCard>
+
+      {/* 2. ACTIVE VIEW RENDERER BASED ON SELECTED TAB */}
+      {activeTab === 'dashboard' && (
+        <div className="space-y-app-24 animate-in fade-in duration-300">
+          {/* CEO Stats Cards */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-app-20">
+            <KPICard title="Total Sales Volume" value={metrics.totalSales} change={metrics.growth} icon={DollarSign} description="Consolidated revenue across 4 branches" />
+            <KPICard title="Net Operating Profit" value={metrics.profit} icon={TrendingUp} description="Net margins after ingredient and payroll expenses" />
+            <KPICard title="Today's Active Revenue" value={metrics.todayRevenue} change="+8%" icon={Activity} description="Live POS billing invoices logged today" />
+            <KPICard title="Active Corporate Growth" value={metrics.growth} trend="up" icon={TrendingUp} description="Q3 franchise target margin index growth" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-app-20">
+            <KPICard title="Active Orders In-Flight" value={metrics.activeOrders} icon={Boxes} description="Real-time orders inside KDS kitchens" />
+            <KPICard title="Consolidated Wastage" value={metrics.wastageCost} trend="down" icon={AlertTriangle} description="Ingredients declared waste by kitchen chef staff" />
+            <KPICard title="Customer Satisfaction" value={metrics.satisfaction} icon={Heart} description="Consolidated sentiment review ratings" />
+            <KPICard title="Pending Manager Approvals" value={metrics.pendingApprovals} trend="down" icon={ShieldCheck} description="Profiles awaiting corporate approval verification" />
+          </div>
+
+          {/* Quick Metrics Multi Branch comparison */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-app-24">
+            <div className="lg:col-span-2">
+              <SectionCard title="Multi Branch Live Occupancy & Financials" subtitle="Comparative overview of branch units">
+                <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                        <th className="py-4 px-6">Branch Code</th>
+                        <th className="py-4 px-6">Branch Name</th>
+                        <th className="py-4 px-6">Active Occupancy</th>
+                        <th className="py-4 px-6">Today's Sales</th>
+                        <th className="py-4 px-6">Staff count</th>
+                        <th className="py-4 px-6">Health Rating</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                      {branches.map(b => (
+                        <tr key={b.id} className="hover:bg-app-hover/30 transition-colors">
+                          <td className="py-4 px-6 font-mono font-bold text-app-primary">{b.code}</td>
+                          <td className="py-4 px-6 font-bold text-text-primary">{b.name}</td>
+                          <td className="py-4 px-6 font-bold">
+                            <span className="text-text-primary mr-1.5">{b.occupancy}%</span>
+                            <div className="inline-block w-16 h-1.5 bg-app-border rounded-full overflow-hidden">
+                              <div className="bg-app-primary h-full" style={{ width: `${b.occupancy}%` }}></div>
+                            </div>
+                          </td>
+                          <td className="py-4 px-6 font-bold text-text-primary">${(b.revenue / 1000).toFixed(0)}k</td>
+                          <td className="py-4 px-6 font-semibold">{b.employees} on duty</td>
+                          <td className="py-4 px-6">
+                            <Badge status="success">★ {b.rating}</Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </SectionCard>
+            </div>
+
+            {/* Branch Rankings & Top Performing unit */}
+            <AppCard className="p-6 space-y-4">
+              <h3 className="text-text-primary text-xs font-bold border-b border-app-border pb-3 flex items-center gap-1.5">
+                <Award size={15} className="text-amber-400" />
+                Branch Rankings (Q3 Performance)
+              </h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-3 border border-amber-500/20 bg-amber-500/5 rounded-app-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-amber-500">#1</span>
+                    <div>
+                      <p className="text-xs font-bold text-text-primary">Mumbai Bandra West</p>
+                      <p className="text-[9px] text-text-secondary mt-0.5">Highest Profit Margin (34.5%)</p>
+                    </div>
+                  </div>
+                  <Badge status="success">Excellent</Badge>
+                </div>
+
+                <div className="flex justify-between items-center p-3 border border-app-border rounded-app-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-text-muted">#2</span>
+                    <div>
+                      <p className="text-xs font-bold text-text-primary">Delhi Connaught Place</p>
+                      <p className="text-[9px] text-text-secondary mt-0.5">Highest Attendance (96%)</p>
+                    </div>
+                  </div>
+                  <Badge status="success">Strong</Badge>
+                </div>
+
+                <div className="flex justify-between items-center p-3 border border-app-border rounded-app-lg">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-black text-text-muted">#3</span>
+                    <div>
+                      <p className="text-xs font-bold text-text-primary">Bangalore Main Branch</p>
+                      <p className="text-[9px] text-text-secondary mt-0.5">Highest Guest Ratings (4.8/5)</p>
+                    </div>
+                  </div>
+                  <Badge status="info">Healthy</Badge>
+                </div>
+              </div>
+            </AppCard>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Branches */}
+      {activeTab === 'branches' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="flex justify-between items-center bg-app-surface/40 p-4 border border-app-border rounded-app-xl">
+            <div>
+              <h3 className="text-xs font-bold text-text-primary">Manage Corporate Branches</h3>
+              <p className="text-[10px] text-text-muted mt-0.5">Franchise units config, status logs, location maps</p>
+            </div>
+            <PrimaryButton onClick={() => addToast("Adding a new branch requires corporate documentation verification.", "warning")} icon={Plus}>
+              Register New Branch
+            </PrimaryButton>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {branches.map(b => (
+              <AppCard key={b.id} className="p-6 space-y-4">
+                <div className="flex justify-between items-start border-b border-app-border pb-3">
+                  <div>
+                    <h4 className="text-sm font-bold text-text-primary">{b.name}</h4>
+                    <p className="text-[10px] text-text-muted mt-0.5">Code: {b.code} • Manager: {b.manager}</p>
+                  </div>
+                  <Badge status={b.status === 'active' ? 'success' : 'danger'}>{b.status}</Badge>
+                </div>
+
+                <div className="grid grid-cols-3 gap-2 text-xs font-semibold">
+                  <div>
+                    <p className="text-[9px] text-text-muted uppercase">Revenue</p>
+                    <p className="text-text-primary font-bold">${b.revenue.toLocaleString()}</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-text-muted uppercase">Occupancy</p>
+                    <p className="text-text-primary font-bold">{b.occupancy}%</p>
+                  </div>
+                  <div>
+                    <p className="text-[9px] text-text-muted uppercase">Avg Bill</p>
+                    <p className="text-text-primary font-bold">${b.avgBill}</p>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-app-border/40 flex justify-end gap-2">
+                  <SecondaryButton onClick={() => addToast(`Editing config for ${b.name}`, 'info')} className="py-1 px-3 text-[10px] font-bold">
+                    Edit Settings
+                  </SecondaryButton>
+                  <PrimaryButton onClick={() => addToast(`Connecting terminal to ${b.code} live telemetry`, 'success')} className="py-1 px-3 text-[10px] font-bold">
+                    Telemetry Live Feed
+                  </PrimaryButton>
+                </div>
+              </AppCard>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Managers */}
+      {activeTab === 'managers' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate Manager Approvals" subtitle="Profiles waiting approval verification">
+            {pendingManagers.length === 0 ? (
+              <div className="py-8 text-center text-text-muted font-medium text-xs">No pending manager applications.</div>
+            ) : (
+              <div className="space-y-3">
+                {pendingManagers.map(m => (
+                  <div key={m.id} className="p-4 border border-app-border rounded-app-lg flex justify-between items-center bg-app-surface/30">
+                    <div className="space-y-1">
+                      <p className="text-xs font-bold text-text-primary">{m.name}</p>
+                      <p className="text-[10px] text-text-muted">{m.email} • Assigned to: {m.branch}</p>
+                      <p className="text-[9px] text-text-secondary">Submitted: {m.appliedAt}</p>
+                    </div>
+                    <div className="flex gap-2">
+                      <SecondaryButton onClick={() => handleRejectManager(m.id, m.name)} className="py-1 px-3 text-[10px] font-bold text-app-danger hover:bg-app-danger/10">
+                        Reject Profile
+                      </SecondaryButton>
+                      <PrimaryButton onClick={() => handleApproveManager(m.id, m.name)} className="py-1 px-3 text-[10px] font-bold shadow-app-md bg-emerald-600 hover:bg-emerald-700">
+                        Approve Profile
+                      </PrimaryButton>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Employees */}
+      {activeTab === 'employees' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Consolidated Corporate Employee Registry" subtitle="Total: 128 employees across all branch divisions">
+            <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                    <th className="py-4 px-6">Employee Name</th>
+                    <th className="py-4 px-6">Corporate Role</th>
+                    <th className="py-4 px-6">Assigned Branch Unit</th>
+                    <th className="py-4 px-6">Clock-In Shift Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Chef Alexander</td>
+                    <td className="py-4 px-6">Head Executive Chef</td>
+                    <td className="py-4 px-6">Mumbai Bandra West</td>
+                    <td className="py-4 px-6"><Badge status="success">Clocked In</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Ronald McDonald</td>
+                    <td className="py-4 px-6">Kitchen Staff Chef</td>
+                    <td className="py-4 px-6">Bangalore Main Branch</td>
+                    <td className="py-4 px-6"><Badge status="success">Clocked In</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Priya Patel</td>
+                    <td className="py-4 px-6">Hostess Receptionist</td>
+                    <td className="py-4 px-6">Delhi Connaught Place</td>
+                    <td className="py-4 px-6"><Badge status="danger">Shift Off</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Customers */}
+      {activeTab === 'customers' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate VIP & Customer Standings" subtitle="Live directory registry matching loyalty balances">
+            <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                    <th className="py-4 px-6">Customer Name</th>
+                    <th className="py-4 px-6">Email / Phone</th>
+                    <th className="py-4 px-6">Loyalty Points Balance</th>
+                    <th className="py-4 px-6">Loyalty Tier Rank</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Aditya Vardhan</td>
+                    <td className="py-4 px-6">aditya@dinein.ai • +91 99887 76655</td>
+                    <td className="py-4 px-6 font-bold">1,820 pts</td>
+                    <td className="py-4 px-6"><Badge status="info">Diamond VIP</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Courtney Henry</td>
+                    <td className="py-4 px-6">courtney@henry.com • +91 98765 43210</td>
+                    <td className="py-4 px-6 font-bold">620 pts</td>
+                    <td className="py-4 px-6"><Badge status="warning">Gold Member</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Reservations */}
+      {activeTab === 'reservations' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Active Reservations (Corporate Feed)" subtitle="Seating logs across all 4 franchise units">
+            <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                    <th className="py-4 px-6">Guest Name</th>
+                    <th className="py-4 px-6">Branch Location</th>
+                    <th className="py-4 px-6">Date / Time</th>
+                    <th className="py-4 px-6">Seating Table No</th>
+                    <th className="py-4 px-6">Reservation Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Alice Smith</td>
+                    <td className="py-4 px-6 font-semibold">Mumbai Bandra West</td>
+                    <td className="py-4 px-6">Today, 7:30 PM</td>
+                    <td className="py-4 px-6 font-mono font-bold">Table 12</td>
+                    <td className="py-4 px-6"><Badge status="success">Confirmed</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Bob Johnson</td>
+                    <td className="py-4 px-6 font-semibold">Delhi Connaught Place</td>
+                    <td className="py-4 px-6">Today, 8:15 PM</td>
+                    <td className="py-4 px-6 font-mono font-bold">Table 4</td>
+                    <td className="py-4 px-6"><Badge status="info">Checked In</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Inventory */}
+      {activeTab === 'inventory' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate Food Inventory & Wastage Audit" subtitle="Consolidated safety levels & low stock indicators">
+            <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                    <th className="py-4 px-6">Ingredient Name</th>
+                    <th className="py-4 px-6">Safety Margin Limit</th>
+                    <th className="py-4 px-6">Current Stock Levels</th>
+                    <th className="py-4 px-6">Wastage Logs Cost</th>
+                    <th className="py-4 px-6">Stock Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Mozzarella Cheese</td>
+                    <td className="py-4 px-6">5.0 kg</td>
+                    <td className="py-4 px-6 font-bold">1.2 kg remaining</td>
+                    <td className="py-4 px-6 text-app-danger">$42.50 wasted</td>
+                    <td className="py-4 px-6"><Badge status="danger">Low Stock Alert</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-bold text-text-primary">Burger Patties</td>
+                    <td className="py-4 px-6">100 units</td>
+                    <td className="py-4 px-6 font-bold">48 units remaining</td>
+                    <td className="py-4 px-6 text-app-danger">$18.00 wasted</td>
+                    <td className="py-4 px-6"><Badge status="warning">Low Stock Warning</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Sales */}
+      {activeTab === 'sales' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate Sales Log Receipts" subtitle="Total Sales: $3,210,000 processed across cash flow channels">
+            <div className="overflow-x-auto border border-app-border rounded-app-xl bg-app-bg">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-app-elevated/40 text-[10px] text-text-muted border-b border-app-border font-extrabold uppercase">
+                    <th className="py-4 px-6">Invoice ID</th>
+                    <th className="py-4 px-6">Branch Location</th>
+                    <th className="py-4 px-6">Amount Total</th>
+                    <th className="py-4 px-6">Payment Method</th>
+                    <th className="py-4 px-6">Invoiced Status</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-app-border text-xs text-text-secondary">
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-mono font-bold text-app-primary">INV-98283</td>
+                    <td className="py-4 px-6 font-semibold">Mumbai Bandra West</td>
+                    <td className="py-4 px-6 font-bold text-text-primary">$182.40</td>
+                    <td className="py-4 px-6 uppercase font-bold text-text-muted">UPI / Card</td>
+                    <td className="py-4 px-6"><Badge status="success">Completed Paid</Badge></td>
+                  </tr>
+                  <tr className="hover:bg-app-hover/30 transition-colors">
+                    <td className="py-4 px-6 font-mono font-bold text-app-primary">INV-98284</td>
+                    <td className="py-4 px-6 font-semibold">Bangalore Main Branch</td>
+                    <td className="py-4 px-6 font-bold text-text-primary">$240.50</td>
+                    <td className="py-4 px-6 uppercase font-bold text-text-muted">Credit Card</td>
+                    <td className="py-4 px-6"><Badge status="success">Completed Paid</Badge></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Finance */}
+      {activeTab === 'finance' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <AppCard className="p-6 space-y-4">
+              <h3 className="text-xs font-bold text-text-primary border-b border-app-border pb-3 flex items-center gap-1.5">
+                <CreditCard size={15} className="text-app-primary" />
+                Profit & Loss (P&L) Statements Consolidated
+              </h3>
+              <div className="space-y-3.5 text-xs font-medium">
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">Company Revenue:</span>
+                  <span className="font-bold text-text-primary">{metrics.companyRevenue}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">Cost of Goods Sold (COGS):</span>
+                  <span className="font-bold text-text-primary">{metrics.expenses}</span>
+                </div>
+                <div className="flex justify-between border-t border-app-border/40 pt-2 font-bold text-text-primary">
+                  <span>Net Operating Income:</span>
+                  <span>{metrics.profit}</span>
+                </div>
+              </div>
+            </AppCard>
+
+            <AppCard className="p-6 space-y-4">
+              <h3 className="text-xs font-bold text-text-primary border-b border-app-border pb-3 flex items-center gap-1.5">
+                <Users size={15} className="text-app-primary" />
+                Corporate Payroll Summary
+              </h3>
+              <div className="space-y-3.5 text-xs font-medium">
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">Active Salaried Staff:</span>
+                  <span className="font-bold text-text-primary">{metrics.totalEmployees} employees</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-text-secondary">Monthly Base Payroll Cost:</span>
+                  <span className="font-bold text-text-primary">$285,000</span>
+                </div>
+                <div className="flex justify-between border-t border-app-border/40 pt-2 font-bold text-text-primary">
+                  <span>Total Cash Flow Reserves:</span>
+                  <span>{metrics.cashFlow}</span>
+                </div>
+              </div>
+            </AppCard>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Reports */}
+      {activeTab === 'reports' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="CEO Executive Reports Center" subtitle="Generate P&L, sales summaries, and attendance audits">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { code: 'sales_report', label: 'Sales Report' },
+                { code: 'p_l', label: 'Profit & Loss Statement' },
+                { code: 'branch_report', label: 'Branch Comparison' },
+                { code: 'reservation_report', label: 'Reservation Report' },
+                { code: 'inventory_report', label: 'Inventory Report' },
+                { code: 'employee_report', label: 'Employee Attendance Summary' }
+              ].map(rep => (
+                <AppCard key={rep.code} className="p-5 flex flex-col justify-between min-h-[140px] hover:border-amber-500/20">
+                  <div>
+                    <h4 className="text-xs font-bold text-text-primary">{rep.label}</h4>
+                    <p className="text-[10px] text-text-muted mt-1 leading-relaxed">Generated with Q3 consolidated metrics.</p>
+                  </div>
+                  <div className="flex gap-2 pt-4 mt-2 border-t border-app-border/40">
+                    <button onClick={() => triggerExport(rep.code, 'pdf')} className="flex-1 py-1 text-[10px] font-bold border border-app-border rounded hover:bg-app-hover text-text-primary">
+                      📄 Export PDF
+                    </button>
+                    <button onClick={() => triggerExport(rep.code, 'excel')} className="flex-1 py-1 text-[10px] font-bold border border-app-border rounded hover:bg-app-hover text-text-primary">
+                      📊 Export Excel
+                    </button>
+                  </div>
+                </AppCard>
+              ))}
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Communication & Announcements */}
+      {(activeTab === 'communication' || activeTab === 'announcements') && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+            <div className="lg:col-span-2 space-y-6">
+              <SectionCard title="Compose CEO Announcement" subtitle="Broadcast Q3 corporate bulletins to all location managers">
+                <form onSubmit={submitAnnouncement} className="space-y-4">
+                  <Input
+                    label="Bulletin Title"
+                    value={newAnnouncement.title}
+                    onChange={(e) => setNewAnnouncement(p => ({ ...p, title: e.target.value }))}
+                    placeholder="e.g. Q3 Regional Marketing Strategy Guide"
+                    required
+                  />
+                  <Textarea
+                    label="Announcement message content"
+                    value={newAnnouncement.content}
+                    onChange={(e) => setNewAnnouncement(p => ({ ...p, content: e.target.value }))}
+                    placeholder="Write announcement body..."
+                    className="min-h-[120px]"
+                    required
+                  />
+                  <div className="flex justify-end pt-2">
+                    <PrimaryButton type="submit" className="shadow-app-md bg-gradient-to-r from-amber-500 to-amber-600 font-bold text-xs uppercase tracking-wider py-2">
+                      📢 Broadcast Announcement
+                    </PrimaryButton>
+                  </div>
+                </form>
+              </SectionCard>
+
+              <SectionCard title="Announcements History Log" subtitle="Verify manager read acknowledgment audits">
+                <div className="space-y-3.5">
+                  {announcements.map(ann => (
+                    <div key={ann.id} className="p-4 border border-app-border bg-app-surface/30 rounded-app-lg space-y-2">
+                      <div className="flex justify-between items-start">
+                        <h4 className="text-xs font-bold text-text-primary">{ann.title}</h4>
+                        <span className="text-[8px] font-black text-amber-500 border border-amber-500/20 px-2 py-0.5 rounded uppercase">
+                          Read: {ann.readCount} managers
+                        </span>
+                      </div>
+                      <p className="text-[10px] text-text-secondary leading-relaxed">{ann.content}</p>
+                      <p className="text-[8px] text-text-muted">Broadcast Date: {ann.date}</p>
+                    </div>
+                  ))}
+                </div>
+              </SectionCard>
+            </div>
+
+            {/* Emergency Alerts Broadcast */}
+            <AppCard className="p-6 space-y-4 border-rose-500/20 bg-rose-500/[0.01]">
+              <h3 className="text-xs font-bold text-app-danger border-b border-app-border pb-3 flex items-center gap-1.5">
+                <AlertTriangle size={15} className="text-app-danger animate-pulse" />
+                Emergency Operations Alert
+              </h3>
+              <p className="text-[10px] text-text-secondary leading-relaxed">
+                Issue a priority alarm notification showing at the top of all active POS, KDS, and manager terminals instantly.
+              </p>
+
+              <div className="space-y-3 text-xs">
+                <label className="text-[9px] font-extrabold uppercase text-text-muted">Alarm Level</label>
+                <div className="flex gap-2">
+                  {['info', 'warning', 'critical'].map(lvl => (
+                    <button
+                      key={lvl}
+                      type="button"
+                      onClick={() => setEmergencyLevel(lvl)}
+                      className={`flex-1 py-1 rounded text-[10px] font-bold border uppercase ${
+                        emergencyLevel === lvl 
+                          ? 'bg-rose-500 text-white border-rose-500 shadow-sm' 
+                          : 'border-app-border text-text-secondary'
+                      }`}
+                    >
+                      {lvl}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <Textarea
+                value={broadcastMessage}
+                onChange={(e) => setBroadcastMessage(e.target.value)}
+                placeholder="Alert text: e.g. Payment gateway timeout issue reported..."
+                className="min-h-[80px]"
+              />
+
+              <PrimaryButton onClick={triggerEmergencyAlert} className="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-2 text-xs uppercase tracking-wider">
+                🚨 Trigger Alarm Broadcast
+              </PrimaryButton>
+            </AppCard>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Notifications */}
+      {activeTab === 'notifications' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Direct Operations Broadcast Alerts" subtitle="Broadcast system alerts to all managers">
+            <div className="space-y-4">
+              <Input
+                label="Alert Header"
+                placeholder="e.g. UPI Payment Gateway Uptime Issue"
+              />
+              <Textarea
+                placeholder="Write system alert message..."
+                className="min-h-[100px]"
+              />
+              <div className="flex justify-end pt-2">
+                <PrimaryButton onClick={() => addToast("Alert broadcasted successfully.", "success")} className="py-2 px-5 text-xs font-bold uppercase tracking-wider shadow-app-md bg-amber-500">
+                  Broadcast System Alert
+                </PrimaryButton>
+              </div>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Analytics */}
+      {activeTab === 'analytics' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <ChartCard title="Revenue Growth Trend" subtitle="Weekly Consolidated CEO Revenue" legend={<Badge status="success">+18.2% Growth</Badge>}>
+              <svg viewBox="0 0 500 180" className="w-full h-full">
+                <line x1="0" y1="160" x2="500" y2="160" stroke="var(--color-border)" strokeWidth="0.5" />
+                <line x1="0" y1="40" x2="500" y2="40" stroke="var(--color-border)" strokeWidth="0.5" strokeDasharray="4" />
+                <motion.path
+                  d="M 10 140 Q 150 110, 250 80 T 490 20"
+                  fill="none"
+                  stroke="var(--color-primary)"
+                  strokeWidth="3.5"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 1.2 }}
+                />
+              </svg>
+              <div className="absolute bottom-1 left-0 right-0 text-[9px] font-bold text-text-muted flex justify-between px-2">
+                <span>Week 1</span><span>Week 2</span><span>Week 3</span><span>Week 4</span>
+              </div>
+            </ChartCard>
+
+            <ChartCard title="Consolidated Reservations & Seating" subtitle="Table occupancy analytics across branches" legend={<Badge status="info">Average: 85%</Badge>}>
+              <svg viewBox="0 0 500 180" className="w-full h-full">
+                <rect x="50" y="60" width="40" height="100" fill="var(--color-primary)" rx="4" />
+                <rect x="150" y="40" width="40" height="120" fill="var(--color-primary)" rx="4" />
+                <rect x="250" y="20" width="40" height="140" fill="var(--color-primary)" rx="4" />
+                <rect x="350" y="50" width="40" height="110" fill="var(--color-primary)" rx="4" />
+              </svg>
+              <div className="absolute bottom-1 left-0 right-0 text-[9px] font-bold text-text-muted flex justify-between px-10">
+                <span>Bangalore</span><span>Delhi</span><span>Mumbai</span><span>Hyderabad</span>
+              </div>
+            </ChartCard>
+          </div>
+        </div>
+      )}
+
+      {/* Tab: Audit */}
+      {activeTab === 'audit' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate Activity & System Audit Logs" subtitle="Live security audit stream tracking corporate actions">
+            <div className="space-y-4 text-xs font-semibold leading-normal">
+              {[
+                { title: "Owner Login Success", desc: "User owner1 logged in via CEO Portal securely.", time: "Today, 12:43 PM", status: "success" },
+                { title: "Announcements broadcasted", desc: "Q3 Franchise Sales Target bulletin sent to all branch managers.", time: "Today, 12:40 PM", status: "info" },
+                { title: "Roles & Permissions Config Seeding", desc: "Database configuration initialized and tables verified.", time: "Today, 12:28 PM", status: "success" },
+                { title: "SMS Gateway Config Updated", desc: "Owner verified Android Gateway URL connection successfully.", time: "Today, 12:25 PM", status: "info" }
+              ].map((act, i) => (
+                <div key={i} className="flex items-start gap-3 border-b border-app-border pb-3.5">
+                  <div className={`w-8 h-8 rounded-app-md shrink-0 flex items-center justify-center border ${
+                    act.status === 'success' ? 'bg-app-success/10 text-app-success border-app-success/20' : 'bg-app-primary/10 text-app-primary border-app-primary/20'
+                  }`}>
+                    <ShieldCheck size={14} />
+                  </div>
+                  <div className="flex-1">
+                    <div className="flex justify-between">
+                      <span className="text-text-primary font-bold">{act.title}</span>
+                      <span className="text-[9px] text-text-muted">{act.time}</span>
+                    </div>
+                    <p className="text-[10px] text-text-secondary mt-0.5 leading-relaxed">{act.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+      {/* Tab: Settings */}
+      {activeTab === 'settings' && (
+        <div className="space-y-6 animate-in fade-in duration-300">
+          <SectionCard title="Corporate CEO System Settings" subtitle="Backup configurations, geofence variables, encryption settings">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <AppCard className="p-5 space-y-4">
+                <h4 className="text-xs font-bold text-text-primary border-b border-app-border pb-2">Operational Configurations</h4>
+                <div className="space-y-3.5 text-xs font-semibold">
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Uptime monitoring status:</span>
+                    <span className="font-bold text-app-success">Online (Healthy)</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Franchise Data Isolation check:</span>
+                    <span className="font-bold text-app-primary">Enabled</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-secondary">Automated Backups:</span>
+                    <span className="font-bold text-text-primary">Daily at 03:00 AM</span>
+                  </div>
+                </div>
+              </AppCard>
+
+              <AppCard className="p-5 space-y-4">
+                <h4 className="text-xs font-bold text-text-primary border-b border-app-border pb-2">Quick Maintenance Actions</h4>
+                <div className="flex flex-col gap-2 pt-2">
+                  <PrimaryButton onClick={() => addToast("Backups database archive download triggered successfully.", "success")} className="py-2 text-xs font-bold uppercase tracking-wider">
+                    📦 Download System Backup
+                  </PrimaryButton>
+                  <SecondaryButton onClick={() => addToast("Re-indexing complete databases indexes completed successfully.", "success")} className="py-2 text-xs font-bold uppercase tracking-wider">
+                    🔄 Re-Index Database tables
+                  </SecondaryButton>
+                </div>
+              </AppCard>
+            </div>
+          </SectionCard>
+        </div>
+      )}
+
+    </div>
+  );
+};

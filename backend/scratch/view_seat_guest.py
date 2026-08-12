@@ -1,0 +1,6 @@
+with open(r'c:\Users\adhit\Downloads\Ai_DineIn_Management\backend\apps\reservation\services.py', 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+
+for idx, line in enumerate(lines):
+    if 'def seat_guest' in line or 'def check_out_guest' in line or 'def check_in_guest' in line:
+        print(f"L{idx+1}: {line.strip()}")

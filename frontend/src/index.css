@@ -1,0 +1,331 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   1. PRIMARY THEME SYSTEM (:root) - Light Option
+   ========================================================================== */
+:root {
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+
+  --color-bg-app: #F8FAFC;
+  --color-bg-surface: rgba(255, 255, 255, 0.78);
+  --color-bg-surface-elevated: rgba(255, 255, 255, 0.90);
+  --color-border: rgba(255, 255, 255, 0.98);
+  --color-border-muted: rgba(226, 232, 240, 0.85);
+
+  --color-primary: #0284C7;
+  --color-primary-hover: #0369A1;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+  --color-danger: #EF4444;
+  --color-purple: #8B5CF6;
+  --color-cyan: #06B6D4;
+
+  --color-text-primary: #0F172A;
+  --color-text-secondary: #334155;
+  --color-text-muted: #64748B;
+
+  --color-hover: rgba(2, 132, 199, 0.08);
+  --color-pressed: rgba(2, 132, 199, 0.16);
+  --color-selected: rgba(2, 132, 199, 0.12);
+
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 32px rgba(15, 23, 42, 0.08), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
+  --shadow-lg: 0 20px 48px rgba(15, 23, 42, 0.12), inset 0 2px 2px rgba(255, 255, 255, 1);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.5rem;
+}
+
+/* ==========================================================================
+   2. PRIMARY DARK THEME SYSTEM (.dark) - Obsidian Black & Cyan Glass System
+   ========================================================================== */
+.dark {
+  --color-bg-app: #05070B;
+  --color-bg-surface: rgba(15, 23, 42, 0.40);
+  --color-bg-surface-elevated: rgba(30, 41, 59, 0.50);
+  --color-border: rgba(255, 255, 255, 0.20);
+  --color-border-muted: rgba(255, 255, 255, 0.10);
+
+  --color-primary: #00E5FF;        /* Electric Neon Cyan */
+  --color-primary-hover: #00B8D9;
+  --color-success: #00FF88;        /* Luminous Neon Emerald */
+  --color-warning: #FFE600;        /* Vivid Neon Yellow */
+  --color-danger: #FF3864;         /* Electric Coral Red */
+  --color-purple: #9B5CFF;         /* Neon Violet */
+  --color-cyan: #00E5FF;
+
+  --color-text-primary: #F8FAFC;    /* Bright Crisp White */
+  --color-text-secondary: #CBD5E1;  /* Slate 300 */
+  --color-text-muted: #94A3B8;      /* Slate 400 */
+
+  --color-hover: rgba(0, 229, 255, 0.12);
+  --color-pressed: rgba(0, 229, 255, 0.20);
+  --color-selected: rgba(0, 229, 255, 0.16);
+
+  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.60), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.80), inset 0 2px 2px rgba(255, 255, 255, 0.45);
+}
+
+/* ==========================================================================
+   3. BASE & BLACK GRADIENT ANIMATED FLOW EFFECTS
+   ========================================================================== */
+@layer base {
+  body {
+    background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
+    background-size: 400% 400%;
+    animation: live-gradient-flow 15s ease infinite;
+    color: var(--color-text-secondary);
+    font-family: 'Inter', sans-serif;
+    @apply antialiased transition-colors duration-300;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-text-primary);
+  }
+
+  select {
+    color: #F8FAFC !important;
+    background-color: #0F172A !important;
+  }
+
+  select option {
+    background-color: #0F172A !important;
+    color: #F8FAFC !important;
+    padding: 8px 12px;
+  }
+}
+
+@keyframes live-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fluid-morph-1 {
+  0% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%;
+    transform: translate(100px, -50px) rotate(90deg) scale(1.25);
+  }
+  50% {
+    border-radius: 30% 70% 40% 60% / 50% 30% 70% 50%;
+    transform: translate(30px, 80px) rotate(180deg) scale(0.9);
+  }
+  75% {
+    border-radius: 60% 40% 60% 40% / 70% 40% 50% 60%;
+    transform: translate(-80px, -30px) rotate(270deg) scale(1.15);
+  }
+  100% {
+    border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+    transform: translate(0px, 0px) rotate(360deg) scale(1);
+  }
+}
+
+@keyframes fluid-morph-2 {
+  0% {
+    border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%;
+    transform: translate(0px, 0px) rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 30% 70% 60% 40% / 60% 40% 50% 50%;
+    transform: translate(-90px, 60px) rotate(-90deg) scale(0.85);
+  }
+  50% {
+    border-radius: 70% 30% 40% 60% / 40% 60% 30% 70%;
+    transform: translate(50px, -70px) rotate(-180deg) scale(1.2);
+  }
+  75% {
+    border-radius: 40% 60% 70% 30% / 50% 40% 60% 50%;
+    transform: translate(70px, 40px) rotate(-270deg) scale(1.05);
+  }
+  100% {
+    border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%;
+    transform: translate(0px, 0px) rotate(-360deg) scale(1);
+  }
+}
+
+@keyframes fluid-morph-3 {
+  0%, 100% {
+    border-radius: 50% 50% 60% 40% / 30% 60% 40% 70%;
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
+    transform: translate(-70px, -50px) scale(1.3);
+  }
+  66% {
+    border-radius: 60% 40% 70% 30% / 40% 70% 30% 60%;
+    transform: translate(60px, 70px) scale(0.85);
+  }
+}
+
+@keyframes fluid-morph-4 {
+  0%, 100% {
+    border-radius: 30% 70% 50% 50% / 60% 40% 60% 40%;
+    transform: translate(0px, 0px) scale(1);
+  }
+  50% {
+    border-radius: 60% 40% 30% 70% / 40% 60% 40% 60%;
+    transform: translate(80px, -60px) scale(1.25);
+  }
+}
+
+.animate-fluid-morph-1 {
+  animation: fluid-morph-1 18s ease-in-out infinite;
+}
+
+.animate-fluid-morph-2 {
+  animation: fluid-morph-2 22s ease-in-out infinite;
+}
+
+.animate-fluid-morph-3 {
+  animation: fluid-morph-3 16s ease-in-out infinite;
+}
+
+.animate-fluid-morph-4 {
+  animation: fluid-morph-4 24s ease-in-out infinite;
+}
+
+.live-animated-bg {
+  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
+  background-size: 400% 400%;
+  animation: live-gradient-flow 15s ease infinite;
+}
+
+.dark body {
+  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
+  background-size: 400% 400%;
+  animation: live-gradient-flow 15s ease infinite;
+  position: relative;
+}
+
+body:not(.dark) {
+  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
+  background-size: 400% 400%;
+  animation: live-gradient-flow 15s ease infinite;
+  position: relative;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: var(--color-bg-app);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: var(--radius-xl);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-primary);
+}
+
+.theme-transition {
+  transition: background-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   4. APPLE / VISIONOS LIQUID GLASSMORPHISM
+   ========================================================================== */
+
+.glass-card-surface {
+  background: var(--color-bg-surface);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--color-border);
+  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25), var(--shadow-md);
+  overflow: hidden;
+  border-radius: 26px;
+}
+
+.dark .glass-card-surface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  pointer-events: none;
+}
+
+body:not(.dark) .glass-card-surface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  pointer-events: none;
+}
+
+/* Floating Glass Navbar */
+.floating-glass-navbar {
+  background: var(--color-bg-surface);
+  backdrop-filter: blur(28px) saturate(170%);
+  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  border-radius: 20px;
+}
+
+/* Controlled Vibrant Edge Glows for KPI Cards */
+.glow-edge-cyan {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 229, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+}
+
+.glow-edge-green {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 136, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+}
+
+.glow-edge-purple {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(155, 92, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+}
+
+.glow-edge-blue {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(2, 132, 199, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+}
+
+.glow-edge-red {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 56, 100, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+}
+
+/* Moving Waveform Line Animation */
+@keyframes dash-scroll {
+  0% { stroke-dashoffset: 200; }
+  100% { stroke-dashoffset: 0; }
+}
+
+.animate-waveform-line {
+  stroke-dasharray: 12, 6;
+  animation: dash-scroll 10s linear infinite;
+}

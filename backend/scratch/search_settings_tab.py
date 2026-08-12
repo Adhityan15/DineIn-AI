@@ -1,0 +1,9 @@
+with open("c:/Users/adhit/Downloads/Ai_DineIn_Management/frontend/src/pages/Communication.jsx", "r", encoding="utf-8") as f:
+    content = f.read()
+
+lines = content.split("\n")
+for i, line in enumerate(lines):
+    if "activeTab === 'settings'" in line or "settingsTab" in line:
+        print(f"Line {i+1}: {line.strip()}")
+        for j in range(i, min(len(lines), i+30)):
+            print(f"  Line {j+2}: {lines[j+1].strip()}")

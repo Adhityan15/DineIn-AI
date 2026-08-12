@@ -1,0 +1,2 @@
+with open("c:/Users/adhit/Downloads/Ai_DineIn_Management/backend/apps/staff/urls.py", "r", encoding="utf-8") as f:
+    print(f.read())

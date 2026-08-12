@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: dinein_db
+    environment:
+      - POSTGRES_DB=dinein_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dinein_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: dinein_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dinein_backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-development-key-change-this-in-production
+      - ALLOWED_HOSTS=localhost,127.0.0.1,backend,0.0.0.0
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/dinein_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+      - GEMINI_API_KEY=mock-key-for-local-dev
+      - TWILIO_ACCOUNT_SID=ACmockaccountsidforlocaldev
+      - TWILIO_AUTH_TOKEN=mockauthtokenforlocaldev
+      - TWILIO_PHONE_NUMBER=+15005550006
+      - EMAIL_HOST=redis
+      - EMAIL_PORT=1025
+      - GPS_LATITUDE=12.9716
+      - GPS_LONGITUDE=77.5946
+      - GPS_RADIUS_METERS=100
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dinein_celery_worker
+    command: celery -A dinein_project worker -l info
+    volumes:
+      - ./backend:/app
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-development-key-change-this-in-production
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/dinein_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery-beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dinein_celery_beat
+    command: celery -A dinein_project beat -l info
+    volumes:
+      - ./backend:/app
+    environment:
+      - ENVIRONMENT=development
+      - DEBUG=True
+      - SECRET_KEY=django-insecure-development-key-change-this-in-production
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/dinein_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dinein_frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  redis_data:

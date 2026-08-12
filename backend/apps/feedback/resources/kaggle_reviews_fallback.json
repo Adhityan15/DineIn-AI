@@ -1,0 +1,66 @@
+[
+  {
+    "author_name": "Marcus Aurelius",
+    "author_avatar_url": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100",
+    "rating": 5,
+    "comment": "The Biryani was exceptionally well prepared, steaming hot, and perfectly spiced. Extremely excited about the food quality here! Table service was prompt and polite.",
+    "external_review_id": "google_maps_rev_001",
+    "visit_date": "2026-07-01"
+  },
+  {
+    "author_name": "Linda Thompson",
+    "author_avatar_url": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100",
+    "rating": 1,
+    "comment": "Extremely frustrated! We waited for 45 minutes to get our food. When it arrived, the fries were cold and tasteless. Unclean tables as well.",
+    "external_review_id": "google_maps_rev_002",
+    "visit_date": "2026-07-02"
+  },
+  {
+    "author_name": "Rajesh Kumar",
+    "author_avatar_url": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100",
+    "rating": 2,
+    "comment": "Disappointed with my visit. I found a hair in my salad! Also, the staff behavior was rather cold when I raised the concern. Waiting time was also too long.",
+    "external_review_id": "google_maps_rev_003",
+    "visit_date": "2026-07-03"
+  },
+  {
+    "author_name": "Sophia Martinez",
+    "author_avatar_url": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100",
+    "rating": 4,
+    "comment": "Very nice ambience, great music volume, and clean tables. The pricing is a bit high but the staff behavior was friendly. Will return.",
+    "external_review_id": "google_maps_rev_004",
+    "visit_date": "2026-07-04"
+  },
+  {
+    "author_name": "John Doe",
+    "author_avatar_url": "",
+    "rating": 3,
+    "comment": "Overall experience was average. The waiting time was fine, but the menu options were limited. Taste was ok, nothing special.",
+    "external_review_id": "google_maps_rev_005",
+    "visit_date": "2026-07-04"
+  },
+  {
+    "author_name": "Arjun Mehta",
+    "author_avatar_url": "",
+    "rating": 5,
+    "comment": "Absolutely happy with the quick service! We reserved table 4 and the reservation experience was flawless. Food was delicious and price was fair.",
+    "external_review_id": "google_maps_rev_006",
+    "visit_date": "2026-07-03"
+  },
+  {
+    "author_name": "Sarah Connor",
+    "author_avatar_url": "",
+    "rating": 1,
+    "comment": "Warning: I had a severe allergy reaction to the peanuts in the sauce. I specifically mentioned the allergen to the staff but they neglected it. Unacceptable!",
+    "external_review_id": "google_maps_rev_007",
+    "visit_date": "2026-07-02"
+  },
+  {
+    "author_name": "David Miller",
+    "author_avatar_url": "",
+    "rating": 2,
+    "comment": "Angry about the delay. We had a reservation at 8 PM but were seated only by 8:30 PM. Hostess was frustrated and unhelpful.",
+    "external_review_id": "google_maps_rev_008",
+    "visit_date": "2026-07-01"
+  }
+]
