@@ -96,6 +96,37 @@ class Command(BaseCommand):
             staff_role = roles.get('kitchen_staff')
             customer_role = roles.get('customer')
 
+            # 3b. Ensure admin1 superuser exists
+            admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
+            admin1 = User.objects.filter(username='admin1').first()
+            if not admin1:
+                admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
+
+            if not admin1:
+                admin1 = User.objects.create_user(
+                    username='admin1',
+                    email='adhityanmclaren@gmail.com',
+                    password='Admin@123',
+                    first_name='Admin',
+                    last_name='User',
+                    role=admin_role,
+                    branch=branch,
+                    is_staff=True,
+                    is_superuser=True,
+                    is_active=True
+                )
+            else:
+                admin1.username = 'admin1'
+                admin1.email = 'adhityanmclaren@gmail.com'
+                admin1.role = admin_role
+                admin1.branch = branch
+                admin1.is_staff = True
+                admin1.is_superuser = True
+                admin1.is_active = True
+                admin1.set_password('Admin@123')
+                admin1.save()
+            self.stdout.write(f"[OK] admin1 user configured: {admin1.username} ({admin1.email}) - Branch: {admin1.branch.name}")
+
             # 4. Generate 400 Customer Users
             self.stdout.write("Generating 400 customer users & profiles...")
             customers = []

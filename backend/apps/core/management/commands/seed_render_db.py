@@ -38,8 +38,8 @@ class Command(BaseCommand):
 
         self.stdout.write(f"Current DB Stats: Branches={branch_count}, MenuItems={menu_count}, Tables={table_count}")
 
-        if branch_count == 0 or menu_count < 5 or table_count < 5:
-            self.stdout.write("Database lacks operational data. Running seed_chennai_data...")
+        if branch_count == 0 or menu_count < 5 or table_count < 20 or not User.objects.filter(username='admin1').exists():
+            self.stdout.write("Database lacks operational data or admin1. Running seed_chennai_data...")
             try:
                 call_command('seed_chennai_data')
                 self.stdout.write(self.style.SUCCESS("[OK] seed_chennai_data executed successfully."))
