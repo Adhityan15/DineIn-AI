@@ -20,75 +20,72 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write("Initializing Chennai Branch database seeding...")
         
-        with transaction.atomic():
-            # 0. Clean old operational data to make room
-            self.stdout.write("Wiping old records to prevent constraint errors...")
-            ReservationHistory.objects.all().delete()
-            ReservationTable.objects.all().delete()
-            Reservation.objects.all().delete()
-            Table.objects.all().delete()
-            
-            POSPayment.objects.all().delete()
-            Invoice.objects.all().delete()
-            OrderItem.objects.all().delete()
-            Order.objects.all().delete()
-            
-            StockMovement.objects.all().delete()
-            InventoryBatch.objects.all().delete()
-            PurchaseItem.objects.all().delete()
-            Purchase.objects.all().delete()
-            Ingredient.objects.all().delete()
-            Vendor.objects.all().delete()
-            MenuItem.objects.all().delete()
-            
-            Attendance.objects.all().delete()
-            Schedule.objects.all().delete()
-            Leave.objects.all().delete()
-            PayrollSummary.objects.all().delete()
-            PerformanceReview.objects.all().delete()
-            EmployeeAvailability.objects.all().delete()
-            Employee.objects.all().delete()
-            
-            CustomerReview.objects.all().delete()
-            ReviewInsight.objects.all().delete()
-            ReputationSnapshot.objects.all().delete()
-            WeeklyFeedbackSummary.objects.all().delete()
+        # 0. Setup Restaurant & Chennai Branch
+        restaurant, _ = Restaurant.objects.get_or_create(
+            code="chennai-dinein",
+            defaults={
+                "name": "Chennai DineIn Group",
+                "contact_email": "ops@chennai-dinein.in",
+                "contact_phone": "+914422445566",
+                "address": "Adambakkam Chennai, India"
+            }
+        )
+        branch, _ = Branch.objects.get_or_create(
+            branch_code="adambakkam-chennai",
+            defaults={
+                "restaurant": restaurant,
+                "name": "Adambakkam Chennai",
+                "latitude": 12.9880,
+                "longitude": 80.2052,
+                "geofence_radius": 150,
+                "address": "No.12, Veerangal Street, Adambakkam, Chennai, Tamil Nadu - 600088"
+            }
+        )
 
-            # 1. Setup Restaurant & Chennai Branch
-            restaurant, _ = Restaurant.objects.get_or_create(
-                code="chennai-dinein",
+        # 1. Ensure admin1 superuser exists IMMEDIATELY
+        admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
+        admin1 = User.objects.filter(username='admin1').first()
+        if not admin1:
+            admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
+
+        if not admin1:
+            admin1 = User.objects.create_user(
+                username='admin1',
+                email='adhityanmclaren@gmail.com',
+                password='Admin@123',
+                first_name='Admin',
+                last_name='User',
+                role=admin_role,
+                branch=branch,
+                is_staff=True,
+                is_superuser=True,
+                is_active=True
+            )
+        else:
+            admin1.username = 'admin1'
+            admin1.email = 'adhityanmclaren@gmail.com'
+            admin1.role = admin_role
+            admin1.branch = branch
+            admin1.is_staff = True
+            admin1.is_superuser = True
+            admin1.is_active = True
+            admin1.set_password('Admin@123')
+            admin1.save()
+        self.stdout.write(f"[OK] admin1 user configured: {admin1.username} ({admin1.email}) - Branch: {admin1.branch.name}")
+
+        # 2. Seed 20 Tables
+        self.stdout.write("Creating 20 tables...")
+        tables = []
+        for i in range(1, 21):
+            t, _ = Table.objects.get_or_create(
+                number=f"T{i}",
+                branch=branch,
                 defaults={
-                    "name": "Chennai DineIn Group",
-                    "contact_email": "ops@chennai-dinein.in",
-                    "contact_phone": "+914422445566",
-                    "address": "Adambakkam Chennai, India"
+                    "capacity": 2 if i <= 8 else (4 if i <= 15 else 6),
+                    "status": "available" if i % 5 != 0 else "occupied"
                 }
             )
-            branch, _ = Branch.objects.get_or_create(
-                branch_code="adambakkam-chennai",
-                defaults={
-                    "restaurant": restaurant,
-                    "name": "Adambakkam Chennai",
-                    "latitude": 12.9880,
-                    "longitude": 80.2052,
-                    "geofence_radius": 150,
-                    "address": "No.12, Veerangal Street, Adambakkam, Chennai, Tamil Nadu - 600088"
-                }
-            )
-
-            # 2. Seed 40 Tables
-            self.stdout.write("Creating 40 tables...")
-            tables = []
-            for i in range(1, 41):
-                t, _ = Table.objects.get_or_create(
-                    number=f"T{i}",
-                    branch=branch,
-                    defaults={
-                        "capacity": 2 if i <= 15 else (4 if i <= 30 else (6 if i <= 37 else 8)),
-                        "status": "available" if i % 10 != 0 else "occupied"
-                    }
-                )
-                tables.append(t)
+            tables.append(t)
 
             # 3. Fetch Roles
             roles = {r.code: r for r in Role.objects.all()}
