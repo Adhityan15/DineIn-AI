@@ -50,34 +50,34 @@
 }
 
 /* ==========================================================================
-   2. PRIMARY DARK THEME SYSTEM (.dark) - Register Page Dark Glass Theme
+   2. PRIMARY DARK THEME SYSTEM (.dark) - Pitch Black & Vibrant Glowing Glass
    ========================================================================== */
 .dark {
-  --color-bg-app: #0B0F19;
-  --color-bg-surface: rgba(22, 28, 42, 0.65);
-  --color-bg-surface-elevated: rgba(30, 38, 56, 0.75);
-  --color-border: rgba(255, 255, 255, 0.10);
-  --color-border-muted: rgba(255, 255, 255, 0.06);
+  --color-bg-app: #000000;
+  --color-bg-surface: rgba(255, 255, 255, 0.05);
+  --color-bg-surface-elevated: rgba(255, 255, 255, 0.10);
+  --color-border: rgba(255, 255, 255, 0.15);
+  --color-border-muted: rgba(255, 255, 255, 0.10);
 
-  --color-primary: #00D2FF;        /* Vibrant Electric Cyan */
+  --color-primary: #00E5FF;        /* Electric Neon Cyan */
   --color-primary-hover: #00B8D9;
-  --color-success: #10B981;        /* Emerald Success */
-  --color-warning: #F59E0B;        /* Amber Warning */
-  --color-danger: #EF4444;         /* Coral Danger */
-  --color-purple: #8B5CF6;         /* Royal Purple */
-  --color-cyan: #00D2FF;
+  --color-success: #00FF88;        /* Luminous Neon Emerald */
+  --color-warning: #FFE600;        /* Vivid Neon Yellow */
+  --color-danger: #FF3864;         /* Electric Coral Red */
+  --color-purple: #9B5CFF;         /* Neon Violet */
+  --color-cyan: #00E5FF;
 
   --color-text-primary: #FFFFFF;    /* Pure Crisp White */
-  --color-text-secondary: #CBD5E1;  /* Slate 300 */
+  --color-text-secondary: #E2E8F0;  /* Slate 200 */
   --color-text-muted: #94A3B8;      /* Slate 400 */
 
-  --color-hover: rgba(99, 102, 241, 0.12);
-  --color-pressed: rgba(99, 102, 241, 0.20);
-  --color-selected: rgba(99, 102, 241, 0.15);
+  --color-hover: rgba(0, 229, 255, 0.18);
+  --color-pressed: rgba(0, 229, 255, 0.30);
+  --color-selected: rgba(0, 229, 255, 0.25);
 
-  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 16px 45px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  --shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.60), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.2);
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.8);
+  --shadow-md: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 229, 255, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+  --shadow-lg: 0 28px 70px rgba(0, 0, 0, 0.98), 0 0 45px rgba(0, 229, 255, 0.35), inset 0 2px 2px rgba(255, 255, 255, 0.5);
 }
 
 /* ==========================================================================
@@ -108,13 +108,13 @@
 
   .dark select {
     color: #FFFFFF !important;
-    background-color: #121724 !important;
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    background-color: #050A16 !important;
+    border: 1px solid rgba(0, 229, 255, 0.5) !important;
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
   }
 
   .dark select option {
-    background-color: #121724 !important;
+    background-color: #050A16 !important;
     color: #FFFFFF !important;
     padding: 8px 12px;
   }
@@ -272,9 +272,9 @@ body:not(.dark)::after {
   animation: fluid-morph-2 26s ease-in-out infinite;
 }
 
-/* Dark Mode Register-Theme Base Backdrop */
+/* Dark Mode Pure Pitch Black & Vibrant Flowing Neon Animation Orbs */
 .dark body {
-  background: #0B0F19 !important;
+  background: #000000 !important;
   position: relative;
   min-height: 100vh;
 }
@@ -282,27 +282,29 @@ body:not(.dark)::after {
 .dark body::before {
   content: '';
   position: fixed;
-  top: 10%;
-  left: 15%;
-  width: 45vw;
-  height: 45vh;
-  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.10) 50%, transparent 70%);
-  filter: blur(90px);
+  top: 5%;
+  left: 10%;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.38) 0%, rgba(139, 92, 246, 0.28) 45%, transparent 70%);
+  filter: blur(75px);
   pointer-events: none;
   z-index: 0;
+  animation: fluid-morph-1 15s ease-in-out infinite;
 }
 
 .dark body::after {
   content: '';
   position: fixed;
-  bottom: 10%;
-  right: 15%;
-  width: 50vw;
-  height: 50vh;
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.14) 0%, rgba(0, 210, 255, 0.10) 50%, transparent 70%);
-  filter: blur(100px);
+  bottom: 5%;
+  right: 10%;
+  width: 55vw;
+  height: 55vh;
+  background: radial-gradient(circle, rgba(236, 72, 153, 0.32) 0%, rgba(59, 130, 246, 0.28) 45%, transparent 70%);
+  filter: blur(85px);
   pointer-events: none;
   z-index: 0;
+  animation: fluid-morph-2 19s ease-in-out infinite;
 }
 
 .live-animated-bg {
@@ -312,7 +314,7 @@ body:not(.dark)::after {
 }
 
 .dark .live-animated-bg {
-  background: #0B0F19 !important;
+  background: #000000 !important;
 }
 
 /* Custom Scrollbar */
@@ -376,16 +378,15 @@ body:not(.dark) .glass-card-surface::before {
   pointer-events: none;
 }
 
-/* Dark Theme Register Page Matching Deep Glass Surface */
+/* Dark Theme Ultra-Frosted Translucent Liquid Glass Surface */
 .dark .glass-card-surface {
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  background: rgba(255, 255, 255, 0.04) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
   box-shadow: 
-    0 16px 45px rgba(0, 0, 0, 0.45), 
-    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15) !important;
-  border-radius: 26px !important;
+    0 20px 50px rgba(0, 0, 0, 0.70), 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.25) !important;
 }
 
 .dark .glass-card-surface::before {
@@ -394,8 +395,8 @@ body:not(.dark) .glass-card-surface::before {
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 40%, rgba(255, 255, 255, 0.25) 60%, transparent 100%);
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.8) 30%, rgba(155, 92, 255, 0.8) 70%, transparent 100%);
   pointer-events: none;
 }
 
@@ -420,10 +421,10 @@ body:not(.dark) .floating-glass-navbar {
 .dark .floating-glass-navbar,
 .dark header.glass-card-surface,
 .dark aside.glass-card-surface {
-  background: rgba(18, 24, 38, 0.75) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.10) !important;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.50) !important;
+  background: rgba(0, 0, 0, 0.50) !important;
+  backdrop-filter: blur(28px) saturate(200%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.80) !important;
 }
 
 /* Light Theme Behance KPI Glass Edge Glows */
@@ -457,45 +458,46 @@ body:not(.dark) .glow-edge-red {
   background: rgba(255, 255, 255, 0.68);
 }
 
-/* Dark Theme Register Page Matching KPI Glass Cards with Cyan/Purple Accent Glows */
+/* Dark Theme Translucent Floating Glass KPI Cards with Vivid Outer Neon Glows */
 .dark .glow-edge-cyan {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 210, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(0, 210, 255, 0.35) !important;
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 229, 255, 0.45), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(0, 229, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
 }
 
 .dark .glow-edge-green {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(16, 185, 129, 0.35) !important;
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 255, 136, 0.45), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(0, 255, 136, 0.6) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
 }
 
 .dark .glow-edge-purple {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(168, 85, 247, 0.35) !important;
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.7), 0 0 28px rgba(155, 92, 255, 0.45), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(155, 92, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
 }
 
 .dark .glow-edge-blue {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(99, 102, 241, 0.35) !important;
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.7), 0 0 28px rgba(0, 229, 255, 0.45), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(0, 229, 255, 0.6) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
 }
 
 .dark .glow-edge-red {
-  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(239, 68, 68, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
-  border: 1px solid rgba(239, 68, 68, 0.35) !important;
-  background: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.7), 0 0 28px rgba(255, 56, 100, 0.45), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(255, 56, 100, 0.6) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
 }
 
-/* Dark Mode High-Contrast Crisp Typography */
+/* Dark Mode High-Contrast & Vibrant Neon Typography Overrides */
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
   color: #FFFFFF !important;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
 }
 
 .dark .text-slate-900,
@@ -517,30 +519,29 @@ body:not(.dark) .glow-edge-red {
 .dark .bg-slate-950,
 .dark .bg-slate-800,
 .dark .bg-slate-850 {
-  background-color: rgba(22, 28, 42, 0.65) !important;
-  backdrop-filter: blur(24px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
-  border-color: rgba(255, 255, 255, 0.10) !important;
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(28px) saturate(210%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(210%) !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 .dark .border-slate-800,
 .dark .border-slate-700,
 .dark .border-slate-800\/80,
 .dark .border-slate-200 {
-  border-color: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Register Page Vivid Cyan-Indigo-Violet Gradient Pill Buttons in Dark Mode */
+/* Active Neon Glow Pill Buttons in Dark Mode (Matching "Click Me" in Image 1) */
 .dark button.bg-primary-500,
 .dark button.bg-blue-600,
-.dark button.bg-indigo-600,
 .dark button.bg-cyan-500,
 .dark .glow-pill-neon {
-  background: linear-gradient(135deg, #00D2FF 0%, #6366F1 50%, #8B5CF6 100%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.20) !important;
-  box-shadow: 0 8px 24px -4px rgba(0, 210, 255, 0.45), 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.35), rgba(155, 92, 255, 0.35)) !important;
+  border: 1px solid #00E5FF !important;
+  box-shadow: 0 0 22px rgba(0, 229, 255, 0.65), 0 0 38px rgba(155, 92, 255, 0.45), inset 0 0 12px rgba(0, 229, 255, 0.35) !important;
   color: #FFFFFF !important;
-  border-radius: 9999px !important;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.9) !important;
 }
 
 /* Moving Waveform Line Animation */
