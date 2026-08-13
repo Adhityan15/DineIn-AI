@@ -11,6 +11,7 @@ class Command(BaseCommand):
     help = "Seeds Render production PostgreSQL database reliably and idempotently with complete operational dataset and admin1 user."
 
     def handle(self, *args, **options):
+        setattr(settings, 'SEEDING', True)
         self.stdout.write("=================== SEEDING RENDER PRODUCTION DATABASE ===================")
         
         # 1. Ensure migrations are applied

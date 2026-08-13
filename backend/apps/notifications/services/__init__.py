@@ -931,6 +931,9 @@ class EmailService:
 class SystemNotificationService:
     @classmethod
     def create_notification(cls, title, message, notification_type='system', priority='medium', sender='system', recipient=None, module='core', branch=None, user=None):
+        if getattr(settings, 'SEEDING', False) or getattr(settings, 'TESTING', False):
+            return None
+            
         from apps.notifications.models import InAppNotification
         
         recipient_val = recipient or (user.username if user else 'All')
