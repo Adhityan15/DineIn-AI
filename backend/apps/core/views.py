@@ -87,9 +87,15 @@ class BranchViewSet(viewsets.ModelViewSet):
 
         User = get_user_model()
         admin1 = User.objects.filter(username='admin1').first()
+        if not admin1:
+            admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
 
         return Response({
             "admin1_exists": bool(admin1),
+            "admin1_username": admin1.username if admin1 else None,
+            "admin1_email": admin1.email if admin1 else None,
+            "admin1_pass_valid": admin1.check_password('Admin@123') if admin1 else False,
+            "admin1_is_active": admin1.is_active if admin1 else False,
             "admin1_role": admin1.role.name if (admin1 and admin1.role) else (admin1.role.code if (admin1 and hasattr(admin1, 'role') and admin1.role) else None),
             "admin1_branch": admin1.branch.name if (admin1 and admin1.branch) else None,
             "users_count": User.objects.count(),

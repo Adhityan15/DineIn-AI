@@ -56,7 +56,7 @@ class Command(BaseCommand):
         from apps.authentication.models import Role
         from apps.core.models import Branch
 
-        admin_role = Role.objects.filter(code='admin').first() or Role.objects.filter(code='manager').first()
+        admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
         branch = Branch.objects.filter(branch_code='adambakkam-chennai').first() or Branch.objects.filter(name__icontains='Chennai').first() or Branch.objects.first()
 
         admin1 = User.objects.filter(username='admin1').first()
@@ -81,6 +81,7 @@ class Command(BaseCommand):
         else:
             self.stdout.write("Verifying admin1 user attributes...")
             admin1.username = 'admin1'
+            admin1.email = 'adhityanmclaren@gmail.com'
             if admin_role:
                 admin1.role = admin_role
             if branch:
