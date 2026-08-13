@@ -9,16 +9,16 @@ import { Search, ChevronLeft, ChevronRight, Loader2, AlertCircle, X, Info } from
 export const PrimaryButton = ({ children, onClick, disabled, loading, icon: Icon, className = '', type = 'button' }) => {
   return (
     <motion.button
-      whileHover={{ y: -2, scale: 1.03, boxShadow: '0 8px 20px rgba(0, 229, 255, 0.25)' }}
+      whileHover={{ y: -2, scale: 1.03, boxShadow: '0 8px 24px rgba(56, 189, 248, 0.4)' }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 450, damping: 22 }}
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
-      className={`px-4 py-2 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-purple)] to-[var(--color-primary)] bg-[length:200%_100%] hover:bg-right text-white font-extrabold text-xs rounded-full shadow-app-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/40 ${className}`}
+      className={`px-4 py-2 bg-gradient-to-r from-sky-600 via-indigo-600 to-cyan-500 hover:from-sky-500 hover:to-indigo-500 text-white font-extrabold text-xs rounded-full shadow-[0_4px_16px_rgba(2,132,199,0.35)] dark:shadow-[0_0_20px_rgba(56,189,248,0.35)] border border-sky-300/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-300 focus:outline-none ${className}`}
     >
-      {loading ? <Loader2 size={14} className="animate-spin" /> : Icon && <Icon size={14} />}
-      {children}
+      {loading ? <Loader2 size={14} className="animate-spin text-white" /> : Icon && <Icon size={14} className="text-white" />}
+      <span className="text-white drop-shadow-sm">{children}</span>
     </motion.button>
   );
 };
@@ -26,15 +26,15 @@ export const PrimaryButton = ({ children, onClick, disabled, loading, icon: Icon
 export const SecondaryButton = ({ children, onClick, disabled, loading, icon: Icon, className = '', type = 'button' }) => {
   return (
     <motion.button
-      whileHover={{ y: -1.5, scale: 1.02, borderColor: 'var(--color-primary)', boxShadow: '0 6px 18px rgba(0, 0, 0, 0.12)' }}
+      whileHover={{ y: -1.5, scale: 1.02, borderColor: 'rgba(56, 189, 248, 0.8)', boxShadow: '0 6px 20px rgba(56, 189, 248, 0.2)' }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 450, damping: 22 }}
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
-      className={`px-4 py-2 bg-[var(--color-bg-surface-elevated)] backdrop-blur-md border border-[var(--color-border)] text-[var(--color-text-primary)] hover:border-[var(--color-primary)]/60 text-xs font-semibold rounded-full shadow-app-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-300 focus:outline-none ${className}`}
+      className={`px-4 py-2 bg-white/90 dark:bg-slate-800/90 backdrop-blur-md border border-slate-300 dark:border-slate-700/90 text-slate-900 dark:text-slate-100 hover:border-sky-500 hover:text-sky-600 dark:hover:text-sky-300 text-xs font-semibold rounded-full shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-300 focus:outline-none ${className}`}
     >
-      {loading ? <Loader2 size={14} className="animate-spin text-[var(--color-text-secondary)]" /> : Icon && <Icon size={14} className="text-[var(--color-text-secondary)]" />}
+      {loading ? <Loader2 size={14} className="animate-spin text-sky-500" /> : Icon && <Icon size={14} className="text-sky-500 dark:text-sky-400" />}
       {children}
     </motion.button>
   );
@@ -270,7 +270,7 @@ export const Select = ({ label, value, onChange, options = [], error, disabled, 
   return (
     <div className={`space-y-1.5 ${className}`}>
       {label && (
-        <label className="block text-xs font-semibold text-[var(--color-text-secondary)]">
+        <label className="block text-xs font-bold text-slate-700 dark:text-slate-200">
           {label} {required && <span className="text-[var(--color-danger)]">*</span>}
         </label>
       )}
@@ -278,13 +278,13 @@ export const Select = ({ label, value, onChange, options = [], error, disabled, 
         value={value}
         onChange={onChange}
         disabled={disabled}
-        className={`w-full bg-[#0F172A] border border-[var(--color-border)] focus:border-[var(--color-primary)] rounded-full px-4 py-2 text-xs text-[#F8FAFC] outline-none transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${
+        className={`w-full bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 focus:border-sky-500 rounded-full px-4 py-2 text-xs text-slate-900 dark:text-white outline-none transition-all duration-200 shadow-sm disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer ${
           error ? 'border-[var(--color-danger)]' : ''
         }`}
         {...props}
       >
         {children ? children : options.map((opt, idx) => (
-          <option key={idx} value={typeof opt === 'object' ? opt.value : opt} className="bg-[#0F172A] text-[#F8FAFC]">
+          <option key={idx} value={typeof opt === 'object' ? opt.value : opt} className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white">
             {typeof opt === 'object' ? opt.label : opt}
           </option>
         ))}
@@ -293,6 +293,7 @@ export const Select = ({ label, value, onChange, options = [], error, disabled, 
     </div>
   );
 };
+
 
 export const FloatingInput = ({ label, type = 'text', value, onChange, placeholder, error, disabled, required, className = '', ...props }) => {
   return (
