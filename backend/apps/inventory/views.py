@@ -1016,9 +1016,11 @@ class OrderItemViewSet(viewsets.ModelViewSet):
 
 from apps.core.models import CashDrawerSession
 from apps.inventory.pos_services import CashDrawerService
+from apps.inventory.serializers import CashDrawerSessionSerializer
 
 class CashDrawerSessionViewSet(viewsets.ModelViewSet):
     queryset = CashDrawerSession.objects.all().order_by('-opening_time')
+    serializer_class = CashDrawerSessionSerializer
     permission_classes = [IsAuthenticated]
     
     @action(detail=False, methods=['get'], url_path='active', url_name='active')

@@ -238,3 +238,19 @@ class DailyStockRecordSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at']
 
+
+from apps.core.models import CashDrawerSession
+
+class CashDrawerSessionSerializer(serializers.ModelSerializer):
+    cashier_name = serializers.ReadOnlyField(source='cashier.username')
+
+    class Meta:
+        model = CashDrawerSession
+        fields = [
+            'id', 'branch', 'cashier', 'cashier_name', 'opening_time', 'closing_time',
+            'opening_balance', 'closing_balance', 'expected_balance', 'difference',
+            'status', 'notes', 'created_at'
+        ]
+        read_only_fields = ['id', 'opening_time', 'created_at']
+
+
