@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: dinein-ai-v1-0
+    env: python
+    buildCommand: chmod +x backend/build.sh && ./backend/build.sh
+    startCommand: gunicorn --chdir backend dinein_project.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: dinein_project.settings.production
+      - key: PYTHON_VERSION
+        value: 3.11.0

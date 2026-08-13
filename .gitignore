@@ -32,6 +32,9 @@ build/
 *.pdf
 *.docx
 *.bak
+production_data.json
+datadump*.json
+*.json.bak
 
 # IDEs & System
 .DS_Store
@@ -40,5 +43,6 @@ Thumbs.db
 .idea/
 .qodo/
 .pytest_cache/
+
 
 

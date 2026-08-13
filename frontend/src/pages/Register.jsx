@@ -1,46 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  Mail, 
-  Lock, 
-  User as UserIcon, 
-  Phone, 
-  ArrowRight, 
   Sparkles, 
   ShieldCheck, 
   Boxes, 
   CalendarDays, 
   Users,
   Eye,
-  EyeOff
+  EyeOff,
+  ArrowRight
 } from 'lucide-react';
 
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../contexts/ToastContext';
-import {
-  GlassCard,
-  PrimaryButton,
-  SecondaryButton,
-  Input,
-  Select
-} from '../components/DesignSystem';
 import FluidGradientBackground from '../components/FluidGradientBackground';
-
 
 const LeftPanelFeatureCard = ({ icon: Icon, title, desc, delay }) => (
   <motion.div
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ delay, type: 'spring', stiffness: 100 }}
-    className="bg-white/5 border border-white/10 p-4 rounded-2xl flex gap-3.5 hover:bg-white/10 hover:border-white/20 transition-all select-none"
+    className="bg-white/10 border border-white/20 p-4 rounded-2xl flex gap-3.5 hover:bg-white/15 hover:border-white/30 transition-all select-none"
   >
-    <span className="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center shrink-0">
+    <span className="w-10 h-10 rounded-xl bg-sky-500/20 text-sky-300 border border-sky-400/40 flex items-center justify-center shrink-0 shadow-[0_0_12px_rgba(56,189,248,0.3)]">
       <Icon size={18} />
     </span>
     <div>
       <h4 className="text-white text-xs font-bold">{title}</h4>
-      <p className="text-[10px] text-slate-400 mt-1 leading-normal font-semibold">{desc}</p>
+      <p className="text-xs text-slate-200 mt-1 leading-normal font-semibold">{desc}</p>
     </div>
   </motion.div>
 );
@@ -65,7 +53,6 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // Typing animation tagline strings
   const taglines = [
     'Restaurant Intelligence',
     'Predictive Analytics',
@@ -103,44 +90,44 @@ const Register = () => {
     return () => clearTimeout(timer);
   }, [typingText, isDeleting, tagIndex]);
 
-  const validatePassword = (pwd) => {
-    if (pwd.length < 8) return 'Password must be 8+ characters.';
-    if (!/[A-Z]/.test(pwd)) return 'Must contain an uppercase letter.';
-    if (!/[a-z]/.test(pwd)) return 'Must contain a lowercase letter.';
-    if (!/[0-9]/.test(pwd)) return 'Must contain a number.';
-    if (!/[!@#$%^&*()_+-=[\]{}|;':",./<>?]/.test(pwd)) return 'Must contain a special character.';
-    return null;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: null }));
+    }
   };
 
   const validateForm = () => {
-    const tempErrors = {};
-    if (!formData.email.trim()) tempErrors.email = 'Email is required.';
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) tempErrors.email = 'Invalid email format.';
-    
-    if (!formData.username.trim()) tempErrors.username = 'Username is required.';
-    if (!formData.first_name.trim()) tempErrors.first_name = 'First name is required.';
-    if (!formData.last_name.trim()) tempErrors.last_name = 'Last name is required.';
-    
-    if (!formData.phone.trim()) tempErrors.phone = 'Phone number is required.';
-    else if (!/^\+?[1-9]\d{1,14}$/.test(formData.phone.replace(/[\s-()]/g, ''))) {
-      tempErrors.phone = 'Invalid phone format (e.g., +15005550006).';
+    const newErrors = {};
+
+    if (!formData.email) {
+      newErrors.email = 'Email address is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Enter a valid email address';
     }
 
-    const pwdErr = validatePassword(formData.password);
-    if (pwdErr) tempErrors.password = pwdErr;
+    if (!formData.username) {
+      newErrors.username = 'Username is required';
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters';
+    }
+
+    if (!formData.first_name) newErrors.first_name = 'First name is required';
+    if (!formData.last_name) newErrors.last_name = 'Last name is required';
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 8) {
+      newErrors.password = 'Password must be at least 8 characters';
+    }
 
     if (formData.password !== formData.password_confirm) {
-      tempErrors.password_confirm = 'Passwords do not match.';
+      newErrors.password_confirm = 'Passwords do not match';
     }
 
-    setErrors(tempErrors);
-    return Object.keys(tempErrors).length === 0;
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    if (errors[name]) setErrors({ ...errors, [name]: null });
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
@@ -148,274 +135,318 @@ const Register = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    const result = await register(formData);
-    setLoading(false);
 
-    if (result.success) {
-      addToast('Registration successful! Please sign in.', 'success');
-      navigate('/login');
-    } else {
-      addToast(result.error, 'error');
+    try {
+      await register(formData);
+      addToast('Registration successful! Welcome aboard.', 'success');
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Registration error:', err);
+      const resData = err.response?.data;
+      let generalMsg = 'Registration failed. Please review your inputs.';
+
+      if (resData && typeof resData === 'object') {
+        const fieldErrors = {};
+        Object.keys(resData).forEach((key) => {
+          const val = resData[key];
+          fieldErrors[key] = Array.isArray(val) ? val.join(' ') : String(val);
+        });
+        setErrors(fieldErrors);
+        if (fieldErrors.detail) generalMsg = fieldErrors.detail;
+        else if (fieldErrors.non_field_errors) generalMsg = fieldErrors.non_field_errors;
+      }
+
+      addToast(generalMsg, 'error');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const roleOptions = [
-    { value: 'customer', label: 'Customer' },
-    { value: 'receptionist', label: 'Receptionist / Service Staff' },
-    { value: 'kitchen_staff', label: 'Kitchen Staff / Chef' },
-    { value: 'inventory_manager', label: 'Inventory Manager' },
-    { value: 'manager', label: 'Restaurant Manager' }
-  ];
-
   return (
-    <div className="dark min-h-screen bg-[#030712] flex relative overflow-hidden font-sans text-slate-100">
+    <div className="dark min-h-screen bg-black flex relative overflow-hidden font-sans text-slate-100 selection:bg-sky-400 selection:text-black">
       
-      {/* 4K Animated 3D Fluid Gradient Motion Background */}
+      {/* 4K Motion Glass Backdrop */}
       <FluidGradientBackground />
 
-      {/* LEFT PANEL: BRANDING & FEATURES (Hidden on Mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 border-r border-white/10 relative z-10 bg-[#030712]/70 backdrop-blur-xl">
-
+      {/* LEFT PANEL: BRANDING & SYSTEM INSIGHTS */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-white/15 bg-[#0B1120]/80 backdrop-blur-2xl">
         
-        {/* Top Header Logo */}
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center border border-indigo-400/20 shadow-[0_0_24px_rgba(99,102,241,0.25)]">
-            <span className="text-white font-extrabold text-lg tracking-wider">D</span>
-          </div>
-          <span className="text-white font-black tracking-tight text-lg">DineIn AI</span>
-        </div>
-
-        {/* Center tagline and typing animation */}
-        <div className="space-y-6 max-w-md">
-          <div className="space-y-2">
-            <h2 className="text-4xl font-extrabold tracking-tight text-white leading-tight">
-              Enterprise Operations <br />
-              Management
-            </h2>
-            <div className="text-indigo-400 text-sm font-extrabold uppercase tracking-widest flex items-center gap-1.5 h-6">
-              <Sparkles size={14} className="animate-pulse text-indigo-400" />
-              <span>{typingText}</span>
-              <span className="w-[2px] h-4 bg-indigo-400 animate-blink shrink-0" />
+        {/* Brand Header */}
+        <div className="space-y-6">
+          <Link to="/" className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-400 via-indigo-500 to-cyan-400 text-black flex items-center justify-center border border-white/50 shadow-[0_0_24px_rgba(56,189,248,0.5)]">
+              <span className="font-black text-2xl tracking-wider text-black">D</span>
             </div>
-          </div>
+            <span className="font-black tracking-tight text-2xl text-white drop-shadow-md">
+              DineIn <span className="text-sky-400">AI</span>
+            </span>
+          </Link>
 
-          {/* Seeds feature cards lists */}
-          <div className="space-y-4">
-            <LeftPanelFeatureCard icon={CalendarDays} title="AI Reservation Engine" desc="Live booking wizard matrices mapping dynamic SVG layout designs." delay={0.1} />
-            <LeftPanelFeatureCard icon={Boxes} title="Inventory Prediction Cost" desc="Tracks low-stock parameters and wastage cost analysis points." delay={0.2} />
-            <LeftPanelFeatureCard icon={Users} title="Workforce Compliance Roster" desc="Roster clocks compliant geofencing and burnout limits." delay={0.3} />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-sky-500/20 border border-sky-400/40 text-sky-300 text-xs font-black tracking-widest uppercase">
+            <Sparkles size={15} className="animate-pulse text-sky-300" />
+            <span>OPERATIONAL ENTERPRISE PORTAL</span>
           </div>
         </div>
 
-        {/* Bottom systems confirmation badge */}
-        <div className="flex items-center gap-2 text-slate-500 text-[10px] font-bold uppercase select-none">
-          <ShieldCheck size={14} className="text-app-success" />
-          JWT secure cloud platform ● certified compliant
+        {/* Dynamic Typing Headline */}
+        <div className="space-y-4 my-auto py-8">
+          <h1 className="text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight drop-shadow-md">
+            Initialize Platform <br />
+            <span className="bg-gradient-to-r from-white via-sky-200 to-cyan-300 bg-clip-text text-transparent min-h-[1.2em] inline-block">
+              {typingText}
+              <span className="animate-pulse text-sky-400">|</span>
+            </span>
+          </h1>
+
+          <p className="text-sm text-slate-200 font-semibold max-w-md leading-relaxed drop-shadow">
+            Create an operational profile to manage branch telemetry, AI table reservations, inventory forecasting, and staff rosters.
+          </p>
+
+          <div className="space-y-3.5 pt-4">
+            <LeftPanelFeatureCard
+              icon={CalendarDays}
+              title="Automated Table Wizard"
+              desc="Real-time guest allocations and floor plan table layout sync."
+              delay={0.1}
+            />
+            <LeftPanelFeatureCard
+              icon={Boxes}
+              title="Predictive Inventory Costing"
+              desc="Low-stock threshold triggers and batch ingredient wastage analytics."
+              delay={0.2}
+            />
+            <LeftPanelFeatureCard
+              icon={Users}
+              title="Geofenced Staff Roster"
+              desc="GPS validated clock-ins, shift compliance, and burnout limit safeguards."
+              delay={0.3}
+            />
+          </div>
+        </div>
+
+        {/* Footer Security Badge */}
+        <div className="flex items-center gap-2 text-xs text-slate-300 font-extrabold uppercase tracking-widest">
+          <ShieldCheck size={16} className="text-sky-300" />
+          <span>JWT ENTERPRISE SECURE ● ACTIVE SYSTEM</span>
         </div>
 
       </div>
 
-      {/* RIGHT PANEL: GLASS REGISTER CARD */}
+      {/* RIGHT PANEL: UNIFIED DARK GLASS REGISTER FORM CARD */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 relative z-10 overflow-y-auto">
         
-        {/* Glass Card form */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 220, damping: 22 }}
           className="w-full max-w-md my-8"
         >
-          <GlassCard className="p-8 sm:p-10 border-white/10 rounded-[28px] shadow-[0_12px_40px_rgba(0,0,0,0.4)] backdrop-blur-2xl">
+          <div className="p-8 sm:p-10 bg-[#0B1120]/95 border border-white/20 rounded-[32px] shadow-[0_20px_70px_rgba(0,0,0,0.95)] backdrop-blur-3xl space-y-6 relative overflow-hidden">
             
-            {/* Logo for mobile headers */}
-            <div className="flex lg:hidden items-center gap-2 mb-6 justify-center">
-              <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
-                <span className="text-white font-extrabold text-sm">D</span>
+            {/* Top Specular Rim Highlight */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-sky-400 via-white to-cyan-400" />
+
+            <div className="flex lg:hidden items-center gap-3 justify-center mb-2">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-400 to-cyan-400 text-black flex items-center justify-center font-black text-xl shadow-md">
+                D
               </div>
-              <span className="text-white font-black text-sm">DineIn AI</span>
+              <span className="text-white font-black text-xl">DineIn AI</span>
             </div>
 
-            <div className="space-y-2 text-center mb-8">
-              <h3 className="text-2xl font-extrabold tracking-tight text-white">Create Account</h3>
-              <p className="text-xs text-slate-400">
+            <div className="space-y-2 text-center">
+              <h3 className="text-3xl font-black tracking-tight text-white drop-shadow-md">Create Account</h3>
+              <p className="text-xs text-slate-200 font-bold">
                 Register to initialize workspace operations or{' '}
-                <Link to="/login" className="text-indigo-400 hover:text-indigo-300 font-extrabold transition-colors">
+                <Link to="/login" className="text-sky-300 font-black hover:underline">
                   sign in to your account
                 </Link>.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Split Names */}
+              
+              {/* Names Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="First Name"
-                  id="first_name"
-                  name="first_name"
-                  type="text"
-                  value={formData.first_name}
-                  onChange={handleChange}
-                  placeholder="John"
-                  required
-                  error={errors.first_name}
-                />
-                <Input
-                  label="Last Name"
-                  id="last_name"
-                  name="last_name"
-                  type="text"
-                  value={formData.last_name}
-                  onChange={handleChange}
-                  placeholder="Doe"
-                  required
-                  error={errors.last_name}
-                />
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    First Name <span className="text-sky-400">*</span>
+                  </label>
+                  <input
+                    name="first_name"
+                    type="text"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    placeholder="John"
+                    className="w-full px-4 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
+                    required
+                  />
+                  {errors.first_name && <p className="text-xs text-rose-400 font-bold">{errors.first_name}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Last Name <span className="text-sky-400">*</span>
+                  </label>
+                  <input
+                    name="last_name"
+                    type="text"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    placeholder="Doe"
+                    className="w-full px-4 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
+                    required
+                  />
+                  {errors.last_name && <p className="text-xs text-rose-400 font-bold">{errors.last_name}</p>}
+                </div>
               </div>
 
-              {/* Email Field */}
-              <Input
-                label="Email Address"
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="name@restaurant.com"
-                required
-                error={errors.email}
-              />
-
-              {/* Username & Phone grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Input
-                  label="Username"
-                  id="username"
-                  name="username"
-                  type="text"
-                  value={formData.username}
+              {/* Email */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-white uppercase tracking-wider">
+                  Email Address <span className="text-sky-400">*</span>
+                </label>
+                <input
+                  name="email"
+                  type="email"
+                  value={formData.email}
                   onChange={handleChange}
-                  placeholder="john_doe"
+                  placeholder="name@restaurant.com"
+                  className="w-full px-4 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
                   required
-                  error={errors.username}
                 />
-                <Input
-                  label="Phone Number"
-                  id="phone"
-                  name="phone"
-                  type="text"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  placeholder="+15005550006"
-                  required
-                  error={errors.phone}
-                />
+                {errors.email && <p className="text-xs text-rose-400 font-bold">{errors.email}</p>}
               </div>
 
-              {/* Split Passwords */}
+              {/* Username & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label htmlFor="password" className="block text-[10px] font-extrabold text-text-secondary uppercase tracking-wider">
-                    Password
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Username <span className="text-sky-400">*</span>
+                  </label>
+                  <input
+                    name="username"
+                    type="text"
+                    value={formData.username}
+                    onChange={handleChange}
+                    placeholder="john_doe"
+                    className="w-full px-4 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
+                    required
+                  />
+                  {errors.username && <p className="text-xs text-rose-400 font-bold">{errors.username}</p>}
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Phone Number
+                  </label>
+                  <input
+                    name="phone"
+                    type="text"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+1 555-0198"
+                    className="w-full px-4 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
+                  />
+                </div>
+              </div>
+
+              {/* Account Role Selection */}
+              <div className="space-y-1.5">
+                <label className="block text-xs font-black text-white uppercase tracking-wider">
+                  Account Role <span className="text-sky-400">*</span>
+                </label>
+                <select
+                  name="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-[#030712] border border-white/20 rounded-2xl text-xs text-white outline-none focus:border-sky-400 font-bold cursor-pointer"
+                >
+                  <option value="customer" className="bg-[#0B1120] text-white">Customer</option>
+                  <option value="owner" className="bg-[#0B1120] text-white">Restaurant Owner</option>
+                  <option value="manager" className="bg-[#0B1120] text-white">Restaurant Manager</option>
+                  <option value="receptionist" className="bg-[#0B1120] text-white">Receptionist / Host</option>
+                  <option value="kitchen_staff" className="bg-[#0B1120] text-white">Kitchen Staff</option>
+                </select>
+              </div>
+
+              {/* Passwords Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Password <span className="text-sky-400">*</span>
                   </label>
                   <div className="relative">
                     <input
-                      id="password"
                       name="password"
                       type={showPassword ? 'text' : 'password'}
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className={`w-full pl-3 pr-10 py-2 bg-app-elevated border ${
-                        errors.password ? 'border-app-danger/60 focus:ring-app-danger/20' : 'border-app-border focus:border-app-primary focus:ring-app-primary/10'
-                      } rounded-app-lg text-xs outline-none text-text-primary transition-all duration-150 focus:ring-2 placeholder-text-muted/60`}
+                      className="w-full pl-4 pr-10 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-350 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white"
                     >
-                      {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                      {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-[10px] font-semibold text-app-danger mt-1">{errors.password}</p>}
+                  {errors.password && <p className="text-xs text-rose-400 font-bold">{errors.password}</p>}
                 </div>
 
-                <div className="space-y-1">
-                  <label htmlFor="password_confirm" className="block text-[10px] font-extrabold text-text-secondary uppercase tracking-wider">
-                    Confirm Password
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Confirm Password <span className="text-sky-400">*</span>
                   </label>
                   <div className="relative">
                     <input
-                      id="password_confirm"
                       name="password_confirm"
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={formData.password_confirm}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className={`w-full pl-3 pr-10 py-2 bg-app-elevated border ${
-                        errors.password_confirm ? 'border-app-danger/60 focus:ring-app-danger/20' : 'border-app-border focus:border-app-primary focus:ring-app-primary/10'
-                      } rounded-app-lg text-xs outline-none text-text-primary transition-all duration-150 focus:ring-2 placeholder-text-muted/60`}
+                      className="w-full pl-4 pr-10 py-3 bg-[#030712]/90 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-sky-400 font-bold"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-350 transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white"
                     >
-                      {showConfirmPassword ? <EyeOff size={14} /> : <Eye size={14} />}
+                      {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {errors.password_confirm && <p className="text-[10px] font-semibold text-app-danger mt-1">{errors.password_confirm}</p>}
+                  {errors.password_confirm && <p className="text-xs text-rose-400 font-bold">{errors.password_confirm}</p>}
                 </div>
               </div>
 
-              {/* Role Dropdown */}
-              <Select
-                label="Primary System Role"
-                id="role"
-                name="role"
-                value={formData.role}
-                onChange={handleChange}
-                options={roleOptions}
-              />
-
               {/* Submit Button */}
-              <div className="pt-4">
-                <PrimaryButton 
-                  type="submit" 
-                  loading={loading}
-                  className="w-full py-3 h-11 text-xs font-bold shadow-[0_4px_16px_rgba(99,102,241,0.25)] rounded-app-xl"
-                >
-                  Create Account
-                </PrimaryButton>
-              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-4 bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-500 text-black font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_30px_rgba(56,189,248,0.5)] hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-4"
+              >
+                {loading ? (
+                  <span>Initializing Profile...</span>
+                ) : (
+                  <>
+                    <span>Create Enterprise Account</span>
+                    <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
             </form>
 
-            <div className="mt-6 flex flex-col items-center gap-2 pt-4 border-t border-white/5">
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Already registered?</span>
-              <SecondaryButton
-                onClick={() => navigate('/login')}
-                className="w-full py-2.5 text-xs font-bold rounded-app-xl bg-white/5 border-white/10 hover:bg-white/10 hover:border-white/20 text-white"
-              >
-                Sign In
-              </SecondaryButton>
+            <div className="pt-4 border-t border-white/15 text-center">
+              <Link to="/" className="text-xs font-bold text-slate-300 hover:text-white transition-colors">
+                ← Back to Opening Landing Page
+              </Link>
             </div>
 
-            <div className="mt-6 text-center text-[10px] text-slate-500 font-semibold select-none">
-              Need assistance?{' '}
-              <a href="mailto:support@dinein.com" className="text-indigo-400 hover:underline">
-                Contact Technical Support
-              </a>
-            </div>
-
-          </GlassCard>
+          </div>
         </motion.div>
-
-        {/* Footer info panels */}
-        <div className="mt-8 text-center text-[9px] text-slate-600 font-bold uppercase tracking-widest select-none">
-          © {new Date().getFullYear()} DineIn AI. All rights reserved.
-        </div>
 
       </div>
 

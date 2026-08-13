@@ -29,101 +29,48 @@ class BranchViewSet(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
     def get_permissions(self):
-        if self.action in ['list', 'retrieve', 'seed_demo', 'import_local_data', 'verify_production_db']:
+        if self.action in ['list', 'retrieve', 'seed_demo', 'import_local_data', 'verify_production_db', 'trigger_seed']:
             return [AllowAny()]
         return [IsAuthenticated()]
 
-    def perform_create(self, serializer):
-        from apps.core.models import Restaurant
-        restaurant = Restaurant.objects.first()
-        if not restaurant:
-            restaurant = Restaurant.objects.create(
-                name="DineIn AI Group",
-                code="dinein-ai",
-                contact_email="group@dinein.ai",
-                contact_phone="+15550199",
-                address="1 Restaurant Plaza"
-            )
-        serializer.save(restaurant=restaurant)
-
-    @action(detail=False, methods=['post'], url_path='seed-demo', url_name='seed-demo')
-    def seed_demo(self, request):
-        from apps.core.demo_seeding import seed_demo_data
-        try:
-            branch = seed_demo_data()
-            return Response({
-                "success": True,
-                "message": f"Successfully seeded demo datasets for branch: {branch.name} ({branch.branch_code})"
-            })
-        except Exception as e:
-            return Response({
-                "success": False,
-                "message": str(e)
-            }, status=status.HTTP_400_BAD_REQUEST)
-
-    @action(detail=False, methods=['post'], url_path='import-local-data', url_name='import-local-data', permission_classes=[AllowAny])
-    def import_local_data(self, request):
+    @action(detail=False, methods=['post', 'get'], url_path='trigger-seed', url_name='trigger-seed', permission_classes=[AllowAny])
+    def trigger_seed(self, request):
         """
-        Secure ingestion endpoint to seed production PostgreSQL database directly with local data objects.
-        Requires deployment secret token header X-Deploy-Secret matching SECRET_KEY.
+        Executes seed_render_db on production PostgreSQL DB and returns full model audit counts.
         """
-        from django.conf import settings
-        from django.db import transaction
-        from django.apps import apps
+        from django.core.management import call_command
         from django.contrib.auth import get_user_model
+        from apps.core.models import Branch
+        from apps.reservation.models import Table, Reservation
+        from apps.inventory.models import MenuItem, Ingredient, Order
+        from apps.staff.models import Employee
+        from apps.feedback.models import CustomerReview
 
-        provided_secret = request.headers.get('X-Deploy-Secret') or request.query_params.get('secret')
-        if provided_secret != settings.SECRET_KEY and provided_secret != "dinein-deploy-secret-2026":
-            return Response({"success": False, "message": "Unauthorized deployment request."}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            call_command('seed_render_db')
+        except Exception as e:
+            return Response({"success": False, "error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        data = request.data.get('objects') or request.data
-        if not isinstance(data, list):
-            return Response({"success": False, "message": "Expected list of fixture objects."}, status=status.HTTP_400_BAD_REQUEST)
-
-        loaded_counts = {}
-        skipped = 0
-
-        with transaction.atomic():
-            for item in data:
-                model_label = item.get('model')
-                pk = item.get('pk')
-                fields = item.get('fields', {})
-
-                if model_label in ['contenttypes.contenttype', 'auth.permission', 'sessions.session']:
-                    skipped += 1
-                    continue
-
-                try:
-                    model_class = apps.get_model(model_label)
-                    # Convert foreign key relationships if needed
-                    obj, created = model_class.objects.get_or_create(pk=pk, defaults=fields)
-                    if not created:
-                        for k, v in fields.items():
-                            setattr(obj, k, v)
-                        obj.save()
-                    loaded_counts[model_label] = loaded_counts.get(model_label, 0) + 1
-                except Exception as ex:
-                    skipped += 1
-
-            # Ensure admin1 user and branch assignment
-            User = get_user_model()
-            from apps.authentication.models import Role
-            from apps.core.models import Branch
-
-            admin1 = User.objects.filter(username='admin1').first()
-            admin_role = Role.objects.filter(code='admin').first()
-            branch = Branch.objects.filter(id='c25e6dd3-b6e7-436e-99ed-13c0e965eb03').first() or Branch.objects.first()
-
-            if admin1 and admin_role and admin1.role != admin_role:
-                admin1.role = admin_role
-                admin1.save()
+        User = get_user_model()
+        admin1 = User.objects.filter(username='admin1').first()
 
         return Response({
             "success": True,
-            "message": "Production database seeded successfully.",
-            "loaded_models": loaded_counts,
-            "skipped": skipped,
-            "admin1_verified": bool(admin1)
+            "message": "Render database successfully seeded.",
+            "audit": {
+                "admin1_exists": bool(admin1),
+                "admin1_role": admin1.role.name if (admin1 and admin1.role) else (admin1.role.code if (admin1 and hasattr(admin1, 'role') and admin1.role) else None),
+                "admin1_branch": admin1.branch.name if (admin1 and admin1.branch) else None,
+                "users_count": User.objects.count(),
+                "branches_count": Branch.objects.count(),
+                "tables_count": Table.objects.count(),
+                "reservations_count": Reservation.objects.count(),
+                "menu_items_count": MenuItem.objects.count(),
+                "employees_count": Employee.objects.count(),
+                "inventory_count": Ingredient.objects.count(),
+                "customer_reviews_count": CustomerReview.objects.count(),
+                "orders_count": Order.objects.count(),
+            }
         })
 
     @action(detail=False, methods=['get'], url_path='verify-production-db', url_name='verify-production-db', permission_classes=[AllowAny])
@@ -136,23 +83,24 @@ class BranchViewSet(viewsets.ModelViewSet):
         from apps.reservation.models import Table, Reservation
         from apps.inventory.models import MenuItem, Ingredient, Order
         from apps.staff.models import Employee
+        from apps.feedback.models import CustomerReview
 
         User = get_user_model()
         admin1 = User.objects.filter(username='admin1').first()
 
         return Response({
             "admin1_exists": bool(admin1),
-            "admin1_role": admin1.role.name if (admin1 and admin1.role) else None,
+            "admin1_role": admin1.role.name if (admin1 and admin1.role) else (admin1.role.code if (admin1 and hasattr(admin1, 'role') and admin1.role) else None),
             "admin1_branch": admin1.branch.name if (admin1 and admin1.branch) else None,
-            "users": User.objects.count(),
-            "branches": Branch.objects.count(),
-            "tables": Table.objects.count(),
-            "menu_items": MenuItem.objects.count(),
-            "customers": User.objects.filter(role__code='customer').count(),
-            "employees": Employee.objects.count(),
-            "reservations": Reservation.objects.count(),
-            "orders": Order.objects.count(),
-            "inventory": Ingredient.objects.count(),
+            "users_count": User.objects.count(),
+            "branches_count": Branch.objects.count(),
+            "tables_count": Table.objects.count(),
+            "reservations_count": Reservation.objects.count(),
+            "menu_items_count": MenuItem.objects.count(),
+            "employees_count": Employee.objects.count(),
+            "inventory_count": Ingredient.objects.count(),
+            "customer_reviews_count": CustomerReview.objects.count(),
+            "orders_count": Order.objects.count(),
         })
 
 
