@@ -1,0 +1,14 @@
+# Local environment & secret files
+.env
+*.sqlite3
+*.sqlite3.bak
+*.log
+*.coverage
+.pytest_cache/
+__pycache__/
+
+# Data dumps and fixtures containing sensitive user data
+production_data.json
+datadump_clean.json
+datadump.json
+*.json.bak
