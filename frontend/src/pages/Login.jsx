@@ -139,19 +139,19 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen live-animated-bg flex relative overflow-hidden font-sans text-slate-100">
+    <div className="dark min-h-screen bg-[#030712] flex relative overflow-hidden font-sans text-slate-100">
       
-      {/* 4K Liquid Fluid Gradient Motion Background */}
+      {/* 4K Animated 3D Fluid Gradient Motion Background */}
       <FluidGradientBackground />
 
-      {/* LEFT PANEL: BRANDING & FEATURES */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 border-r border-white/10 relative z-10 bg-[#0A0E17]/60 backdrop-blur-md">
+      {/* LEFT PANEL: BRANDING & ANIMATED FEATURE CARDS */}
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 border-r border-white/10 relative z-10 bg-[#030712]/70 backdrop-blur-xl">
         
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 flex items-center justify-center border border-cyan-400/30 shadow-[0_0_24px_rgba(0,229,255,0.3)]">
-            <span className="text-white font-extrabold text-lg tracking-wider">D</span>
+          <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 via-indigo-500 to-purple-600 flex items-center justify-center border border-cyan-400/40 shadow-[0_0_28px_rgba(0,229,255,0.4)] animate-pulse">
+            <span className="text-white font-black text-xl tracking-wider">D</span>
           </div>
-          <span className="text-white font-black tracking-tight text-xl">DineIn AI</span>
+          <span className="text-white font-black tracking-tight text-2xl">DineIn <span className="text-cyan-400">AI</span></span>
         </div>
 
         <div className="space-y-6 max-w-md">
@@ -161,9 +161,9 @@ const Login = () => {
               Management
             </h2>
             <div className="text-cyan-400 text-sm font-extrabold uppercase tracking-widest flex items-center gap-1.5 h-6">
-              <Sparkles size={14} className="animate-pulse text-cyan-400" />
-              <span>{typingText}</span>
-              <span className="w-[2px] h-4 bg-cyan-400 animate-blink shrink-0" />
+              <Sparkles size={16} className="animate-pulse text-cyan-400" />
+              <span className="bg-gradient-to-r from-cyan-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">{typingText}</span>
+              <span className="w-[2.5px] h-4 bg-cyan-400 animate-blink shrink-0" />
             </div>
           </div>
 
@@ -174,26 +174,26 @@ const Login = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-slate-400 text-xs font-bold uppercase select-none">
-          <ShieldCheck size={16} className="text-[#00FF88]" />
+        <div className="flex items-center gap-2 text-slate-300 text-xs font-extrabold uppercase select-none">
+          <ShieldCheck size={16} className="text-[#00FF88] animate-pulse" />
           JWT secure enterprise platform ● certified active
         </div>
 
       </div>
 
-      {/* RIGHT PANEL: HIGH-CONTRAST DARK GLASS LOGIN CARD */}
+      {/* RIGHT PANEL: HIGH-CONTRAST ANIMATED DARK GLASS LOGIN CARD */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 relative z-10">
         
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 25 }}
+          initial={{ opacity: 0, y: 20, scale: 0.96 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ type: 'spring', stiffness: 220, damping: 22 }}
           className="w-full max-w-md"
         >
-          <div className="p-8 sm:p-10 bg-[#0F172A]/90 border border-slate-700/80 rounded-[28px] shadow-[0_20px_60px_rgba(0,0,0,0.85)] backdrop-blur-2xl space-y-6 relative overflow-hidden">
+          <div className="p-8 sm:p-10 bg-[#0B1120]/90 border border-cyan-500/30 rounded-[30px] shadow-[0_20px_70px_rgba(0,0,0,0.95),0_0_35px_rgba(0,229,255,0.20)] backdrop-blur-2xl space-y-6 relative overflow-hidden">
             
-            {/* Top Glass Rim Highlight */}
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
+            {/* Top Specular Glass Rim Highlight */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-purple-500" />
 
             <div className="flex lg:hidden items-center gap-2.5 justify-center mb-2">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-indigo-600 flex items-center justify-center shadow-md">
@@ -230,8 +230,8 @@ const Login = () => {
                       if (errors.email) setErrors({ ...errors, email: null });
                     }}
                     placeholder="name@restaurant.com or username"
-                    className={`w-full px-4 py-3 bg-[#020617] border ${
-                      errors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20'
+                    className={`w-full px-4 py-3 bg-[#030712] border ${
+                      errors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-700/80 focus:border-cyan-400 focus:ring-cyan-400/25'
                     } rounded-2xl text-xs text-white placeholder-slate-500 outline-none transition-all duration-200 focus:ring-2 font-semibold`}
                     required
                   />
@@ -262,8 +262,8 @@ const Login = () => {
                         if (errors.password) setErrors({ ...errors, password: null });
                       }}
                       placeholder="••••••••"
-                      className={`w-full pl-4 pr-11 py-3 bg-[#020617] border ${
-                        errors.password ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-700 focus:border-cyan-400 focus:ring-cyan-400/20'
+                      className={`w-full pl-4 pr-11 py-3 bg-[#030712] border ${
+                        errors.password ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-700/80 focus:border-cyan-400 focus:ring-cyan-400/25'
                       } rounded-2xl text-xs text-white placeholder-slate-500 outline-none transition-all duration-200 focus:ring-2 font-semibold`}
                       required
                     />
@@ -294,7 +294,7 @@ const Login = () => {
                 <PrimaryButton 
                   type="submit" 
                   loading={loading}
-                  className="w-full py-3 h-12 text-xs font-black bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white rounded-2xl shadow-[0_8px_24px_rgba(0,229,255,0.3)] hover:scale-[1.01] transition-all"
+                  className="w-full py-3.5 h-12 text-xs font-black bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-600 text-white rounded-2xl shadow-[0_8px_25px_rgba(0,229,255,0.4)] hover:scale-[1.02] active:scale-[0.98] transition-all"
                 >
                   {getLoadingMessage()}
                 </PrimaryButton>
@@ -302,12 +302,12 @@ const Login = () => {
             </form>
 
             {/* Create Account Action */}
-            <div className="mt-6 flex flex-col items-center gap-3 pt-5 border-t border-slate-800">
+            <div className="mt-6 flex flex-col items-center gap-3 pt-5 border-t border-slate-800/80">
               <span className="text-xs text-slate-400 font-extrabold uppercase tracking-widest">New to the platform?</span>
               <button
                 type="button"
                 onClick={() => navigate('/register')}
-                className="w-full py-3 text-xs font-bold rounded-2xl bg-slate-800/90 border border-slate-700 hover:bg-slate-800 hover:border-slate-600 text-white transition-all shadow-sm cursor-pointer"
+                className="w-full py-3 text-xs font-bold rounded-2xl bg-slate-800/80 border border-slate-700/80 hover:bg-slate-800 hover:border-cyan-400/40 text-white transition-all shadow-sm cursor-pointer hover:scale-[1.01]"
               >
                 Create Account
               </button>
@@ -331,6 +331,7 @@ const Login = () => {
 
     </div>
   );
+
 };
 
 export default Login;

@@ -25,6 +25,8 @@ import {
   Input,
   Select
 } from '../components/DesignSystem';
+import FluidGradientBackground from '../components/FluidGradientBackground';
+
 
 const LeftPanelFeatureCard = ({ icon: Icon, title, desc, delay }) => (
   <motion.div
@@ -166,17 +168,14 @@ const Register = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 flex relative overflow-hidden font-sans text-slate-100">
+    <div className="dark min-h-screen bg-[#030712] flex relative overflow-hidden font-sans text-slate-100">
       
-      {/* Background animated aurora glow widgets */}
-      <div className="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-indigo-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 translate-x-1/2 translate-y-1/2 w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[140px] pointer-events-none animate-pulse" />
-
-      {/* Grid Pattern overlay */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
+      {/* 4K Animated 3D Fluid Gradient Motion Background */}
+      <FluidGradientBackground />
 
       {/* LEFT PANEL: BRANDING & FEATURES (Hidden on Mobile) */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 border-r border-white/5 relative z-10 bg-slate-950/20 backdrop-blur-md">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-16 border-r border-white/10 relative z-10 bg-[#030712]/70 backdrop-blur-xl">
+
         
         {/* Top Header Logo */}
         <div className="flex items-center gap-3">
