@@ -171,27 +171,10 @@ class Command(BaseCommand):
             last_names_staff = ["Sundaram", "Kalyan", "Natarajan", "Sekar", "Pandian", "Elangovan", "Pillai", "Mudaliar", "Naidu", "Reddy"]
             
             employees = []
-            for i in range(60):
+            for i in range(10):
                 email = f"staff{i}@chennai-dinein.in"
-                # Set up designated roles
-                if i < 4:
-                    desig = desig_manager
-                    role = manager_role
-                elif i < 15:
-                    desig = desig_chef
-                    role = staff_role
-                elif i < 35:
-                    desig = desig_server
-                    role = staff_role
-                elif i < 45:
-                    desig = desig_cashier
-                    role = staff_role
-                elif i < 56:
-                    desig = desig_cleaner
-                    role = staff_role
-                else:
-                    desig = desig_hr
-                    role = manager_role
+                desig = desig_manager if i < 2 else (desig_chef if i < 5 else desig_server)
+                role = manager_role if i < 2 else staff_role
 
                 user, _ = User.objects.get_or_create(
                     email=email,
@@ -208,19 +191,21 @@ class Command(BaseCommand):
                     user.set_password("Password123!")
                     user.save()
 
-                emp = Employee.objects.create(
+                emp, _ = Employee.objects.get_or_create(
                     user=user,
-                    employee_id=f"MEMBER-{i:03d}",
-                    designation=desig,
-                    skills="culinary, safety, HACCP" if desig == desig_chef else "hospitality, cash-handling, guest-relations",
-                    status="active",
-                    hire_date=timezone.now().date() - datetime.timedelta(days=random.randint(30, 360)),
-                    hourly_rate=random.randint(120, 450)
+                    defaults={
+                        "employee_id": f"MEMBER-{i:03d}",
+                        "designation": desig,
+                        "skills": "culinary, safety, HACCP" if desig == desig_chef else "hospitality, cash-handling, guest-relations",
+                        "status": "active",
+                        "hire_date": timezone.now().date() - datetime.timedelta(days=random.randint(30, 360)),
+                        "hourly_rate": random.randint(120, 450)
+                    }
                 )
                 employees.append(emp)
 
-            # 6. Roster attendance logs for past 7 days
-            self.stdout.write("Rostering shift attendance for past 7 days...")
+            # 6. Roster attendance logs for past 1 day
+            self.stdout.write("Rostering shift attendance...")
             shift_morning, _ = Shift.objects.get_or_create(
                 name="Morning Chennai Shift",
                 defaults={"start_time": "08:00:00", "end_time": "16:00:00"}
@@ -232,7 +217,7 @@ class Command(BaseCommand):
 
             today = timezone.now().date()
             attendance_records = []
-            for day_idx in range(7):
+            for day_idx in range(1):
                 date_cursor = today - datetime.timedelta(days=day_idx)
                 for emp in employees:
                     # Skip some employees to simulate off days
