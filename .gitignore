@@ -1,0 +1,44 @@
+# Python & Virtual Environments
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+.venv.*/
+env/
+venv/
+ENV/
+*.sqlite3
+*.sqlite3.bak
+error.log
+
+# Environment files & Secrets
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# Static & Build Artifacts
+staticfiles/
+backend/staticfiles/
+dist/
+build/
+.output/
+.vite/
+*.log
+
+# Documents & Dumps
+*.pdf
+*.docx
+*.bak
+
+# IDEs & System
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.qodo/
+.pytest_cache/
+
+

@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   1. PRIMARY THEME SYSTEM (:root) - Light Option
+   1. PRIMARY THEME SYSTEM (:root) - Behance Digital Agency Glassmorphism Theme
    ========================================================================== */
 :root {
   --space-8: 0.5rem;
@@ -17,10 +17,10 @@
   --space-40: 2.5rem;
 
   --color-bg-app: #F8FAFC;
-  --color-bg-surface: rgba(255, 255, 255, 0.78);
-  --color-bg-surface-elevated: rgba(255, 255, 255, 0.90);
-  --color-border: rgba(255, 255, 255, 0.98);
-  --color-border-muted: rgba(226, 232, 240, 0.85);
+  --color-bg-surface: rgba(255, 255, 255, 0.65);
+  --color-bg-surface-elevated: rgba(255, 255, 255, 0.88);
+  --color-border: rgba(255, 255, 255, 0.88);
+  --color-border-muted: rgba(203, 213, 225, 0.50);
 
   --color-primary: #0284C7;
   --color-primary-hover: #0369A1;
@@ -38,9 +38,9 @@
   --color-pressed: rgba(2, 132, 199, 0.16);
   --color-selected: rgba(2, 132, 199, 0.12);
 
-  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 10px 32px rgba(15, 23, 42, 0.08), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.95);
-  --shadow-lg: 0 20px 48px rgba(15, 23, 42, 0.12), inset 0 2px 2px rgba(255, 255, 255, 1);
+  --shadow-sm: 0 2px 10px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 16px 40px -10px rgba(15, 23, 42, 0.07), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  --shadow-lg: 0 28px 64px -12px rgba(15, 23, 42, 0.10), inset 0 2px 2px rgba(255, 255, 255, 1);
 
   --radius-sm: 0.375rem;
   --radius-md: 0.5rem;
@@ -50,44 +50,41 @@
 }
 
 /* ==========================================================================
-   2. PRIMARY DARK THEME SYSTEM (.dark) - Obsidian Black & Cyan Glass System
+   2. PRIMARY DARK THEME SYSTEM (.dark) - Register Page Dark Glass Theme
    ========================================================================== */
 .dark {
-  --color-bg-app: #05070B;
-  --color-bg-surface: rgba(15, 23, 42, 0.40);
-  --color-bg-surface-elevated: rgba(30, 41, 59, 0.50);
-  --color-border: rgba(255, 255, 255, 0.20);
-  --color-border-muted: rgba(255, 255, 255, 0.10);
+  --color-bg-app: #0B0F19;
+  --color-bg-surface: rgba(22, 28, 42, 0.65);
+  --color-bg-surface-elevated: rgba(30, 38, 56, 0.75);
+  --color-border: rgba(255, 255, 255, 0.10);
+  --color-border-muted: rgba(255, 255, 255, 0.06);
 
-  --color-primary: #00E5FF;        /* Electric Neon Cyan */
+  --color-primary: #00D2FF;        /* Vibrant Electric Cyan */
   --color-primary-hover: #00B8D9;
-  --color-success: #00FF88;        /* Luminous Neon Emerald */
-  --color-warning: #FFE600;        /* Vivid Neon Yellow */
-  --color-danger: #FF3864;         /* Electric Coral Red */
-  --color-purple: #9B5CFF;         /* Neon Violet */
-  --color-cyan: #00E5FF;
+  --color-success: #10B981;        /* Emerald Success */
+  --color-warning: #F59E0B;        /* Amber Warning */
+  --color-danger: #EF4444;         /* Coral Danger */
+  --color-purple: #8B5CF6;         /* Royal Purple */
+  --color-cyan: #00D2FF;
 
-  --color-text-primary: #F8FAFC;    /* Bright Crisp White */
+  --color-text-primary: #FFFFFF;    /* Pure Crisp White */
   --color-text-secondary: #CBD5E1;  /* Slate 300 */
   --color-text-muted: #94A3B8;      /* Slate 400 */
 
-  --color-hover: rgba(0, 229, 255, 0.12);
-  --color-pressed: rgba(0, 229, 255, 0.20);
-  --color-selected: rgba(0, 229, 255, 0.16);
+  --color-hover: rgba(99, 102, 241, 0.12);
+  --color-pressed: rgba(99, 102, 241, 0.20);
+  --color-selected: rgba(99, 102, 241, 0.15);
 
-  --shadow-sm: 0 2px 10px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.60), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.35);
-  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.80), inset 0 2px 2px rgba(255, 255, 255, 0.45);
+  --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 16px 45px rgba(0, 0, 0, 0.50), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  --shadow-lg: 0 28px 64px rgba(0, 0, 0, 0.60), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.2);
 }
 
 /* ==========================================================================
-   3. BASE & BLACK GRADIENT ANIMATED FLOW EFFECTS
+   3. ANIMATED RUNNING GRADIENT BACKDROPS & BASE STYLES
    ========================================================================== */
 @layer base {
   body {
-    background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
-    background-size: 400% 400%;
-    animation: live-gradient-flow 15s ease infinite;
     color: var(--color-text-secondary);
     font-family: 'Inter', sans-serif;
     @apply antialiased transition-colors duration-300;
@@ -97,15 +94,42 @@
     color: var(--color-text-primary);
   }
 
-  select {
-    color: #F8FAFC !important;
-    background-color: #0F172A !important;
+  body:not(.dark) select {
+    color: #0F172A !important;
+    background-color: rgba(255, 255, 255, 0.88) !important;
+    border: 1px solid rgba(203, 213, 225, 0.7) !important;
   }
 
-  select option {
-    background-color: #0F172A !important;
-    color: #F8FAFC !important;
+  body:not(.dark) select option {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
     padding: 8px 12px;
+  }
+
+  .dark select {
+    color: #FFFFFF !important;
+    background-color: #121724 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  }
+
+  .dark select option {
+    background-color: #121724 !important;
+    color: #FFFFFF !important;
+    padding: 8px 12px;
+  }
+}
+
+/* Dynamic Live Animated Running Gradient Keyframes for Light Mode */
+@keyframes live-gradient-flow-light {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
@@ -121,6 +145,7 @@
   }
 }
 
+/* Behance Digital Agency 3D Morphing Fluid Orbs */
 @keyframes fluid-morph-1 {
   0% {
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
@@ -128,15 +153,15 @@
   }
   25% {
     border-radius: 70% 30% 50% 50% / 30% 60% 40% 70%;
-    transform: translate(100px, -50px) rotate(90deg) scale(1.25);
+    transform: translate(140px, -70px) rotate(90deg) scale(1.35);
   }
   50% {
     border-radius: 30% 70% 40% 60% / 50% 30% 70% 50%;
-    transform: translate(30px, 80px) rotate(180deg) scale(0.9);
+    transform: translate(50px, 100px) rotate(180deg) scale(0.9);
   }
   75% {
     border-radius: 60% 40% 60% 40% / 70% 40% 50% 60%;
-    transform: translate(-80px, -30px) rotate(270deg) scale(1.15);
+    transform: translate(-100px, -50px) rotate(270deg) scale(1.25);
   }
   100% {
     border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
@@ -151,15 +176,15 @@
   }
   25% {
     border-radius: 30% 70% 60% 40% / 60% 40% 50% 50%;
-    transform: translate(-90px, 60px) rotate(-90deg) scale(0.85);
+    transform: translate(-120px, 80px) rotate(-90deg) scale(0.88);
   }
   50% {
     border-radius: 70% 30% 40% 60% / 40% 60% 30% 70%;
-    transform: translate(50px, -70px) rotate(-180deg) scale(1.2);
+    transform: translate(70px, -90px) rotate(-180deg) scale(1.3);
   }
   75% {
     border-radius: 40% 60% 70% 30% / 50% 40% 60% 50%;
-    transform: translate(70px, 40px) rotate(-270deg) scale(1.05);
+    transform: translate(90px, 60px) rotate(-270deg) scale(1.15);
   }
   100% {
     border-radius: 60% 40% 30% 70% / 50% 30% 70% 50%;
@@ -174,11 +199,11 @@
   }
   33% {
     border-radius: 40% 60% 30% 70% / 60% 30% 70% 40%;
-    transform: translate(-70px, -50px) scale(1.3);
+    transform: translate(-90px, -70px) scale(1.4);
   }
   66% {
     border-radius: 60% 40% 70% 30% / 40% 70% 30% 60%;
-    transform: translate(60px, 70px) scale(0.85);
+    transform: translate(80px, 90px) scale(0.85);
   }
 }
 
@@ -189,7 +214,7 @@
   }
   50% {
     border-radius: 60% 40% 30% 70% / 40% 60% 40% 60%;
-    transform: translate(80px, -60px) scale(1.25);
+    transform: translate(100px, -80px) scale(1.35);
   }
 }
 
@@ -209,24 +234,85 @@
   animation: fluid-morph-4 24s ease-in-out infinite;
 }
 
-.live-animated-bg {
-  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
-  background-size: 400% 400%;
-  animation: live-gradient-flow 15s ease infinite;
-}
-
-.dark body {
-  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
-  background-size: 400% 400%;
-  animation: live-gradient-flow 15s ease infinite;
-  position: relative;
-}
-
+/* Light Mode Behance Glassmorphism Multi-Color Animated Fluid Backdrop */
 body:not(.dark) {
-  background: linear-gradient(-45deg, #05070B, #0D1527, #140E2E, #050F1E, #05070B);
+  background: linear-gradient(-45deg, #F0F4F8, #E2E8F0, #E0E7FF, #FCE7F3, #FAF5FF, #E0F2FE, #F8FAFC);
   background-size: 400% 400%;
-  animation: live-gradient-flow 15s ease infinite;
+  animation: live-gradient-flow-light 16s ease infinite;
   position: relative;
+  min-height: 100vh;
+}
+
+/* Glowing Floating Spheres Behind Light Glass */
+body:not(.dark)::before {
+  content: '';
+  position: fixed;
+  top: -12%;
+  left: -8%;
+  width: 55vw;
+  height: 55vh;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.32) 0%, rgba(99, 102, 241, 0.22) 45%, transparent 70%);
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 0;
+  animation: fluid-morph-1 22s ease-in-out infinite;
+}
+
+body:not(.dark)::after {
+  content: '';
+  position: fixed;
+  bottom: -12%;
+  right: -8%;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.28) 0%, rgba(236, 72, 153, 0.22) 45%, transparent 70%);
+  filter: blur(95px);
+  pointer-events: none;
+  z-index: 0;
+  animation: fluid-morph-2 26s ease-in-out infinite;
+}
+
+/* Dark Mode Register-Theme Base Backdrop */
+.dark body {
+  background: #0B0F19 !important;
+  position: relative;
+  min-height: 100vh;
+}
+
+.dark body::before {
+  content: '';
+  position: fixed;
+  top: 10%;
+  left: 15%;
+  width: 45vw;
+  height: 45vh;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, rgba(168, 85, 247, 0.10) 50%, transparent 70%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.dark body::after {
+  content: '';
+  position: fixed;
+  bottom: 10%;
+  right: 15%;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.14) 0%, rgba(0, 210, 255, 0.10) 50%, transparent 70%);
+  filter: blur(100px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.live-animated-bg {
+  background: linear-gradient(-45deg, #F0F4F8, #E2E8F0, #E0E7FF, #FCE7F3, #FAF5FF, #E0F2FE);
+  background-size: 400% 400%;
+  animation: live-gradient-flow-light 16s ease infinite;
+}
+
+.dark .live-animated-bg {
+  background: #0B0F19 !important;
 }
 
 /* Custom Scrollbar */
@@ -240,7 +326,7 @@ body:not(.dark) {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--color-border);
+  background-color: var(--color-border-muted);
   border-radius: var(--radius-xl);
 }
 
@@ -253,28 +339,30 @@ body:not(.dark) {
 }
 
 /* ==========================================================================
-   4. APPLE / VISIONOS LIQUID GLASSMORPHISM
+   4. APPLE / BEHANCE DIGITAL AGENCY LIQUID GLASSMORPHISM
    ========================================================================== */
 
+/* Base Glass Card Surface */
 .glass-card-surface {
   background: var(--color-bg-surface);
-  backdrop-filter: blur(28px) saturate(180%);
-  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
   border: 1px solid var(--color-border);
-  box-shadow: inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 0.35), inset 0 -1px 1px 0 rgba(0, 0, 0, 0.25), var(--shadow-md);
+  box-shadow: var(--shadow-md);
   overflow: hidden;
   border-radius: 26px;
 }
 
-.dark .glass-card-surface::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
-  pointer-events: none;
+/* Light Theme Behance Crystalline Frosted Liquid Glass Surface */
+body:not(.dark) .glass-card-surface {
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.88);
+  box-shadow: 
+    0 20px 50px -10px rgba(15, 23, 42, 0.08), 
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset, 
+    inset 0 1.5px 1.5px 0 rgba(255, 255, 255, 1);
 }
 
 body:not(.dark) .glass-card-surface::before {
@@ -284,39 +372,175 @@ body:not(.dark) .glass-card-surface::before {
   left: 0;
   right: 0;
   height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.98) 40%, rgba(255, 255, 255, 0.98) 60%, transparent 100%);
   pointer-events: none;
 }
 
-/* Floating Glass Navbar */
+/* Dark Theme Register Page Matching Deep Glass Surface */
+.dark .glass-card-surface {
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 
+    0 16px 45px rgba(0, 0, 0, 0.45), 
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.15) !important;
+  border-radius: 26px !important;
+}
+
+.dark .glass-card-surface::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.25) 40%, rgba(255, 255, 255, 0.25) 60%, transparent 100%);
+  pointer-events: none;
+}
+
+/* Floating Glass Navbar & Layout Panels in Dark Mode */
 .floating-glass-navbar {
   background: var(--color-bg-surface);
-  backdrop-filter: blur(28px) saturate(170%);
-  -webkit-backdrop-filter: blur(28px) saturate(170%);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
   border: 1px solid var(--color-border);
   box-shadow: var(--shadow-md);
   border-radius: 20px;
 }
 
-/* Controlled Vibrant Edge Glows for KPI Cards */
-.glow-edge-cyan {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 229, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+body:not(.dark) .floating-glass-navbar {
+  background: rgba(255, 255, 255, 0.68);
+  backdrop-filter: blur(32px) saturate(210%);
+  -webkit-backdrop-filter: blur(32px) saturate(210%);
+  border: 1px solid rgba(255, 255, 255, 0.90);
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.06), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
 }
 
-.glow-edge-green {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 136, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+.dark .floating-glass-navbar,
+.dark header.glass-card-surface,
+.dark aside.glass-card-surface {
+  background: rgba(18, 24, 38, 0.75) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.10) !important;
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.50) !important;
 }
 
-.glow-edge-purple {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(155, 92, 255, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+/* Light Theme Behance KPI Glass Edge Glows */
+body:not(.dark) .glow-edge-cyan {
+  box-shadow: 0 14px 36px rgba(14, 165, 233, 0.15), 0 0 22px rgba(6, 182, 212, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(255, 255, 255, 0.68);
 }
 
-.glow-edge-blue {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(2, 132, 199, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+body:not(.dark) .glow-edge-green {
+  box-shadow: 0 14px 36px rgba(16, 185, 129, 0.15), 0 0 22px rgba(16, 185, 129, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(52, 211, 153, 0.5);
+  background: rgba(255, 255, 255, 0.68);
 }
 
-.glow-edge-red {
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 56, 100, 0.22), inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4);
+body:not(.dark) .glow-edge-purple {
+  box-shadow: 0 14px 36px rgba(139, 92, 246, 0.15), 0 0 22px rgba(139, 92, 246, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(168, 85, 247, 0.5);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+body:not(.dark) .glow-edge-blue {
+  box-shadow: 0 14px 36px rgba(2, 132, 199, 0.15), 0 0 22px rgba(2, 132, 199, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(56, 189, 248, 0.5);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+body:not(.dark) .glow-edge-red {
+  box-shadow: 0 14px 36px rgba(239, 68, 68, 0.15), 0 0 22px rgba(239, 68, 68, 0.25), inset 0 1.5px 1.5px rgba(255, 255, 255, 1);
+  border-color: rgba(248, 113, 113, 0.5);
+  background: rgba(255, 255, 255, 0.68);
+}
+
+/* Dark Theme Register Page Matching KPI Glass Cards with Cyan/Purple Accent Glows */
+.dark .glow-edge-cyan {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 210, 255, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(0, 210, 255, 0.35) !important;
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.dark .glow-edge-green {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(16, 185, 129, 0.35) !important;
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.dark .glow-edge-purple {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(168, 85, 247, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(168, 85, 247, 0.35) !important;
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.dark .glow-edge-blue {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(99, 102, 241, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(99, 102, 241, 0.35) !important;
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+.dark .glow-edge-red {
+  box-shadow: 0 14px 38px rgba(0, 0, 0, 0.5), 0 0 20px rgba(239, 68, 68, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.2) !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  background: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+}
+
+/* Dark Mode High-Contrast Crisp Typography */
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
+  color: #FFFFFF !important;
+}
+
+.dark .text-slate-900,
+.dark .text-slate-800,
+.dark .text-slate-700 {
+  color: #FFFFFF !important;
+}
+
+.dark .text-slate-600,
+.dark .text-slate-500,
+.dark .text-slate-400,
+.dark .text-slate-450,
+.dark .text-slate-350 {
+  color: #CBD5E1 !important;
+}
+
+.dark .bg-white,
+.dark .bg-slate-900,
+.dark .bg-slate-950,
+.dark .bg-slate-800,
+.dark .bg-slate-850 {
+  background-color: rgba(22, 28, 42, 0.65) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+.dark .border-slate-800,
+.dark .border-slate-700,
+.dark .border-slate-800\/80,
+.dark .border-slate-200 {
+  border-color: rgba(255, 255, 255, 0.10) !important;
+}
+
+/* Register Page Vivid Cyan-Indigo-Violet Gradient Pill Buttons in Dark Mode */
+.dark button.bg-primary-500,
+.dark button.bg-blue-600,
+.dark button.bg-indigo-600,
+.dark button.bg-cyan-500,
+.dark .glow-pill-neon {
+  background: linear-gradient(135deg, #00D2FF 0%, #6366F1 50%, #8B5CF6 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 210, 255, 0.45), 0 4px 12px rgba(99, 102, 241, 0.3) !important;
+  color: #FFFFFF !important;
+  border-radius: 9999px !important;
 }
 
 /* Moving Waveform Line Animation */
@@ -329,3 +553,7 @@ body:not(.dark) .glass-card-surface::before {
   stroke-dasharray: 12, 6;
   animation: dash-scroll 10s linear infinite;
 }
+
+
+
+
