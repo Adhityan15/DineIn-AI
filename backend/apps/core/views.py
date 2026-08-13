@@ -29,7 +29,7 @@ class BranchViewSet(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
     def get_permissions(self):
-        if self.action in ['list', 'retrieve']:
+        if self.action in ['list', 'retrieve', 'seed_demo', 'import_local_data', 'verify_production_db']:
             return [AllowAny()]
         return [IsAuthenticated()]
 
