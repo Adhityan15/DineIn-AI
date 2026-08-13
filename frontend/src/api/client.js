@@ -1,8 +1,10 @@
 import axios from 'axios';
 
-// Axios client with relative path targeting local Vite dev proxy
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1';
+
+// Axios client with environment-aware API base URL (falling back to local Vite dev proxy)
 const client = axios.create({
-  baseURL: '/api/v1',
+  baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -58,7 +60,7 @@ client.interceptors.response.use(
       if (refreshToken && refreshToken !== 'undefined' && refreshToken !== 'null') {
         try {
           console.log("[CLIENT INTERCEPTOR] Attempting token refresh...");
-          const { data } = await axios.post('/api/v1/auth/refresh/', {
+          const { data } = await axios.post(`${API_BASE_URL}/auth/refresh/`, {
             refresh: refreshToken,
           });
           
