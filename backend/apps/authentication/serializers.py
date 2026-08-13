@@ -90,7 +90,13 @@ class RegisterSerializer(serializers.ModelSerializer):
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
     SimpleJWT custom authentication mapping to email/username login.
+    Accepts both 'email' and 'username' keys in incoming request payloads.
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'] = serializers.CharField(required=False, write_only=True)
+        self.fields['email'] = serializers.CharField(required=False, write_only=True)
+
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
@@ -102,6 +108,12 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         return token
 
     def validate(self, attrs):
+        identifier = attrs.get('email') or attrs.get('username')
+        if not identifier:
+            raise serializers.ValidationError({'email': ['Email or Username is required.']})
+        attrs['email'] = identifier
+        attrs['username'] = identifier
+
         # The parent simplejwt validate() method authenticates the user using Django auth backends.
         # This will invoke our EmailOrUsernameModelBackend.
         try:
