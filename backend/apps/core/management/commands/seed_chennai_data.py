@@ -102,7 +102,7 @@ class Command(BaseCommand):
             first_names_cust = ["Rajesh", "Priya", "Arvind", "Sundar", "Lakshmi", "Karthik", "Anjali", "Suresh", "Divya", "Vijay", "Sandhya", "Hari", "Deepa", "Ramesh"]
             last_names_cust = ["Raman", "Krishnan", "Subramanian", "Balaji", "Narayanan", "Raghavan", "Venkatesh", "Chidambaram", "Srinivasan", "Mani"]
             
-            for i in range(400):
+            for i in range(50):
                 email = f"customer{i}@adambakkam.in"
                 user, _ = User.objects.get_or_create(
                     email=email,
@@ -498,7 +498,7 @@ class Command(BaseCommand):
                 ("High pricing for Malabar parotta. Too oily.", "negative", 2)
             ]
             
-            for i in range(250):
+            for i in range(30):
                 text, sent, rating = random.choice(review_sentiments)
                 rev = CustomerReview.objects.create(
                     branch=branch,
