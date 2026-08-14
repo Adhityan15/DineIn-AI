@@ -516,8 +516,8 @@ class CommunicationDispatchService:
         print(f"settings.EMAIL_BACKEND: {settings.EMAIL_BACKEND}")
 
         try:
-            # Custom Connection build if custom credentials are configured
-            if settings_obj:
+            # Custom Connection build if custom credentials are configured in DB and host is not localhost
+            if settings_obj and settings_obj.smtp_host not in ['localhost', '127.0.0.1'] and settings_obj.smtp_username:
                 print("[6] Building EmailMessage / EmailMultiAlternatives with explicit SMTP backend")
                 connection = get_connection(
                     backend='django.core.mail.backends.smtp.EmailBackend',
@@ -558,12 +558,13 @@ class CommunicationDispatchService:
                 msg.attach('reservation_pass.png', pass_bytes, 'image/png')
                 print("[Pass Generator] Attached inline pass and file attachment to EmailMessage")
 
+            use_db = settings_obj and settings_obj.smtp_host not in ['localhost', '127.0.0.1'] and settings_obj.smtp_username
             print("[7] Connecting to SMTP...")
-            print(f"Host: {settings_obj.smtp_host if settings_obj else settings.EMAIL_HOST}")
-            print(f"Port: {settings_obj.smtp_port if settings_obj else settings.EMAIL_PORT}")
-            print(f"TLS: {settings_obj.smtp_use_tls if settings_obj else settings.EMAIL_USE_TLS}")
-            print(f"SSL: {settings_obj.smtp_use_ssl if settings_obj else settings.EMAIL_USE_SSL}")
-            print(f"Username: {settings_obj.smtp_username if settings_obj else settings.EMAIL_HOST_USER}")
+            print(f"Host: {settings_obj.smtp_host if use_db else settings.EMAIL_HOST}")
+            print(f"Port: {settings_obj.smtp_port if use_db else settings.EMAIL_PORT}")
+            print(f"TLS: {settings_obj.smtp_use_tls if use_db else settings.EMAIL_USE_TLS}")
+            print(f"SSL: {settings_obj.smtp_use_ssl if use_db else settings.EMAIL_USE_SSL}")
+            print(f"Username: {settings_obj.smtp_username if use_db else settings.EMAIL_HOST_USER}")
             
             print("[8] Authenticating...")
             print("[9] Sending email...")
