@@ -3,6 +3,7 @@ services:
     name: dinein-ai-v1-0
     env: python
     buildCommand: chmod +x backend/build.sh && ./backend/build.sh
+    releaseCommand: cd backend && python manage.py seed_render_db --settings=dinein_project.settings.production
     startCommand: gunicorn --chdir backend dinein_project.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE

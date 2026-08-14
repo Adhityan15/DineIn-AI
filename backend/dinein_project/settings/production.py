@@ -64,6 +64,5 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'Content-Type',
 ]
 
-# Celery task broker fallback when Redis is not provided on Render
-if not env('REDIS_URL', default=''):
-    CELERY_TASK_ALWAYS_EAGER = True
+# Unconditionally enable synchronous Celery task execution for the presentation to avoid Redis errors
+CELERY_TASK_ALWAYS_EAGER = True

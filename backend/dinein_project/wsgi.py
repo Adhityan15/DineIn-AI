@@ -8,21 +8,15 @@ else:
 
 application = get_wsgi_application()
 
-# Safe auto-migration and seeder on production startup
+# Safe one-time auto-seeder on production startup
 try:
-    from django.core.management import call_command
     from django.contrib.auth import get_user_model
-    from apps.inventory.models import MenuItem
-    
-    print("[WSGI Startup] Running Django migrations on production PostgreSQL...")
-    call_command('migrate', interactive=False)
-    
-    if MenuItem.objects.count() == 0:
-        print("[WSGI Startup] Operational data (MenuItems) is missing. Running seed_render_db...")
+    User = get_user_model()
+    if not User.objects.filter(username='admin1').exists():
+        from django.core.management import call_command
+        print("[WSGI Startup] admin1 user missing from PostgreSQL. Running automated Render database seeder...")
         call_command('seed_render_db')
-        print("[WSGI Startup] Database migration from local dump completed.")
-    else:
-        print("[WSGI Startup] Database already contains operational data.")
+        print("[WSGI Startup] Automated Render database seeder completed.")
 except Exception as e:
-    print(f"[WSGI Startup] Error during startup database migrations/seeding: {e}")
+    print(f"[WSGI Startup] Seeder check note: {e}")
 

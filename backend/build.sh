@@ -13,8 +13,6 @@ pip install -r requirements.txt
 echo "2. Collecting static files..."
 python manage.py collectstatic --no-input --settings=dinein_project.settings.production
 
-echo "3. Running database migrations & seeding Render PostgreSQL..."
-python manage.py seed_render_db --settings=dinein_project.settings.production
-
-echo "=================== BUILD & SEEDING COMPLETED ==================="
+echo "3. Build step completed. Migrations & Seeding will run in the Render Release phase."
+echo "=================== BUILD COMPLETED ==================="
 
