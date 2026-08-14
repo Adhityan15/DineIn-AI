@@ -152,6 +152,14 @@ def audit_db_view(request):
         except Exception:
             pass
 
+    # Debug paths
+    base_dir_str = str(settings.BASE_DIR)
+    path1 = os.path.join(base_dir_str, 'local_dump.json')
+    path2 = os.path.join(base_dir_str, 'backend', 'local_dump.json')
+    exists1 = os.path.exists(path1)
+    exists2 = os.path.exists(path2)
+    files_in_base = os.listdir(base_dir_str) if os.path.exists(base_dir_str) else []
+
     return JsonResponse({
         "settings_module": settings_module,
         "database_engine": db_config.get('ENGINE'),
@@ -162,7 +170,15 @@ def audit_db_view(request):
         "model_counts": model_counts,
         "admin1_info": admin_info,
         "branch_info": branch_info,
-        "adambakkam_chennai_branch_exists": adambakkam_exists
+        "adambakkam_chennai_branch_exists": adambakkam_exists,
+        "debug_paths": {
+            "BASE_DIR": base_dir_str,
+            "path1": path1,
+            "exists1": exists1,
+            "path2": path2,
+            "exists2": exists2,
+            "files_in_base": files_in_base[:15]
+        }
     })
 
 urlpatterns = [
