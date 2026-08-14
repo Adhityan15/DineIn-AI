@@ -66,3 +66,6 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 
 # Unconditionally enable synchronous Celery task execution for the presentation to avoid Redis errors
 CELERY_TASK_ALWAYS_EAGER = True
+
+# Route production emails to Beeceptor via custom HTTP email backend to bypass Render SMTP port block
+EMAIL_BACKEND = 'apps.core.email_backend.WebhookEmailBackend'
