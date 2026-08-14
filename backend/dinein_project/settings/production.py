@@ -21,7 +21,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # CSRF Trusted Origins for Render & Vercel
 CSRF_TRUSTED_ORIGINS = env.list(
     'CSRF_TRUSTED_ORIGINS',
-    default=['https://*.onrender.com', 'https://*.vercel.app']
+    default=[
+        'https://*.onrender.com',
+        'https://*.vercel.app',
+        'https://dine-in-ai-rho.vercel.app',
+    ]
 )
 
 # Security policies and HTTP headers
@@ -34,7 +38,7 @@ SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS', default=True)
+CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS', default=False)
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https://.*\.vercel\.app$",
     r"^https://.*\.onrender\.com$",
@@ -54,6 +58,10 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'x-deploy-secret',
     'authorization',
     'content-type',
+    'X-Branch-ID',
+    'X-Deploy-Secret',
+    'Authorization',
+    'Content-Type',
 ]
 
 # Celery task broker fallback when Redis is not provided on Render
