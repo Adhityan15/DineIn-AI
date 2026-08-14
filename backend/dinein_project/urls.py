@@ -25,16 +25,26 @@ import traceback
 import os
 
 def test_email_view(request):
-    base_dir = getattr(settings, 'BASE_DIR', '')
-    error_log_path = os.path.join(base_dir, 'error.log')
-    log_content = f"Log file not found at: {error_log_path}"
-    if os.path.exists(error_log_path):
-        try:
-            with open(error_log_path, 'r', encoding='utf-8') as f:
-                log_content = f.read()[-10000:] # Last 10000 chars
-        except Exception as e:
-            log_content = f"Error reading log file: {e}"
-    return HttpResponse(log_content, content_type='text/plain')
+    from django.core.mail import send_mail
+    import traceback
+    
+    output = "SMTP TEST START\n"
+    output += f"Config: HOST={settings.EMAIL_HOST}, PORT={settings.EMAIL_PORT}, USER={settings.EMAIL_HOST_USER}, TLS={settings.EMAIL_USE_TLS}, SSL={settings.EMAIL_USE_SSL}\n"
+    
+    try:
+        send_mail(
+            'DineIn SMTP Test from Render',
+            'This is a test email sent from the Render server container.',
+            settings.DEFAULT_FROM_EMAIL or 'dineinplatform@gmail.com',
+            ['dineinplatform@gmail.com'],
+            fail_silently=False,
+        )
+        output += "SUCCESS: Email sent successfully!\n"
+    except Exception as e:
+        output += f"FAILED: {e}\n"
+        output += traceback.format_exc()
+        
+    return HttpResponse(output, content_type='text/plain')
 
 urlpatterns = [
     path("api/v1/test-email/", test_email_view, name="test_email"),
