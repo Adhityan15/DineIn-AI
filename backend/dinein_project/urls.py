@@ -19,7 +19,37 @@ from django.contrib import admin
 from django.urls import path, include
 from apps.core.views import HealthCheckView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+from django.http import JsonResponse
+import traceback
+
+def test_email_view(request):
+    from django.core.mail import send_mail
+    from django.conf import settings
+    try:
+        send_mail(
+            'DineIn SMTP Test',
+            'This is a test email from DineIn AI.',
+            settings.DEFAULT_FROM_EMAIL or 'dineinplatform@gmail.com',
+            ['dineinplatform@gmail.com'],
+            fail_silently=False,
+        )
+        return JsonResponse({"status": "success", "message": "Email sent successfully!"})
+    except Exception as e:
+        return JsonResponse({
+            "status": "error",
+            "error_message": str(e),
+            "traceback": traceback.format_exc(),
+            "settings": {
+                "EMAIL_HOST": settings.EMAIL_HOST,
+                "EMAIL_PORT": settings.EMAIL_PORT,
+                "EMAIL_USE_TLS": settings.EMAIL_USE_TLS,
+                "EMAIL_USE_SSL": settings.EMAIL_USE_SSL,
+                "EMAIL_HOST_USER": settings.EMAIL_HOST_USER,
+            }
+        })
+
 urlpatterns = [
+    path("api/v1/test-email/", test_email_view, name="test_email"),
     path("admin/", admin.site.urls),
     
     # API Schema and Documentation
