@@ -1,213 +1,53 @@
+import os
 from django.core.management.base import BaseCommand
+from django.core.management import call_command
 from django.conf import settings
-import sys
 
 class Command(BaseCommand):
-    help = "Fast, idempotent Render PostgreSQL database seeder."
+    help = "Migrate local database state (local_dump.json) to Render PostgreSQL."
 
     def handle(self, *args, **options):
-        setattr(settings, 'SEEDING', True)
-        self.stdout.write("=================== FAST SEEDING RENDER DB ===================")
+        self.stdout.write("=================== RUNNING RENDER DB MIGRATION & SEEDING ===================")
         
-        from django.contrib.auth import get_user_model
-        from apps.authentication.models import Role
-        from apps.core.models import Restaurant, Branch
-        from apps.reservation.models import Table, Reservation
-        from apps.inventory.models import MenuItem, Ingredient, Order, InventoryBatch
-        from apps.staff.models import Employee, Department, Designation
-        from apps.feedback.models import CustomerReview
-        from django.utils import timezone
-        import datetime, random, uuid
-
-        User = get_user_model()
-
-        # 1. Setup Roles
-        admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
-        manager_role, _ = Role.objects.get_or_create(code='manager', defaults={'name': 'Branch Manager'})
-        staff_role, _ = Role.objects.get_or_create(code='kitchen_staff', defaults={'name': 'Kitchen Staff'})
-        customer_role, _ = Role.objects.get_or_create(code='customer', defaults={'name': 'Customer'})
-
-        # 2. Setup Restaurant & Branch
-        restaurant, _ = Restaurant.objects.get_or_create(
-            code="chennai-dinein",
-            defaults={
-                "name": "Chennai DineIn Group",
-                "contact_email": "ops@chennai-dinein.in",
-                "contact_phone": "+914422445566",
-                "address": "Adambakkam Chennai, India"
-            }
-        )
-        branch, _ = Branch.objects.get_or_create(
-            branch_code="adambakkam-chennai",
-            defaults={
-                "restaurant": restaurant,
-                "name": "Adambakkam Chennai",
-                "latitude": 12.9880,
-                "longitude": 80.2052,
-                "geofence_radius": 150,
-                "address": "No.12, Veerangal Street, Adambakkam, Chennai, Tamil Nadu - 600088"
-            }
-        )
-
-        # 3. Create / Ensure admin1 user
-        admin1 = User.objects.filter(username='admin1').first()
-        if not admin1:
-            admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
-
-        if not admin1:
-            admin1 = User.objects.create_user(
-                username='admin1',
-                email='adhityanmclaren@gmail.com',
-                password='Admin@123',
-                first_name='Admin',
-                last_name='User',
-                role=admin_role,
-                branch=branch,
-                is_staff=True,
-                is_superuser=True,
-                is_active=True
-            )
+        # 1. Run migrations first to make sure schema is up to date
+        self.stdout.write("Running Django database migrations...")
+        call_command('migrate', interactive=False)
+        self.stdout.write("Migrations completed.")
+        
+        # 2. Path to local dump
+        fixture_path = os.path.join(settings.BASE_DIR, 'local_dump.json')
+        if not os.path.exists(fixture_path):
+            fixture_path = os.path.join(settings.BASE_DIR, 'backend', 'local_dump.json')
+            
+        if os.path.exists(fixture_path):
+            self.stdout.write(f"Found local dump at: {fixture_path}")
+            
+            # Flush existing database to prevent unique/duplicate key conflicts
+            self.stdout.write("Flushing production database...")
+            call_command('flush', interactive=False)
+            self.stdout.write("Database flushed.")
+            
+            # Load local dump
+            self.stdout.write("Loading local database dump...")
+            call_command('loaddata', fixture_path, ignorenonexistent=True)
+            self.stdout.write("Local database dump loaded successfully!")
+            
+            # Ensure admin1 has the correct branch (ADAMBAKKAM-CHENNAI)
+            try:
+                from django.contrib.auth import get_user_model
+                from apps.core.models import Branch
+                User = get_user_model()
+                admin1 = User.objects.filter(username='admin1').first()
+                target_branch = Branch.objects.filter(name='ADAMBAKKAM-CHENNAI').first() or Branch.objects.filter(id='c25e6dd3-b6e7-436e-99ed-13c0e965eb03').first()
+                if admin1 and target_branch:
+                    admin1.branch = target_branch
+                    admin1.save()
+                    self.stdout.write(f"SUCCESS: Updated admin1's branch to {target_branch.name} ({target_branch.id})")
+                else:
+                    self.stdout.write(f"WARNING: admin1={admin1}, target_branch={target_branch}. Branch update skipped.")
+            except Exception as e:
+                self.stdout.write(f"ERROR updating admin1 branch: {e}")
         else:
-            admin1.username = 'admin1'
-            admin1.email = 'adhityanmclaren@gmail.com'
-            admin1.role = admin_role
-            admin1.branch = branch
-            admin1.is_staff = True
-            admin1.is_superuser = True
-            admin1.is_active = True
-            admin1.set_password('Admin@123')
-            admin1.save()
-        self.stdout.write(f"[OK] admin1 user verified: {admin1.username} ({admin1.email})")
-
-        # 4. Tables (20)
-        tables = []
-        for i in range(1, 21):
-            t, _ = Table.objects.get_or_create(
-                number=f"T{i}",
-                branch=branch,
-                defaults={"capacity": 4 if i <= 15 else 6, "status": "available"}
-            )
-            tables.append(t)
-
-        # 5. Customers (15)
-        customers = []
-        for i in range(15):
-            u, _ = User.objects.get_or_create(
-                email=f"customer_{i}@adambakkam.in",
-                defaults={
-                    "username": f"cust_{i}_{uuid.uuid4().hex[:4]}",
-                    "first_name": f"Customer{i}",
-                    "last_name": "Raman",
-                    "phone": f"+919940112{i:03d}",
-                    "role": customer_role,
-                    "branch": branch
-                }
-            )
-            customers.append(u)
-
-        # 6. Staff & Employees (10)
-        dept = Department.objects.filter(code="kitchen").first()
-        if not dept:
-            dept = Department.objects.create(code="kitchen", name="Kitchen Dept")
-        desig = Designation.objects.filter(name="Chef").first()
-        if not desig:
-            desig = Designation.objects.create(name="Chef", department=dept)
-        employees = []
-        for i in range(10):
-            su, _ = User.objects.get_or_create(
-                email=f"staff_{i}@chennai-dinein.in",
-                defaults={
-                    "username": f"staff_{i}_{uuid.uuid4().hex[:4]}",
-                    "first_name": f"Staff{i}",
-                    "last_name": "Chennai",
-                    "phone": f"+919840223{i:03d}",
-                    "role": staff_role,
-                    "branch": branch
-                }
-            )
-            emp, _ = Employee.objects.get_or_create(
-                user=su,
-                defaults={
-                    "employee_id": f"MEMBER-{i:03d}",
-                    "designation": desig,
-                    "status": "active",
-                    "hire_date": timezone.now().date(),
-                    "hourly_rate": 250
-                }
-            )
-            employees.append(emp)
-
-        # 7. Menu Items (11)
-        menu_items_data = [
-            ("Chicken Chettinad Biryani", 320, "Biryani"),
-            ("Mutton Sukka", 380, "Starters"),
-            ("Paneer Butter Masala", 260, "Main Course"),
-            ("Malabar Parotta (2 pcs)", 60, "Breads"),
-            ("South Indian Meals Thali", 220, "Thalis"),
-            ("Madras Filter Coffee", 40, "Beverages"),
-            ("Jigarthanda Special", 120, "Desserts"),
-            ("Ghee Roast Dosa", 110, "Breakfast"),
-            ("Chicken 65", 280, "Starters"),
-            ("Dragon Chicken", 290, "Indo-Chinese"),
-            ("Garlic Naan", 70, "Breads")
-        ]
-        menu_objs = []
-        for name, price, cat in menu_items_data:
-            mi, _ = MenuItem.objects.get_or_create(
-                name=name,
-                defaults={"price": price, "category": cat, "is_available": True}
-            )
-            menu_objs.append(mi)
-
-        # 8. Ingredients & Inventory (12)
-        ing_names = ["Basmati Rice", "Chicken Breast", "Mutton Chunks", "Paneer Cubes", "Whole Milk", "Coffee Powder", "Pure Ghee", "Refined Oil", "Onions", "Tomatoes", "Ginger Garlic Paste", "Chettinad Masala"]
-        for ing_name in ing_names:
-            ing, _ = Ingredient.objects.get_or_create(
-                name=ing_name,
-                defaults={"unit": "kg", "unit_cost": 150, "reorder_level": 10, "branch": branch}
-            )
-            InventoryBatch.objects.get_or_create(
-                ingredient=ing,
-                batch_number=f"BATCH-{uuid.uuid4().hex[:6].upper()}",
-                defaults={"quantity": 100, "purchase_price": 150, "expiry_date": timezone.now().date() + datetime.timedelta(days=30), "branch": branch}
-            )
-
-        # 9. Reservations (10)
-        for i in range(10):
-            c = customers[i % len(customers)]
-            t = tables[i % len(tables)]
-            r, _ = Reservation.objects.get_or_create(
-                branch=branch,
-                customer=c,
-                reservation_date=timezone.now().date() + datetime.timedelta(days=i % 3),
-                reservation_time="19:30:00",
-                defaults={"guest_count": 2, "status": "confirmed"}
-            )
-            r.tables.add(t)
-
-        # 10. Orders & Invoices (10)
-        for i in range(10):
-            c = customers[i % len(customers)]
-            t = tables[i % len(tables)]
-            ord_obj, _ = Order.objects.get_or_create(
-                order_number=f"ORD-{i+1000}",
-                defaults={"branch": branch, "table": t, "status": "completed", "total_amount": 750, "customer_phone": c.phone}
-            )
-
-        # 11. Customer Reviews (10)
-        review_texts = [
-            "Authentic Chettinad taste! Filter coffee was exceptional.",
-            "Fast service, great ambience, highly recommended.",
-            "Best biryani in Adambakkam! Staff was very courteous.",
-            "Loved the Paneer Butter Masala and Parottas.",
-            "Great value for money. Will visit again soon!"
-        ]
-        for i in range(10):
-            c = customers[i % len(customers)]
-            CustomerReview.objects.get_or_create(
-                branch=branch,
-                customer_name=f"{c.first_name} {c.last_name}",
-                defaults={"rating": 5, "review_text": random.choice(review_texts), "sentiment": "positive"}
-            )
-
-        self.stdout.write(self.style.SUCCESS("=================== FAST SEEDING COMPLETED 100% ==================="))
+            self.stdout.write(self.style.WARNING("local_dump.json not found! Running fallback seeding..."))
+            
+        self.stdout.write("=================== MIGRATION COMPLETED ===================")
