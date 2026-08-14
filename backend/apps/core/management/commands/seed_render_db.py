@@ -106,8 +106,12 @@ class Command(BaseCommand):
             customers.append(u)
 
         # 6. Staff & Employees (10)
-        dept, _ = Department.objects.get_or_create(code="kitchen", defaults={"name": "Kitchen Dept"})
-        desig, _ = Designation.objects.get_or_create(name="Chef", defaults={"department": dept})
+        dept = Department.objects.filter(code="kitchen").first()
+        if not dept:
+            dept = Department.objects.create(code="kitchen", name="Kitchen Dept")
+        desig = Designation.objects.filter(name="Chef").first()
+        if not desig:
+            desig = Designation.objects.create(name="Chef", department=dept)
         employees = []
         for i in range(10):
             su, _ = User.objects.get_or_create(
@@ -151,7 +155,7 @@ class Command(BaseCommand):
         for name, price, cat in menu_items_data:
             mi, _ = MenuItem.objects.get_or_create(
                 name=name,
-                defaults={"price": price, "category": cat, "branch": branch, "is_available": True}
+                defaults={"price": price, "category": cat, "is_available": True}
             )
             menu_objs.append(mi)
 
@@ -165,7 +169,7 @@ class Command(BaseCommand):
             InventoryBatch.objects.get_or_create(
                 ingredient=ing,
                 batch_number=f"BATCH-{uuid.uuid4().hex[:6].upper()}",
-                defaults={"quantity": 100, "expiry_date": timezone.now().date() + datetime.timedelta(days=30), "branch": branch}
+                defaults={"quantity": 100, "purchase_price": 150, "expiry_date": timezone.now().date() + datetime.timedelta(days=30), "branch": branch}
             )
 
         # 9. Reservations (10)
