@@ -20,11 +20,24 @@ from django.urls import path, include
 from apps.core.views import HealthCheckView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 import os
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.conf import settings
 from django.db import connections
 from django.apps import apps
 from django.contrib.auth import get_user_model
+from django.core.management import call_command
+from io import StringIO
+
+def backup_db_view(request):
+    out = StringIO()
+    try:
+        call_command('dumpdata', '--natural-foreign', '--natural-primary', exclude=['contenttypes', 'auth.Permission', 'admin.LogEntry'], stdout=out)
+        data = out.getvalue()
+        response = HttpResponse(data, content_type='application/json')
+        response['Content-Disposition'] = 'attachment; filename="render_backup.json"'
+        return response
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
 
 def audit_db_view(request):
     def mask_credential(val):
@@ -154,6 +167,7 @@ def audit_db_view(request):
 
 urlpatterns = [
     path("api/v1/audit-db/", audit_db_view, name="audit_db"),
+    path("api/v1/backup-db/", backup_db_view, name="backup_db"),
     path("admin/", admin.site.urls),
     
     # API Schema and Documentation
