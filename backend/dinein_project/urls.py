@@ -19,34 +19,22 @@ from django.contrib import admin
 from django.urls import path, include
 from apps.core.views import HealthCheckView
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+from django.conf import settings
 import traceback
+import os
 
 def test_email_view(request):
-    from django.core.mail import send_mail
-    from django.conf import settings
-    try:
-        send_mail(
-            'DineIn SMTP Test',
-            'This is a test email from DineIn AI.',
-            settings.DEFAULT_FROM_EMAIL or 'dineinplatform@gmail.com',
-            ['dineinplatform@gmail.com'],
-            fail_silently=False,
-        )
-        return JsonResponse({"status": "success", "message": "Email sent successfully!"})
-    except Exception as e:
-        return JsonResponse({
-            "status": "error",
-            "error_message": str(e),
-            "traceback": traceback.format_exc(),
-            "settings": {
-                "EMAIL_HOST": settings.EMAIL_HOST,
-                "EMAIL_PORT": settings.EMAIL_PORT,
-                "EMAIL_USE_TLS": settings.EMAIL_USE_TLS,
-                "EMAIL_USE_SSL": settings.EMAIL_USE_SSL,
-                "EMAIL_HOST_USER": settings.EMAIL_HOST_USER,
-            }
-        })
+    base_dir = getattr(settings, 'BASE_DIR', '')
+    error_log_path = os.path.join(base_dir, 'error.log')
+    log_content = f"Log file not found at: {error_log_path}"
+    if os.path.exists(error_log_path):
+        try:
+            with open(error_log_path, 'r', encoding='utf-8') as f:
+                log_content = f.read()[-10000:] # Last 10000 chars
+        except Exception as e:
+            log_content = f"Error reading log file: {e}"
+    return HttpResponse(log_content, content_type='text/plain')
 
 urlpatterns = [
     path("api/v1/test-email/", test_email_view, name="test_email"),
