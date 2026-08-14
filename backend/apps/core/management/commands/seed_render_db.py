@@ -4,6 +4,21 @@ import traceback
 from django.core.management.base import BaseCommand
 from django.core.management import call_command
 from django.conf import settings
+from django.db.models.signals import pre_save, post_save, pre_delete, post_delete, m2m_changed
+
+class MuteSignals(object):
+    def __init__(self, *signals):
+        self.signals = signals
+        self.paused = {}
+
+    def __enter__(self):
+        for signal in self.signals:
+            self.paused[signal] = signal.receivers
+            signal.receivers = []
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        for signal in self.signals:
+            signal.receivers = self.paused[signal]
 
 class Command(BaseCommand):
     help = "Migrate local database state (local_dump.json) to Render PostgreSQL."
@@ -37,10 +52,10 @@ class Command(BaseCommand):
                     call_command('flush', interactive=False, stdout=log_file, stderr=log_file)
                     log("Database flushed.")
                     
-                    # Load local dump
-                    log("Loading local database dump...")
-                    # We pass stdout and stderr to redirect output to our log file
-                    call_command('loaddata', fixture_path, ignorenonexistent=True, stdout=log_file, stderr=log_file)
+                    # Load local dump with muted signals to prevent constraint and cascade issues during import
+                    log("Loading local database dump with muted signals...")
+                    with MuteSignals(pre_save, post_save, pre_delete, post_delete, m2m_changed):
+                        call_command('loaddata', fixture_path, ignorenonexistent=True, stdout=log_file, stderr=log_file)
                     log("Local database dump loaded successfully!")
                     
                     # Ensure admin1 has the correct branch (ADAMBAKKAM-CHENNAI)
