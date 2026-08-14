@@ -204,7 +204,15 @@ SIMPLE_JWT = {
 }
 
 # CORS configuration
-CORS_ALLOW_ALL_ORIGINS = True  # Adjusted in production settings
+CORS_ALLOW_ALL_ORIGINS = True
+
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-branch-id',
+    'x-deploy-secret',
+    'authorization',
+    'content-type',
+]
 
 # Celery & Redis task broker settings
 REDIS_URL = env('REDIS_URL', default='redis://localhost:6379/0')

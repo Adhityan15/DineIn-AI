@@ -18,10 +18,10 @@ ALLOWED_HOSTS = env.list(
 # Trust Render Reverse Proxy HTTPS header
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# CSRF Trusted Origins for Render
+# CSRF Trusted Origins for Render & Vercel
 CSRF_TRUSTED_ORIGINS = env.list(
     'CSRF_TRUSTED_ORIGINS',
-    default=['https://*.onrender.com']
+    default=['https://*.onrender.com', 'https://*.vercel.app']
 )
 
 # Security policies and HTTP headers
@@ -34,9 +34,27 @@ SECURE_HSTS_PRELOAD = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 
 # CORS
-CORS_ALLOW_ALL_ORIGINS = False
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[])
+CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS', default=True)
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.onrender\.com$",
+]
+CORS_ALLOWED_ORIGINS = env.list(
+    'CORS_ALLOWED_ORIGINS',
+    default=[
+        'https://dine-in-ai-rho.vercel.app',
+        'https://dinein-ai-v1-0.onrender.com',
+    ]
+)
 CORS_ALLOW_CREDENTIALS = True
+
+from corsheaders.defaults import default_headers
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'x-branch-id',
+    'x-deploy-secret',
+    'authorization',
+    'content-type',
+]
 
 # Celery task broker fallback when Redis is not provided on Render
 if not env('REDIS_URL', default=''):
