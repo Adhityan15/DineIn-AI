@@ -160,6 +160,15 @@ def audit_db_view(request):
     exists2 = os.path.exists(path2)
     files_in_base = os.listdir(base_dir_str) if os.path.exists(base_dir_str) else []
 
+    migration_log_path = os.path.join(base_dir_str, 'migration.log')
+    migration_log_content = ""
+    if os.path.exists(migration_log_path):
+        try:
+            with open(migration_log_path, 'r', encoding='utf-8') as f:
+                migration_log_content = f.read()
+        except Exception as e:
+            migration_log_content = f"Error reading log file: {e}"
+
     return JsonResponse({
         "settings_module": settings_module,
         "database_engine": db_config.get('ENGINE'),
@@ -171,6 +180,7 @@ def audit_db_view(request):
         "admin1_info": admin_info,
         "branch_info": branch_info,
         "adambakkam_chennai_branch_exists": adambakkam_exists,
+        "migration_log": migration_log_content,
         "debug_paths": {
             "BASE_DIR": base_dir_str,
             "path1": path1,
