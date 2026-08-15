@@ -1045,56 +1045,83 @@ const MenuStudio = () => {
                     </div>
                   </div>
 
-                  <div className="relative w-full h-96 bg-slate-950/45 rounded-xl border border-white/5 p-6 flex items-center justify-center overflow-hidden">
-                    {/* SVG Coordinate Grid */}
-                    <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                      {/* Grid Threshold Lines */}
-                      <line x1="0" y1="50" x2="100" y2="50" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" strokeDasharray="2" />
-                      <line x1="50" y1="0" x2="50" y2="100" stroke="rgba(255,255,255,0.06)" strokeWidth="0.5" strokeDasharray="2" />
+                  <div className="relative w-full h-[400px] bg-slate-100 dark:bg-slate-950/40 rounded-2xl border border-slate-200 dark:border-white/10 overflow-hidden shadow-inner p-4">
+                    {/* 4 Quadrants Background Grid */}
+                    <div className="absolute inset-0 grid grid-cols-2 grid-rows-2 gap-[1px] bg-slate-200 dark:bg-white/10">
+                      {/* Top-Left: Puzzles */}
+                      <div className="bg-amber-500/5 dark:bg-amber-500/10 p-4 relative flex flex-col justify-between">
+                        <span className="font-extrabold text-amber-600 dark:text-amber-400 text-xs uppercase tracking-wider">🧩 Puzzles</span>
+                        <span className="text-[9px] text-amber-500/60 font-semibold">High Margin, Low Volume</span>
+                      </div>
                       
-                      {/* Quadrant Labels */}
-                      <text x="75" y="15" className="fill-emerald-400/25 text-[3.5px] font-black text-center tracking-widest">⭐ STARS</text>
-                      <text x="15" y="15" className="fill-amber-400/25 text-[3.5px] font-black text-center tracking-widest">🧩 PUZZLES</text>
-                      <text x="75" y="85" className="fill-blue-400/25 text-[3.5px] font-black text-center tracking-widest">🐎 PLOW HORSES</text>
-                      <text x="15" y="85" className="fill-rose-400/25 text-[3.5px] font-black text-center tracking-widest">🐶 DOGS</text>
+                      {/* Top-Right: Stars */}
+                      <div className="bg-emerald-500/5 dark:bg-emerald-500/10 p-4 relative flex flex-col justify-between items-end">
+                        <span className="font-extrabold text-emerald-600 dark:text-emerald-400 text-xs uppercase tracking-wider">⭐ Stars</span>
+                        <span className="text-[9px] text-emerald-500/60 font-semibold">High Margin, High Volume</span>
+                      </div>
+                      
+                      {/* Bottom-Left: Dogs */}
+                      <div className="bg-rose-500/5 dark:bg-rose-500/10 p-4 relative flex flex-col justify-between">
+                        <span className="text-[9px] text-rose-500/60 font-semibold">Low Margin, Low Volume</span>
+                        <span className="font-extrabold text-rose-600 dark:text-rose-400 text-xs uppercase tracking-wider">🐶 Dogs</span>
+                      </div>
+                      
+                      {/* Bottom-Right: Plow Horses */}
+                      <div className="bg-blue-500/5 dark:bg-blue-500/10 p-4 relative flex flex-col justify-between items-end">
+                        <span className="text-[9px] text-blue-500/60 font-semibold">Low Margin, High Volume</span>
+                        <span className="font-extrabold text-blue-600 dark:text-blue-400 text-xs uppercase tracking-wider">🐎 Plow Horses</span>
+                      </div>
+                    </div>
 
-                      {/* Scatter Points */}
-                      {allMatrixItems.map((item, idx) => {
-                        const x = 5 + (item.popularity_score || 50) * 0.9;
-                        const y = 95 - (item.profit / maxProfit) * 90;
-                        return (
-                          <circle
-                            key={idx}
-                            cx={x}
-                            cy={y}
-                            r="2.2"
-                            fill={item.color}
-                            className="cursor-pointer hover:r-[3.5] transition-all duration-200"
-                            onClick={() => {
-                              setSelectedItem(item);
-                              setIsDrawerOpen(true);
-                              setDrawerMode('edit');
-                              if (item.ingredients) {
-                                setRecipeIngredients(item.ingredients.map(ri => ({
-                                  ingredient_id: ri.id,
-                                  quantity: ri.quantity,
-                                  name: ri.name,
-                                  unit: ri.unit
-                                })));
-                              }
-                            }}
-                            onMouseEnter={() => setHoveredPoint(item)}
-                            onMouseLeave={() => setHoveredPoint(null)}
+                    {/* Divider Grid Lines */}
+                    <div className="absolute top-0 bottom-0 left-1/2 border-l border-dashed border-slate-300 dark:border-white/20 z-0" />
+                    <div className="absolute left-0 right-0 top-1/2 border-t border-dashed border-slate-300 dark:border-white/20 z-0" />
+
+                    {/* Scatter Points (HTML absolute divs) */}
+                    {allMatrixItems.map((item, idx) => {
+                      const x = 8 + (item.popularity_score || 50) * 0.84;
+                      const y = 92 - (item.profit / maxProfit) * 84;
+                      return (
+                        <div
+                          key={idx}
+                          className="absolute w-4 h-4 rounded-full border-2 border-white dark:border-slate-900 shadow-lg cursor-pointer transition-all duration-300 hover:scale-150 hover:z-20 group"
+                          style={{
+                            left: `${x}%`,
+                            top: `${y}%`,
+                            backgroundColor: item.color,
+                            transform: 'translate(-50%, -50%)',
+                            zIndex: 10
+                          }}
+                          onClick={() => {
+                            setSelectedItem(item);
+                            setIsDrawerOpen(true);
+                            setDrawerMode('edit');
+                            if (item.ingredients) {
+                              setRecipeIngredients(item.ingredients.map(ri => ({
+                                ingredient_id: ri.id,
+                                quantity: ri.quantity,
+                                name: ri.name,
+                                unit: ri.unit
+                              })));
+                            }
+                          }}
+                          onMouseEnter={() => setHoveredPoint(item)}
+                          onMouseLeave={() => setHoveredPoint(null)}
+                        >
+                          {/* Outer Glow Ring on Hover */}
+                          <span 
+                            className="absolute -inset-1.5 rounded-full opacity-35 group-hover:block hidden animate-ping"
+                            style={{ backgroundColor: item.color }}
                           />
-                        );
-                      })}
-                    </svg>
+                        </div>
+                      );
+                    })}
 
                     {/* Floating Tooltip Popover on Hover */}
                     {hoveredPoint && (
                       <div className="absolute bg-slate-900/95 border border-white/10 p-3 rounded-xl shadow-2xl z-50 text-[10px] space-y-1.5 w-44 backdrop-blur-md" style={{
-                        left: `${Math.min(60, 5 + (hoveredPoint.popularity_score || 50) * 0.7)}%`,
-                        top: `${Math.min(60, 90 - (hoveredPoint.profit / maxProfit) * 75)}%`
+                        left: `${Math.min(65, 8 + (hoveredPoint.popularity_score || 50) * 0.7)}%`,
+                        top: `${Math.min(65, 92 - (hoveredPoint.profit / maxProfit) * 0.75)}%`
                       }}>
                         <div className="flex items-center gap-2 border-b border-white/5 pb-1">
                           <img 
