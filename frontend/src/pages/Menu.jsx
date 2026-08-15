@@ -51,7 +51,8 @@ import {
   AppCard,
   AnimatedCounter,
   Modal,
-  Drawer
+  Drawer,
+  KPICard
 } from '../components/DesignSystem';
 
 const containerVariants = {
