@@ -62,8 +62,7 @@ export const AuthProvider = ({ children }) => {
       return { success: true, data: payload };
     } catch (error) {
       console.error("LOGIN ERROR:", error.response?.status, error.response?.data || error.message);
-      const message = error.response?.data?.message || error.response?.data?.detail || 'Login failed. Please check your credentials.';
-      return { success: false, error: message };
+      throw error;
     }
   };
 
@@ -72,8 +71,8 @@ export const AuthProvider = ({ children }) => {
       await client.post('/auth/register/', userData);
       return { success: true };
     } catch (error) {
-      const message = error.response?.data?.message || 'Registration failed.';
-      return { success: false, error: message };
+      console.error("REGISTER ERROR:", error.response?.status, error.response?.data || error.message);
+      throw error;
     }
   };
 
