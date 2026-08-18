@@ -58,21 +58,27 @@ class Command(BaseCommand):
                         call_command('loaddata', fixture_path, ignorenonexistent=True, stdout=log_file, stderr=log_file)
                     log("Local database dump loaded successfully!")
                     
-                    # Ensure admin1 has the correct branch (ADAMBAKKAM-CHENNAI)
+                    # Ensure admin1 and adhityan have the correct branch (ADAMBAKKAM-CHENNAI)
                     try:
                         from django.contrib.auth import get_user_model
                         from apps.core.models import Branch
                         User = get_user_model()
-                        admin1 = User.objects.filter(username='admin1').first()
                         target_branch = Branch.objects.filter(name='ADAMBAKKAM-CHENNAI').first() or Branch.objects.filter(id='c25e6dd3-b6e7-436e-99ed-13c0e965eb03').first()
-                        if admin1 and target_branch:
-                            admin1.branch = target_branch
-                            admin1.save()
-                            log(f"SUCCESS: Updated admin1's branch to {target_branch.name} ({target_branch.id})")
+                        if target_branch:
+                            admin1 = User.objects.filter(username='admin1').first()
+                            if admin1:
+                                admin1.branch = target_branch
+                                admin1.save()
+                                log(f"SUCCESS: Updated admin1's branch to {target_branch.name}")
+                            adhityan = User.objects.filter(username='adhityan').first()
+                            if adhityan:
+                                adhityan.branch = target_branch
+                                adhityan.save()
+                                log(f"SUCCESS: Updated adhityan's branch to {target_branch.name}")
                         else:
-                            log(f"WARNING: admin1={admin1}, target_branch={target_branch}. Branch update skipped.")
+                            log(f"WARNING: Target branch not found. Branch update skipped.")
                     except Exception as e:
-                        log(f"ERROR updating admin1 branch: {e}")
+                        log(f"ERROR updating admin/adhityan branch: {e}")
                 else:
                     log("WARNING: local_dump.json not found! Seeding skipped.")
             except Exception as e:

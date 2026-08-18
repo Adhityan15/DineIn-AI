@@ -42,12 +42,13 @@ class Command(BaseCommand):
             }
         )
 
-        # 1. Ensure admin1 superuser exists IMMEDIATELY
+        # 1. Ensure admin1 and adhityan superusers exist IMMEDIATELY
         admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
+        
+        # admin1
         admin1 = User.objects.filter(username='admin1').first()
         if not admin1:
             admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
-
         if not admin1:
             admin1 = User.objects.create_user(
                 username='admin1',
@@ -73,6 +74,35 @@ class Command(BaseCommand):
             admin1.save()
         self.stdout.write(f"[OK] admin1 user configured: {admin1.username} ({admin1.email}) - Branch: {admin1.branch.name}")
 
+        # adhityan
+        adhityan = User.objects.filter(username='adhityan').first()
+        if not adhityan:
+            adhityan = User.objects.filter(email='adhityan.9r@gmail.com').first()
+        if not adhityan:
+            adhityan = User.objects.create_user(
+                username='adhityan',
+                email='adhityan.9r@gmail.com',
+                password='Admin@123',
+                first_name='Adhityan',
+                last_name='User',
+                role=admin_role,
+                branch=branch,
+                is_staff=True,
+                is_superuser=True,
+                is_active=True
+            )
+        else:
+            adhityan.username = 'adhityan'
+            adhityan.email = 'adhityan.9r@gmail.com'
+            adhityan.role = admin_role
+            adhityan.branch = branch
+            adhityan.is_staff = True
+            adhityan.is_superuser = True
+            adhityan.is_active = True
+            adhityan.set_password('Admin@123')
+            adhityan.save()
+        self.stdout.write(f"[OK] adhityan user configured: {adhityan.username} ({adhityan.email}) - Branch: {adhityan.branch.name}")
+
         # 2. Seed 20 Tables
         self.stdout.write("Creating 20 tables...")
         tables = []
@@ -93,12 +123,13 @@ class Command(BaseCommand):
             staff_role = roles.get('kitchen_staff')
             customer_role = roles.get('customer')
 
-            # 3b. Ensure admin1 superuser exists
+            # 3b. Ensure admin1 and adhityan superusers exist
             admin_role, _ = Role.objects.get_or_create(code='admin', defaults={'name': 'Administrator'})
+            
+            # admin1
             admin1 = User.objects.filter(username='admin1').first()
             if not admin1:
                 admin1 = User.objects.filter(email='adhityanmclaren@gmail.com').first()
-
             if not admin1:
                 admin1 = User.objects.create_user(
                     username='admin1',
@@ -123,6 +154,35 @@ class Command(BaseCommand):
                 admin1.set_password('Admin@123')
                 admin1.save()
             self.stdout.write(f"[OK] admin1 user configured: {admin1.username} ({admin1.email}) - Branch: {admin1.branch.name}")
+
+            # adhityan
+            adhityan = User.objects.filter(username='adhityan').first()
+            if not adhityan:
+                adhityan = User.objects.filter(email='adhityan.9r@gmail.com').first()
+            if not adhityan:
+                adhityan = User.objects.create_user(
+                    username='adhityan',
+                    email='adhityan.9r@gmail.com',
+                    password='Admin@123',
+                    first_name='Adhityan',
+                    last_name='User',
+                    role=admin_role,
+                    branch=branch,
+                    is_staff=True,
+                    is_superuser=True,
+                    is_active=True
+                )
+            else:
+                adhityan.username = 'adhityan'
+                adhityan.email = 'adhityan.9r@gmail.com'
+                adhityan.role = admin_role
+                adhityan.branch = branch
+                adhityan.is_staff = True
+                adhityan.is_superuser = True
+                adhityan.is_active = True
+                adhityan.set_password('Admin@123')
+                adhityan.save()
+            self.stdout.write(f"[OK] adhityan user configured: {adhityan.username} ({adhityan.email}) - Branch: {adhityan.branch.name}")
 
             # 4. Generate 400 Customer Users
             self.stdout.write("Generating 400 customer users & profiles...")
