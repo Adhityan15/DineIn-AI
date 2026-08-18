@@ -5,27 +5,23 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   CEO AROUNDA DESIGN SYSTEM TEMPLATE (OUTFIT FONT & OBSIDIAN DARK GLASS)
-   - Deep Obsidian Canvas: #040A0A
-   - Electric Blue: #49DC7A
-   - Neon Lime Green: #A3E635
-   - Ice Glass: #22F2EF
-   - Crisp White: #FFFFFF
+   CEO AROUNDA DEEP EMERALD OBSIDIAN GLASS DESIGN SYSTEM
    ========================================================================== */
 
 :root {
   --font-outfit: 'Outfit', sans-serif;
 
   --color-bg-app: #040A0A;
-  --color-bg-surface: rgba(12, 18, 18, 0.88);
-  --color-border: rgba(255, 255, 255, 0.16);
+  --color-bg-surface: rgba(10, 24, 18, 0.90);
+  --color-bg-surface-elevated: rgba(16, 36, 26, 0.92);
+  --color-border: rgba(73, 220, 122, 0.28);
 
+  --color-primary: #A3E635;
   --color-text-primary: #FFFFFF;
-  --color-text-secondary: #E5E7EB;
-  --color-text-muted: #9CA3AF;
+  --color-text-secondary: #F1F5F9;
+  --color-text-muted: #D1D5DB;
   --color-accent: #A3E635;
 
-  /* Spacing Variables */
   --space-8: 0.5rem;
   --space-12: 0.75rem;
   --space-16: 1rem;
@@ -35,74 +31,103 @@
   --space-40: 2.5rem;
 }
 
-.dark {
-  --color-bg-app: #040A0A;
-  --color-bg-surface: rgba(12, 18, 18, 0.88);
-  --color-border: rgba(255, 255, 255, 0.16);
-
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #E5E7EB;
-  --color-text-muted: #9CA3AF;
-  --color-accent: #A3E635;
-}
-
 /* ==========================================================================
-   GLOBAL OUTFIT TYPOGRAPHY & DEFAULT DARK THEME
+   1. GLOBAL BASE STYLES - DEFAULT OBSIDIAN CANVAS & WHITE TYPOGRAPHY
    ========================================================================== */
 @layer base {
   html, body {
     font-family: 'Outfit', sans-serif !important;
-    background-color: #040A0A;
-    color: #FFFFFF;
+    background-color: #040A0A !important;
+    color: #FFFFFF !important;
     @apply antialiased transition-colors duration-300;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif !important;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
   }
 }
 
 /* ==========================================================================
-   DARK MODE SYSTEM (CRISP 100% WHITE TYPOGRAPHY & OBSIDIAN DARK GLASS)
+   2. SYSTEMWIDE EMERALD OBSIDIAN GLASS SURFACES (ALL CONTAINERS, CARDS, SIDEBARS)
    ========================================================================== */
-html.dark,
-body.dark,
-.dark body,
-.dark #root,
-.dark {
-  background-color: #040A0A !important;
-  color: #FFFFFF !important;
-}
-
-.dark .glass-card-surface,
-.dark .glass-card-transparent,
-.dark .glass-kpi-card,
-.dark aside,
-.dark header,
-.dark nav,
-.dark main .bg-white,
-.dark main .bg-slate-50,
-.dark main .bg-slate-100,
-.dark main .bg-slate-200,
-.dark main .bg-slate-800,
-.dark main .bg-slate-900 {
-  background: rgba(12, 18, 18, 0.88) !important;
+.glass-card-surface,
+.glass-card-transparent,
+.glass-kpi-card,
+aside,
+header,
+nav,
+main div.rounded-app-xl,
+main div.rounded-2xl,
+main div.rounded-\[28px\],
+main .bg-white,
+main .bg-slate-50,
+main .bg-slate-100,
+main .bg-slate-200,
+main .bg-slate-800,
+main .bg-slate-900 {
+  background: rgba(10, 24, 18, 0.90) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.16) !important;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.90) !important;
+  border: 1px solid rgba(73, 220, 122, 0.28) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.90), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
   border-radius: 24px !important;
 }
 
-/* Force Crisp White Headings & High Contrast Text in Dark Mode & Dark Containers */
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
-.dark-container h1, .dark-container h2, .dark-container h3, .dark-container h4, .dark-container h5, .dark-container h6,
-.text-white {
+/* Sub-containers, Search Pills & Input Fields */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="search"],
+select,
+textarea,
+.bg-\[var\(--color-bg-surface-elevated\)\] {
+  background: rgba(16, 36, 26, 0.88) !important;
+  border: 1px solid rgba(73, 220, 122, 0.3) !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+/* ==========================================================================
+   3. 100% MAXIMUM HIGH CONTRAST TYPOGRAPHY SYSTEMWIDE
+   ========================================================================== */
+/* Headings & Main Titles: Crisp Pure White */
+h1, h2, h3, h4, h5, h6,
+.text-slate-900,
+.text-slate-800,
+.text-slate-700,
+.text-slate-600,
+.text-gray-900,
+.text-gray-800,
+.text-text-primary {
   color: #FFFFFF !important;
 }
 
-/* Force Pure Pitch Black Text on All White Pill Buttons */
+/* Paragraphs, Labels & Subtext: High-Contrast Light Silver */
+p, label, td, th,
+.text-slate-300,
+.text-slate-200,
+.text-slate-100,
+.text-text-secondary {
+  color: #F1F5F9 !important;
+}
+
+/* Secondary & Muted Text: High-Contrast Bright Silver-Gray */
+.text-slate-500,
+.text-slate-400,
+.text-slate-350,
+.text-text-muted {
+  color: #D1D5DB !important;
+}
+
+/* Active Accents & Neon Highlights */
+.text-emerald-400,
+.text-emerald-500,
+.text-app-primary {
+  color: #A3E635 !important;
+}
+
+/* Pure Pitch Black Text on All White Buttons */
 button.bg-white,
 button.bg-white *,
 .bg-white.text-black,
@@ -110,34 +135,13 @@ button.bg-white *,
   color: #000000 !important;
 }
 
-.dark p, .dark label, .dark span:not(button.bg-white *), .dark td, .dark th,
-.dark .text-slate-300,
-.dark .text-slate-200,
-.dark .text-slate-100,
-.dark .text-slate-500,
-.dark .text-slate-400 {
-  color: #E5E7EB !important;
-}
-
-.dark .text-emerald-400,
-.dark .text-emerald-500,
-.dark .text-app-primary {
-  color: #A3E635 !important;
-}
-
-.dark select {
-  color: #FFFFFF !important;
-  background-color: #040A0A !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.dark select option {
-  background-color: #040A0A !important;
+select option {
+  background-color: #0A1C14 !important;
   color: #FFFFFF !important;
 }
 
 /* ==========================================================================
-   LIGHT MODE SYSTEM (CLEAN FROSTED ICE GLASS - ONLY FOR LIGHT THEME)
+   4. LIGHT MODE SPECIFIC OVERRIDES (ONLY WHEN EXPLICITLY SWITCHED TO LIGHT THEME)
    ========================================================================== */
 body.light-theme {
   background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 50%, #E0F2FE 100%) !important;
@@ -150,10 +154,8 @@ body.light-theme .glass-kpi-card,
 body.light-theme aside,
 body.light-theme header,
 body.light-theme nav {
-  background: rgba(255, 255, 255, 0.88) !important;
-  backdrop-filter: blur(28px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(203, 213, 225, 0.95) !important;
+  background: #FFFFFF !important;
+  border: 1px solid #CBD5E1 !important;
   box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.08) !important;
   border-radius: 24px !important;
 }
@@ -167,7 +169,7 @@ body.light-theme p, body.light-theme label, body.light-theme span {
 }
 
 /* ==========================================================================
-   RUNNING GRADIENT ANIMATIONS
+   5. RUNNING GRADIENT ANIMATIONS & SCROLLBAR
    ========================================================================== */
 @keyframes fluid-morph-blue {
   0% { border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; transform: translate(0px, 0px) scale(1) rotate(0deg); }
@@ -184,7 +186,6 @@ body.light-theme p, body.light-theme label, body.light-theme span {
 .animate-fluid-blue { animation: fluid-morph-blue 18s ease-in-out infinite; }
 .animate-fluid-green { animation: fluid-morph-green 22s ease-in-out infinite; }
 
-/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -195,10 +196,10 @@ body.light-theme p, body.light-theme label, body.light-theme span {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(73, 220, 122, 0.3);
   border-radius: 12px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
+  background: rgba(73, 220, 122, 0.6);
 }
