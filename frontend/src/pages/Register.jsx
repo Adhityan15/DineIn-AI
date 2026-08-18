@@ -67,6 +67,11 @@ const Register = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+  }, []);
+
+  useEffect(() => {
     let timer;
     const currentFullText = taglines[tagIndex];
 

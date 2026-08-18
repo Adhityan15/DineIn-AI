@@ -16,14 +16,14 @@
 :root {
   --font-outfit: 'Outfit', sans-serif;
 
-  --color-bg-app: #F0F4F8;
-  --color-bg-surface: rgba(255, 255, 255, 0.88);
-  --color-border: rgba(203, 213, 225, 0.9);
+  --color-bg-app: #040A0A;
+  --color-bg-surface: rgba(12, 18, 18, 0.88);
+  --color-border: rgba(255, 255, 255, 0.16);
 
-  --color-text-primary: #0F172A;
-  --color-text-secondary: #334155;
-  --color-text-muted: #64748B;
-  --color-accent: #0284C7;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #E5E7EB;
+  --color-text-muted: #9CA3AF;
+  --color-accent: #A3E635;
 
   /* Spacing Variables */
   --space-8: 0.5rem;
@@ -47,26 +47,30 @@
 }
 
 /* ==========================================================================
-   GLOBAL OUTFIT TYPOGRAPHY & BODY STYLES
+   GLOBAL OUTFIT TYPOGRAPHY & DEFAULT DARK THEME
    ========================================================================== */
 @layer base {
   html, body {
     font-family: 'Outfit', sans-serif !important;
+    background-color: #040A0A;
+    color: #FFFFFF;
     @apply antialiased transition-colors duration-300;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Outfit', sans-serif !important;
+    color: #FFFFFF;
   }
 }
 
 /* ==========================================================================
-   DARK MODE SYSTEM (IMAGE 2 OBSIDIAN DARK GLASS + NEON GREEN ACCENTS)
+   DARK MODE SYSTEM (CRISP 100% WHITE TYPOGRAPHY & OBSIDIAN DARK GLASS)
    ========================================================================== */
 html.dark,
 body.dark,
 .dark body,
-.dark #root {
+.dark #root,
+.dark {
   background-color: #040A0A !important;
   color: #FFFFFF !important;
 }
@@ -91,24 +95,19 @@ body.dark,
   border-radius: 24px !important;
 }
 
-/* Dark Mode Typography Overrides */
+/* Force Crisp White Headings & High Contrast Text in Dark Mode & Dark Containers */
 .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
-.dark .text-slate-900,
-.dark .text-slate-800,
-.dark .text-slate-700,
-.dark .text-slate-600,
-.dark .text-gray-900,
-.dark .text-gray-800,
-.dark .text-text-primary {
+.dark-container h1, .dark-container h2, .dark-container h3, .dark-container h4, .dark-container h5, .dark-container h6,
+.text-white {
   color: #FFFFFF !important;
 }
 
 .dark p, .dark label, .dark span, .dark td, .dark th,
+.dark .text-slate-300,
+.dark .text-slate-200,
+.dark .text-slate-100,
 .dark .text-slate-500,
-.dark .text-slate-400,
-.dark .text-slate-350,
-.dark .text-text-secondary,
-.dark .text-text-muted {
+.dark .text-slate-400 {
   color: #E5E7EB !important;
 }
 
@@ -130,17 +129,19 @@ body.dark,
 }
 
 /* ==========================================================================
-   LIGHT MODE SYSTEM (CLEAN FROSTED ICE GLASS)
+   LIGHT MODE SYSTEM (CLEAN FROSTED ICE GLASS - ONLY FOR LIGHT THEME)
    ========================================================================== */
-body:not(.dark) {
+body.light-theme {
   background: linear-gradient(135deg, #F0F4F8 0%, #E2E8F0 50%, #E0F2FE 100%) !important;
   color: #0F172A !important;
 }
 
-body:not(.dark) .glass-card-surface,
-body:not(.dark) aside,
-body:not(.dark) header,
-body:not(.dark) nav {
+body.light-theme .glass-card-surface,
+body.light-theme .glass-card-transparent,
+body.light-theme .glass-kpi-card,
+body.light-theme aside,
+body.light-theme header,
+body.light-theme nav {
   background: rgba(255, 255, 255, 0.88) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
@@ -149,33 +150,12 @@ body:not(.dark) nav {
   border-radius: 24px !important;
 }
 
-body:not(.dark) .glass-card-transparent,
-body:not(.dark) .glass-kpi-card {
-  background: rgba(255, 255, 255, 0.22) !important;
-  backdrop-filter: blur(32px) saturate(190%) !important;
-  -webkit-backdrop-filter: blur(32px) saturate(190%) !important;
-  border: 1px solid rgba(255, 255, 255, 0.5) !important;
-  box-shadow: 0 16px 40px -10px rgba(15, 23, 42, 0.03) !important;
-  border-radius: 24px !important;
-}
-
-body:not(.dark) h1, body:not(.dark) h2, body:not(.dark) h3, body:not(.dark) h4, body:not(.dark) h5, body:not(.dark) h6 {
+body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 {
   color: #0F172A !important;
 }
 
-body:not(.dark) p, body:not(.dark) label, body:not(.dark) span {
+body.light-theme p, body.light-theme label, body.light-theme span {
   color: #334155 !important;
-}
-
-body:not(.dark) select {
-  color: #0F172A !important;
-  background-color: #FFFFFF !important;
-  border: 1px solid #CBD5E1 !important;
-}
-
-body:not(.dark) select option {
-  background-color: #FFFFFF !important;
-  color: #0F172A !important;
 }
 
 /* ==========================================================================

@@ -62,6 +62,11 @@ const Login = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    document.documentElement.classList.add('dark');
+    document.body.classList.add('dark');
+  }, []);
+
+  useEffect(() => {
     const remembered = localStorage.getItem('remembered_email');
     if (remembered) {
       setEmail(remembered);
