@@ -73,6 +73,10 @@ const Settings = () => {
 
   const [apiKey, setApiKey] = useState('google_places_api_mock_secret_key_12345');
 
+  const [restaurantNameInput, setRestaurantNameInput] = useState(
+    localStorage.getItem('restaurant_name') || 'DineIn AI'
+  );
+
   // Theme configuration states
   const [themeMode, setThemeMode] = useState(document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 
@@ -222,6 +226,13 @@ const Settings = () => {
   const handleApiSave = (e) => {
     e.preventDefault();
     addToast('Google Places API integration key updated.', 'success');
+  };
+
+  const handleBrandingSave = (e) => {
+    e.preventDefault();
+    localStorage.setItem('restaurant_name', restaurantNameInput);
+    window.dispatchEvent(new Event('restaurantNameUpdate'));
+    addToast('Restaurant branding name updated successfully!', 'success');
   };
 
   const handleThemeToggle = (mode) => {
@@ -528,6 +539,35 @@ const Settings = () => {
                 🌙 Dark Mode
               </button>
             </div>
+          </AppCard>
+
+          {/* Restaurant Branding configuration */}
+          <AppCard className="space-y-5">
+            <div className="flex items-center gap-2.5 border-b border-app-border pb-3">
+              <span className="w-9 h-9 rounded-app-md bg-app-primary/10 text-app-primary flex items-center justify-center border border-app-primary/15">
+                <Sparkles size={16} />
+              </span>
+              <div>
+                <h2 className="text-text-primary text-xs font-bold uppercase tracking-wider">Restaurant Branding</h2>
+                <p className="text-[10px] text-text-muted font-semibold mt-0.5">Customize your restaurant brand name displayed at the top header</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleBrandingSave} className="space-y-4">
+              <Input
+                label="Restaurant/Brand Name"
+                value={restaurantNameInput}
+                onChange={(e) => setRestaurantNameInput(e.target.value)}
+                placeholder="e.g. Gusteau's Kitchen"
+                required
+              />
+              <div className="flex justify-end pt-2">
+                <PrimaryButton type="submit" className="shadow-app-md">
+                  <Save size={14} className="mr-1.5" />
+                  Save Branding Name
+                </PrimaryButton>
+              </div>
+            </form>
           </AppCard>
 
         </div>

@@ -25,7 +25,8 @@ import {
   ChevronsRight, 
   Search, 
   ChevronDown,
-  Clock
+  Clock,
+  Sparkles
 } from 'lucide-react';
 
 import { useAuth } from '../contexts/AuthContext';
@@ -132,6 +133,22 @@ const DashboardLayout = () => {
 
   useEffect(() => {
     fetchHeaderNotifications();
+  }, []);
+
+  const [restaurantName, setRestaurantName] = useState(
+    localStorage.getItem('restaurant_name') || 'DineIn AI'
+  );
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      setRestaurantName(localStorage.getItem('restaurant_name') || 'DineIn AI');
+    };
+    window.addEventListener('restaurantNameUpdate', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('restaurantNameUpdate', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
   }, []);
 
   const markAllRead = async () => {
@@ -710,7 +727,16 @@ const DashboardLayout = () => {
       >
         
         {/* TOP NAVIGATION HEADER - Sticky top 0 inside main application area */}
-        <header className="glass-card-surface h-16 flex items-center justify-between px-6 sticky top-0 z-30 border-b border-[var(--color-border)] rounded-none shadow-sm w-full shrink-0">
+        <header className="glass-card-surface h-16 flex items-center justify-between px-6 sticky top-0 z-30 border-b border-[var(--color-border)] rounded-none shadow-sm w-full shrink-0 relative">
+          
+          {/* Centered Restaurant Brand Title */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden lg:flex items-center gap-2">
+            <Sparkles size={13} className="text-[var(--color-primary)] animate-pulse" />
+            <h1 className="text-xs font-black uppercase tracking-[0.25em] text-[var(--color-text-primary)]">
+              {restaurantName}
+            </h1>
+            <Sparkles size={13} className="text-[var(--color-primary)] animate-pulse" />
+          </div>
           
           <div className="flex items-center gap-4">
             <button
