@@ -99,13 +99,16 @@ const DashboardLayout = () => {
     return localStorage.getItem('theme') || 'dark';
   });
 
-  // Dynamic Theme Sync Effect
+  // Dynamic Theme Sync Effect (Applies Image 2 Obsidian Dark Glass or Light Mode)
   useEffect(() => {
     const root = window.document.documentElement;
+    const body = window.document.body;
     if (theme === 'dark') {
       root.classList.add('dark');
+      body.classList.add('dark');
     } else {
       root.classList.remove('dark');
+      body.classList.remove('dark');
     }
     localStorage.setItem('theme', theme);
   }, [theme]);
@@ -529,9 +532,18 @@ const DashboardLayout = () => {
           {/* Logo Header - Pinned at Top */}
           <div className="h-20 px-4 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 w-full">
             <Link to="/dashboard" onClick={resetScrollToTop} className="flex items-center gap-3 overflow-hidden group">
-              <div className="w-11 h-11 rounded-[16px] bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg relative shrink-0 transition-transform duration-300 group-hover:scale-105">
+              <div className="w-11 h-11 rounded-[16px] bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg relative shrink-0 overflow-hidden transition-transform duration-300 group-hover:scale-105">
                 <div className="absolute inset-0 rounded-[16px] bg-gradient-to-tr from-indigo-600 to-pink-500 blur-md opacity-40 group-hover:opacity-75 transition-opacity pointer-events-none" />
-                <span className="text-white font-black text-lg tracking-wider relative z-10 font-sans">D</span>
+                {currentBranch?.logo_url ? (
+                  <img 
+                    src={currentBranch.logo_url} 
+                    alt="Logo" 
+                    className="w-full h-full object-cover relative z-10"
+                    onError={(e) => { e.target.style.display = 'none'; }}
+                  />
+                ) : (
+                  <span className="text-white font-black text-lg tracking-wider relative z-10 font-sans">D</span>
+                )}
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col min-w-0">
