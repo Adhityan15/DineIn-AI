@@ -5,21 +5,21 @@
 @tailwind utilities;
 
 /* ==========================================================================
-   CEO AROUNDA DEEP EMERALD OBSIDIAN GLASS DESIGN SYSTEM
+   CEO AROUNDA DEEP EMERALD OBSIDIAN GLASS DESIGN SYSTEM (HIGH CONTRAST)
    ========================================================================== */
 
 :root {
   --font-outfit: 'Outfit', sans-serif;
 
   --color-bg-app: #040A0A;
-  --color-bg-surface: rgba(10, 24, 18, 0.90);
-  --color-bg-surface-elevated: rgba(16, 36, 26, 0.92);
-  --color-border: rgba(73, 220, 122, 0.28);
+  --color-bg-surface: rgba(10, 24, 18, 0.92);
+  --color-bg-surface-elevated: rgba(16, 36, 26, 0.95);
+  --color-border: rgba(73, 220, 122, 0.35);
 
   --color-primary: #A3E635;
   --color-text-primary: #FFFFFF;
   --color-text-secondary: #F1F5F9;
-  --color-text-muted: #D1D5DB;
+  --color-text-muted: #E2E8F0;
   --color-accent: #A3E635;
 
   --space-8: 0.5rem;
@@ -29,6 +29,19 @@
   --space-24: 1.5rem;
   --space-32: 2rem;
   --space-40: 2.5rem;
+}
+
+.dark {
+  --color-bg-app: #040A0A;
+  --color-bg-surface: rgba(10, 24, 18, 0.92);
+  --color-bg-surface-elevated: rgba(16, 36, 26, 0.95);
+  --color-border: rgba(73, 220, 122, 0.35);
+
+  --color-primary: #A3E635;
+  --color-text-primary: #FFFFFF;
+  --color-text-secondary: #F1F5F9;
+  --color-text-muted: #E2E8F0;
+  --color-accent: #A3E635;
 }
 
 /* ==========================================================================
@@ -49,7 +62,7 @@
 }
 
 /* ==========================================================================
-   2. SYSTEMWIDE EMERALD OBSIDIAN GLASS SURFACES (ALL CONTAINERS, CARDS, SIDEBARS)
+   2. SYSTEMWIDE EMERALD OBSIDIAN GLASS SURFACES
    ========================================================================== */
 .glass-card-surface,
 .glass-card-transparent,
@@ -60,39 +73,51 @@ nav,
 main div.rounded-app-xl,
 main div.rounded-2xl,
 main div.rounded-\[28px\],
-main .bg-white,
+main .bg-white:not(button),
 main .bg-slate-50,
 main .bg-slate-100,
 main .bg-slate-200,
 main .bg-slate-800,
 main .bg-slate-900 {
-  background: rgba(10, 24, 18, 0.90) !important;
+  background: rgba(10, 24, 18, 0.92) !important;
   backdrop-filter: blur(28px) saturate(190%) !important;
   -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
-  border: 1px solid rgba(73, 220, 122, 0.28) !important;
+  border: 1px solid rgba(73, 220, 122, 0.35) !important;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.90), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
   border-radius: 24px !important;
 }
 
-/* Sub-containers, Search Pills & Input Fields */
+/* Header & Sidebar Input Pill Elements */
 input[type="text"],
 input[type="password"],
 input[type="email"],
 input[type="search"],
 select,
 textarea,
+header input,
+aside input,
 .bg-\[var\(--color-bg-surface-elevated\)\] {
-  background: rgba(16, 36, 26, 0.88) !important;
-  border: 1px solid rgba(73, 220, 122, 0.3) !important;
+  background: rgba(16, 36, 26, 0.90) !important;
+  border: 1px solid rgba(73, 220, 122, 0.35) !important;
   color: #FFFFFF !important;
   font-weight: 700 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #D1D5DB !important;
+  opacity: 0.9 !important;
 }
 
 /* ==========================================================================
    3. 100% MAXIMUM HIGH CONTRAST TYPOGRAPHY SYSTEMWIDE
    ========================================================================== */
-/* Headings & Main Titles: Crisp Pure White */
+/* Headings, Main Titles & Navigation Links: Crisp Pure White */
 h1, h2, h3, h4, h5, h6,
+header *,
+aside a,
+aside button,
+main h1, main h2, main h3, main h4, main h5, main h6,
 .text-slate-900,
 .text-slate-800,
 .text-slate-700,
@@ -103,8 +128,10 @@ h1, h2, h3, h4, h5, h6,
   color: #FFFFFF !important;
 }
 
-/* Paragraphs, Labels & Subtext: High-Contrast Light Silver */
+/* Subtext & Labels: High-Contrast Light Silver */
 p, label, td, th,
+aside span,
+main p, main label, main span,
 .text-slate-300,
 .text-slate-200,
 .text-slate-100,
@@ -112,31 +139,44 @@ p, label, td, th,
   color: #F1F5F9 !important;
 }
 
-/* Secondary & Muted Text: High-Contrast Bright Silver-Gray */
+/* Muted & Helper Text: Bright Silver-Gray */
 .text-slate-500,
 .text-slate-400,
 .text-slate-350,
 .text-text-muted {
-  color: #D1D5DB !important;
+  color: #E2E8F0 !important;
 }
 
-/* Active Accents & Neon Highlights */
+/* Active Accents & Neon Green Highlights */
 .text-emerald-400,
 .text-emerald-500,
-.text-app-primary {
+.text-app-primary,
+aside .text-\[var\(--color-primary\)\] {
   color: #A3E635 !important;
 }
 
-/* Pure Pitch Black Text on All White Buttons */
+/* Force Pure Pitch Black Text on All White Pill Buttons */
 button.bg-white,
 button.bg-white *,
 .bg-white.text-black,
 .bg-white.text-black * {
   color: #000000 !important;
+  background-color: #FFFFFF !important;
 }
 
 select option {
   background-color: #0A1C14 !important;
+  color: #FFFFFF !important;
+}
+
+/* Status Pill Bar in Live Operations */
+main .rounded-full.border {
+  background: rgba(10, 24, 18, 0.90) !important;
+  border: 1px solid rgba(73, 220, 122, 0.35) !important;
+  color: #FFFFFF !important;
+}
+
+main .rounded-full.border * {
   color: #FFFFFF !important;
 }
 
@@ -160,7 +200,8 @@ body.light-theme nav {
   border-radius: 24px !important;
 }
 
-body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6 {
+body.light-theme h1, body.light-theme h2, body.light-theme h3, body.light-theme h4, body.light-theme h5, body.light-theme h6,
+body.light-theme header *, body.light-theme aside * {
   color: #0F172A !important;
 }
 
