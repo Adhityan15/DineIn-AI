@@ -9,16 +9,16 @@ import { Search, ChevronLeft, ChevronRight, Loader2, AlertCircle, X, Info } from
 export const PrimaryButton = ({ children, onClick, disabled, loading, icon: Icon, className = '', type = 'button' }) => {
   return (
     <motion.button
-      whileHover={{ y: -1.5, scale: 1.02 }}
+      whileHover={{ y: -1.5, scale: 1.03 }}
       whileTap={{ scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 450, damping: 22 }}
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
-      className={`px-4 py-2 bg-white text-black font-extrabold text-xs rounded-full shadow-md hover:bg-slate-100 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-200 focus:outline-none ${className}`}
+      className={`px-4 py-2.5 bg-white text-black font-extrabold text-xs rounded-full shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:bg-slate-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-200 focus:outline-none cursor-pointer ${className}`}
     >
       {loading ? <Loader2 size={14} className="animate-spin text-black" /> : Icon && <Icon size={14} className="text-black" />}
-      <span className="text-black font-extrabold">{children}</span>
+      <span className="text-black font-extrabold tracking-wide">{children}</span>
     </motion.button>
   );
 };
@@ -26,16 +26,16 @@ export const PrimaryButton = ({ children, onClick, disabled, loading, icon: Icon
 export const SecondaryButton = ({ children, onClick, disabled, loading, icon: Icon, className = '', type = 'button' }) => {
   return (
     <motion.button
-      whileHover={{ y: -1, scale: 1.02 }}
+      whileHover={{ y: -1.5, scale: 1.03 }}
       whileTap={{ scale: 0.96 }}
       transition={{ type: 'spring', stiffness: 450, damping: 22 }}
       type={type}
       disabled={disabled || loading}
       onClick={onClick}
-      className={`px-4 py-2 bg-black/80 dark:bg-black/90 backdrop-blur-md border border-white/20 text-white hover:bg-white/10 hover:border-white/40 text-xs font-bold rounded-full shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-200 focus:outline-none ${className}`}
+      className={`px-4 py-2.5 bg-white/10 hover:bg-white/20 border border-white/25 text-white text-xs font-black rounded-full shadow-md backdrop-blur-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 transition-all duration-200 focus:outline-none cursor-pointer ${className}`}
     >
-      {loading ? <Loader2 size={14} className="animate-spin text-white" /> : Icon && <Icon size={14} className="text-white" />}
-      <span className="text-white font-bold">{children}</span>
+      {loading ? <Loader2 size={14} className="animate-spin text-white" /> : Icon && <Icon size={14} className="text-[#49DC7A]" />}
+      <span className="text-white font-extrabold tracking-wide">{children}</span>
     </motion.button>
   );
 };
