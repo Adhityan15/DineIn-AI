@@ -102,7 +102,15 @@ body.dark,
   color: #FFFFFF !important;
 }
 
-.dark p, .dark label, .dark span, .dark td, .dark th,
+/* Force Pure Pitch Black Text on All White Pill Buttons */
+button.bg-white,
+button.bg-white *,
+.bg-white.text-black,
+.bg-white.text-black * {
+  color: #000000 !important;
+}
+
+.dark p, .dark label, .dark span:not(button.bg-white *), .dark td, .dark th,
 .dark .text-slate-300,
 .dark .text-slate-200,
 .dark .text-slate-100,

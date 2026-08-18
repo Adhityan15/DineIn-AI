@@ -142,24 +142,26 @@ const LandingPage = () => {
               {isAuthenticated ? (
                 <button
                   onClick={() => navigate('/dashboard')}
-                  className="px-6 py-3 bg-white text-black font-black text-xs rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:bg-slate-200 hover:scale-105 transition-all cursor-pointer"
+                  className="px-6 py-3 bg-white !text-black font-black text-xs rounded-full shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:bg-slate-200 hover:scale-105 transition-all cursor-pointer"
+                  style={{ color: '#000000' }}
                 >
-                  Launch Workspace →
+                  <span className="!text-black font-black" style={{ color: '#000000' }}>Launch Workspace →</span>
                 </button>
               ) : (
                 <>
                   <button
                     onClick={() => navigate('/login')}
-                    className="px-4 py-2.5 text-xs font-black text-white hover:text-[#49DC7A] transition-colors uppercase tracking-wider cursor-pointer"
+                    className="px-4 py-2.5 text-xs font-black !text-white hover:text-[#A3E635] transition-colors uppercase tracking-wider cursor-pointer"
                   >
                     Sign In
                   </button>
                   <button
                     onClick={() => navigate('/register')}
-                    className="px-6 py-3 bg-white text-black font-black text-xs rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:bg-slate-200 transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
+                    className="px-6 py-3 bg-white !text-black font-black text-xs rounded-full shadow-[0_0_25px_rgba(255,255,255,0.7)] hover:bg-slate-200 transition-all hover:scale-105 flex items-center gap-2 cursor-pointer"
+                    style={{ color: '#000000' }}
                   >
-                    <span>Get Started</span>
-                    <ArrowRight size={15} />
+                    <span className="!text-black font-black" style={{ color: '#000000' }}>Get Started</span>
+                    <ArrowRight size={15} className="!text-black" style={{ color: '#000000' }} />
                   </button>
                 </>
               )}
@@ -219,10 +221,11 @@ const LandingPage = () => {
             >
               <button
                 onClick={() => navigate('/register')}
-                className="w-full sm:w-auto px-8 py-4 bg-white text-black font-black text-sm rounded-full shadow-[0_0_35px_rgba(255,255,255,0.4)] hover:bg-slate-200 hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-8 py-4 bg-white !text-black font-black text-sm rounded-full shadow-[0_0_35px_rgba(255,255,255,0.7)] hover:bg-slate-200 hover:scale-105 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                style={{ color: '#000000' }}
               >
-                <span>Launch Enterprise Workspace</span>
-                <ArrowRight size={18} />
+                <span className="!text-black font-black" style={{ color: '#000000' }}>Launch Enterprise Workspace</span>
+                <ArrowRight size={18} className="!text-black" style={{ color: '#000000' }} />
               </button>
 
               <button

@@ -106,9 +106,13 @@ const DashboardLayout = () => {
     if (theme === 'dark') {
       root.classList.add('dark');
       body.classList.add('dark');
+      root.classList.remove('light-theme');
+      body.classList.remove('light-theme');
     } else {
       root.classList.remove('dark');
       body.classList.remove('dark');
+      root.classList.add('light-theme');
+      body.classList.add('light-theme');
     }
     localStorage.setItem('theme', theme);
   }, [theme]);
@@ -547,11 +551,11 @@ const DashboardLayout = () => {
               </div>
               {!isCollapsed && (
                 <div className="flex flex-col min-w-0">
-                  <span className="font-black text-sm tracking-[0.08em] text-[var(--color-text-primary)] uppercase whitespace-nowrap">
-                    DineIn <span className="text-[var(--color-primary)] font-black">AI</span>
+                  <span className="font-black text-[13px] tracking-[0.04em] text-[var(--color-text-primary)] uppercase truncate w-32">
+                    {restaurantName}
                   </span>
-                  <span className="text-[8px] font-extrabold text-[var(--color-primary)]/80 uppercase tracking-[0.16em] leading-none mt-0.5 whitespace-nowrap">
-                    Hospitality OS
+                  <span className="text-[8px] font-extrabold text-[var(--color-primary)]/75 uppercase tracking-[0.08em] leading-none mt-1 whitespace-nowrap">
+                    DineIn AI • Hospitality OS
                   </span>
                 </div>
               )}
