@@ -527,15 +527,21 @@ const DashboardLayout = () => {
       >
         <div className="flex flex-col h-full overflow-hidden w-full">
           {/* Logo Header - Pinned at Top */}
-          <div className="h-16 px-4 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 w-full">
-            <Link to="/dashboard" onClick={resetScrollToTop} className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-[var(--color-primary)] to-[var(--color-purple)] flex items-center justify-center shadow-app-md shrink-0">
-                <span className="text-white font-extrabold text-base tracking-wider">D</span>
+          <div className="h-20 px-4 flex items-center justify-between border-b border-[var(--color-border)] shrink-0 w-full">
+            <Link to="/dashboard" onClick={resetScrollToTop} className="flex items-center gap-3 overflow-hidden group">
+              <div className="w-11 h-11 rounded-[16px] bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center shadow-lg relative shrink-0 transition-transform duration-300 group-hover:scale-105">
+                <div className="absolute inset-0 rounded-[16px] bg-gradient-to-tr from-indigo-600 to-pink-500 blur-md opacity-40 group-hover:opacity-75 transition-opacity pointer-events-none" />
+                <span className="text-white font-black text-lg tracking-wider relative z-10 font-sans">D</span>
               </div>
               {!isCollapsed && (
-                <span className="font-extrabold text-base tracking-tight text-[var(--color-text-primary)] whitespace-nowrap">
-                  DineIn <span className="text-[var(--color-primary)] font-black">AI</span>
-                </span>
+                <div className="flex flex-col min-w-0">
+                  <span className="font-black text-sm tracking-[0.08em] text-[var(--color-text-primary)] uppercase whitespace-nowrap">
+                    DineIn <span className="text-[var(--color-primary)] font-black">AI</span>
+                  </span>
+                  <span className="text-[8px] font-extrabold text-[var(--color-primary)]/80 uppercase tracking-[0.16em] leading-none mt-0.5 whitespace-nowrap">
+                    Hospitality OS
+                  </span>
+                </div>
               )}
             </Link>
             
@@ -730,7 +736,7 @@ const DashboardLayout = () => {
         <header className="glass-card-surface h-16 flex items-center justify-between px-6 sticky top-0 z-30 border-b border-[var(--color-border)] rounded-none shadow-sm w-full shrink-0 relative">
           
           {/* Centered Restaurant Brand Title */}
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden lg:flex items-center gap-2">
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none hidden xl:flex items-center gap-2">
             <Sparkles size={13} className="text-[var(--color-primary)] animate-pulse" />
             <h1 className="text-xs font-black uppercase tracking-[0.25em] text-[var(--color-text-primary)]">
               {restaurantName}

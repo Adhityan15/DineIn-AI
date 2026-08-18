@@ -146,95 +146,67 @@ export const ChartCard = ({ children, title, subtitle, legend, className = '' })
 
 export const KPICard = ({ title, value, change, trend = 'up', icon: Icon, description, className = '' }) => {
   const isPositive = trend === 'up';
-  const strokeColor = isPositive ? "var(--color-success)" : "var(--color-danger)";
-  const gradientId = isPositive ? "greenGrad" : "redGrad";
-  const glowEdgeClass = isPositive ? "glow-edge-green" : "glow-edge-red";
   
   return (
-    <AppCard hoverEffect className={`relative overflow-hidden group rounded-[28px] ${glowEdgeClass} ${className}`}>
-      {/* Background Glowing Mesh Sphere */}
-      <div className={`absolute -right-10 -top-10 w-36 h-36 rounded-full blur-[60px] pointer-events-none transition-all duration-300 group-hover:scale-125 opacity-70 ${
-        isPositive ? 'bg-[var(--color-success)]/20' : 'bg-[var(--color-danger)]/20'
-      }`} />
+    <motion.div 
+      whileHover={{ y: -4, scale: 1.01 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 22 }}
+      className={`glass-kpi-card relative overflow-hidden rounded-[26px] p-6 border border-white/15 bg-white/5 backdrop-blur-2xl transition-all duration-300 shadow-[0_16px_45px_rgba(0,0,0,0.75)] ${className}`}
+    >
+      {/* Specular Top Rim Highlight Line */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none" />
 
-      {/* Top Glass Specular Light Reflection */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent group-hover:via-[var(--color-primary)] transition-all duration-300 pointer-events-none" />
-
-      <div className="flex items-start justify-between relative z-10">
-        <div className="space-y-1.5">
-          <span className="text-[10px] font-black text-[var(--color-text-muted)] uppercase tracking-widest block">{title}</span>
-          <div className="flex items-baseline gap-2.5">
-            <h2 className="text-3xl font-black text-[var(--color-text-primary)] tracking-tight">
+      <div className="flex items-start justify-between relative z-10 gap-3">
+        <div className="space-y-1 min-w-0">
+          <span className="text-[11px] font-black text-slate-300 uppercase tracking-widest block truncate">{title}</span>
+          <div className="flex items-baseline gap-2.5 flex-wrap">
+            <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
               {typeof value === 'number' || !isNaN(parseInt(value, 10)) ? (
                 <AnimatedCounter value={value} />
               ) : value}
             </h2>
             {change && (
-              <motion.span 
-                initial={{ scale: 0.9 }}
-                animate={{ scale: 1 }}
-                className={`text-[10px] font-black px-3 py-1 rounded-full inline-flex items-center gap-1 shadow-md backdrop-blur-md ${
-                  isPositive 
-                    ? 'bg-[var(--color-success)]/20 text-[var(--color-success)] border border-[var(--color-success)]/40 shadow-[0_0_12px_rgba(0,255,136,0.25)]' 
-                    : 'bg-[var(--color-danger)]/20 text-[var(--color-danger)] border border-[var(--color-danger)]/40 shadow-[0_0_12px_rgba(255,56,100,0.25)]'
-                }`}
-              >
-                <span className={`w-1.5 h-1.5 rounded-full ${isPositive ? 'bg-[var(--color-success)] shadow-[0_0_6px_var(--color-success)]' : 'bg-[var(--color-danger)] shadow-[0_0_6px_var(--color-danger)]'}`} />
+              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 border backdrop-blur-md shrink-0 ${
+                isPositive 
+                  ? 'bg-[#A3E635]/20 text-[#A3E635] border-[#A3E635]/40 shadow-[0_0_12px_rgba(163,230,53,0.25)]' 
+                  : 'bg-rose-500/20 text-rose-300 border-rose-500/40 shadow-[0_0_12px_rgba(244,63,94,0.25)]'
+              }`}>
                 {isPositive ? '↑' : '↓'} {change}
-              </motion.span>
+              </span>
             )}
           </div>
         </div>
         
         {Icon && (
-          <div className="w-12 h-12 rounded-2xl bg-white/10 dark:bg-white/5 backdrop-blur-lg border border-white/20 dark:border-white/15 flex items-center justify-center text-[var(--color-text-secondary)] group-hover:text-[var(--color-primary)] group-hover:border-[var(--color-primary)]/60 group-hover:scale-110 transition-all duration-300 shadow-lg">
-            <Icon size={20} />
+          <div className="w-12 h-12 rounded-2xl bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0 shadow-md">
+            <Icon size={22} className="text-[#49DC7A]" />
           </div>
         )}
       </div>
       
-      {/* 3D Dual Ribbon Waveform Line Chart Overlay (Matching Reference Screenshot) */}
-      <div className="h-11 w-full mt-4 flex items-center justify-between relative z-10">
+      <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between relative z-10 gap-2">
         {description ? (
-          <span className="text-[10px] text-[var(--color-text-muted)] font-bold truncate max-w-[50%]">
+          <span className="text-[11px] text-slate-300 font-bold truncate max-w-[65%]">
             {description}
           </span>
         ) : <div />}
         
-        <div className="w-32 h-10 shrink-0 relative overflow-hidden">
-          <svg className="w-full h-full filter drop-shadow-[0_4px_12px_rgba(0,255,136,0.35)]" viewBox="0 0 100 35" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={strokeColor} stopOpacity="0.35" />
-                <stop offset="100%" stopColor={strokeColor} stopOpacity="0.0" />
-              </linearGradient>
-              <linearGradient id="neonRibbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#00E5FF" />
-                <stop offset="50%" stopColor="#9B5CFF" />
-                <stop offset="100%" stopColor="#00FF88" />
-              </linearGradient>
-            </defs>
-            <path
-              d={isPositive ? "M0 26 Q 25 12, 50 20 T 100 8 L 100 35 L 0 35 Z" : "M0 8 Q 25 24, 50 16 T 100 30 L 100 35 L 0 35 Z"}
-              fill={`url(#${gradientId})`}
-            />
-            {/* Single Smooth Glowing 3D Ribbon Wave */}
+        <div className="w-24 h-7 shrink-0 relative overflow-hidden">
+          <svg className="w-full h-full filter drop-shadow-[0_2px_8px_rgba(73,220,122,0.4)]" viewBox="0 0 100 35" preserveAspectRatio="none">
             <path
               d={isPositive ? "M0 26 Q 25 12, 50 20 T 100 8" : "M0 8 Q 25 24, 50 16 T 100 30"}
               fill="none"
-              stroke="url(#neonRibbonGrad)"
-              strokeWidth="4"
+              stroke={isPositive ? "#A3E635" : "#F43F5E"}
+              strokeWidth="3.5"
               strokeLinecap="round"
-              className="animate-waveform-line"
             />
           </svg>
         </div>
       </div>
-      
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-purple)] to-transparent opacity-50 group-hover:opacity-100 transition-all duration-300"></div>
-    </AppCard>
+    </motion.div>
   );
 };
+
 
 export const StatCard = KPICard;
 
