@@ -21,14 +21,14 @@ const LeftPanelFeatureCard = ({ icon: Icon, title, desc, delay }) => (
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ delay, type: 'spring', stiffness: 100 }}
-    className="bg-white border border-slate-200/90 p-4 rounded-2xl flex gap-3.5 shadow-sm hover:shadow-md hover:border-slate-400 transition-all select-none"
+    className="bg-white/10 border border-white/20 p-4 rounded-2xl flex gap-3.5 hover:bg-white/15 hover:border-white/30 transition-all select-none"
   >
-    <span className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+    <span className="w-10 h-10 rounded-xl bg-white/10 text-[#49DC7A] border border-white/20 flex items-center justify-center shrink-0 shadow-md">
       <Icon size={18} />
     </span>
     <div>
-      <h4 className="text-slate-900 text-xs font-black">{title}</h4>
-      <p className="text-xs text-slate-600 mt-1 leading-normal font-semibold">{desc}</p>
+      <h4 className="text-white text-xs font-bold">{title}</h4>
+      <p className="text-xs text-slate-300 mt-1 leading-normal font-semibold">{desc}</p>
     </div>
   </motion.div>
 );
@@ -163,42 +163,42 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] text-slate-900 flex relative overflow-hidden font-sans selection:bg-black selection:text-white">
+    <div className="dark min-h-screen bg-[#040A0A] text-white flex relative overflow-hidden font-sans selection:bg-[#A3E635] selection:text-black">
       
-      {/* Dynamic Animated Glass Backdrop */}
+      {/* CEO Running Gradient Mesh Backdrop */}
       <FluidGradientBackground />
 
       {/* LEFT PANEL: BRANDING & SYSTEM INSIGHTS */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-slate-200 bg-white/80 backdrop-blur-2xl">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-white/15 bg-[#040A0A]/80 backdrop-blur-2xl">
         
         {/* Brand Header */}
         <div className="space-y-6">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center border border-slate-800 shadow-md">
-              <span className="font-black text-2xl tracking-wider text-white">D</span>
+            <div className="w-11 h-11 rounded-2xl bg-white text-black flex items-center justify-center border border-white/40 shadow-md">
+              <span className="font-black text-2xl tracking-wider">D</span>
             </div>
-            <span className="font-black tracking-tight text-2xl text-slate-900">
-              DineIn <span className="text-slate-600">AI</span>
+            <span className="font-black tracking-tight text-2xl text-white">
+              DineIn <span className="text-[#49DC7A]">AI</span>
             </span>
           </Link>
 
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-black tracking-widest uppercase shadow-md">
-            <Sparkles size={15} className="animate-pulse text-white" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-xs font-black tracking-widest uppercase">
+            <Sparkles size={15} className="animate-pulse text-[#A3E635]" />
             <span>OPERATIONAL ENTERPRISE PORTAL</span>
           </div>
         </div>
 
         {/* Dynamic Typing Headline */}
         <div className="space-y-4 my-auto py-8">
-          <h1 className="text-4xl xl:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+          <h1 className="text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight">
             Initialize Platform <br />
-            <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 bg-clip-text text-transparent min-h-[1.2em] inline-block">
+            <span className="bg-gradient-to-r from-white via-[#49DC7A] to-[#A3E635] bg-clip-text text-transparent min-h-[1.2em] inline-block">
               {typingText}
-              <span className="animate-pulse text-black">|</span>
+              <span className="animate-pulse text-[#A3E635]">|</span>
             </span>
           </h1>
 
-          <p className="text-sm text-slate-700 font-bold max-w-md leading-relaxed">
+          <p className="text-sm text-slate-300 font-semibold max-w-md leading-relaxed">
             Create an operational profile to manage branch telemetry, AI table reservations, inventory forecasting, and staff rosters.
           </p>
 
@@ -225,14 +225,14 @@ const Register = () => {
         </div>
 
         {/* Footer Security Badge */}
-        <div className="flex items-center gap-2 text-xs text-slate-900 font-extrabold uppercase tracking-widest">
-          <ShieldCheck size={16} className="text-slate-900" />
+        <div className="flex items-center gap-2 text-xs text-slate-300 font-extrabold uppercase tracking-widest">
+          <ShieldCheck size={16} className="text-[#49DC7A]" />
           <span>JWT ENTERPRISE SECURE ● ACTIVE SYSTEM</span>
         </div>
 
       </div>
 
-      {/* RIGHT PANEL: UNIFIED WHITE & BLACK GLASS REGISTER FORM CARD */}
+      {/* RIGHT PANEL: CEO SPEC GLASS REGISTER FORM CARD */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 relative z-10 overflow-y-auto">
         
         <motion.div
@@ -241,23 +241,23 @@ const Register = () => {
           transition={{ type: 'spring', stiffness: 220, damping: 22 }}
           className="w-full max-w-md my-8"
         >
-          <div className="p-8 sm:p-10 bg-white/95 border border-slate-200 rounded-[32px] shadow-[0_20px_60px_-15px_rgba(15,23,42,0.12)] backdrop-blur-3xl space-y-6 relative overflow-hidden">
+          <div className="p-8 sm:p-10 bg-[#040A0A]/90 border border-white/20 rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.95)] backdrop-blur-3xl space-y-6 relative overflow-hidden">
             
             {/* Top Specular Rim Highlight */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-black via-slate-700 to-black" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#49DC7A] via-white to-[#A3E635]" />
 
             <div className="flex lg:hidden items-center gap-3 justify-center mb-2">
-              <div className="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center font-black text-xl shadow-md">
+              <div className="w-10 h-10 rounded-2xl bg-white text-black flex items-center justify-center font-black text-xl shadow-md">
                 D
               </div>
-              <span className="text-slate-900 font-black text-xl">DineIn AI</span>
+              <span className="text-white font-black text-xl">DineIn AI</span>
             </div>
 
             <div className="space-y-2 text-center">
-              <h3 className="text-3xl font-black tracking-tight text-slate-900">Create Account</h3>
-              <p className="text-xs text-slate-700 font-bold">
+              <h3 className="text-3xl font-black tracking-tight text-white">Create Account</h3>
+              <p className="text-xs text-slate-300 font-bold">
                 Register to initialize workspace operations or{' '}
-                <Link to="/login" className="text-black font-black underline">
+                <Link to="/login" className="text-[#49DC7A] font-black hover:underline">
                   sign in to your account
                 </Link>.
               </p>
@@ -268,8 +268,8 @@ const Register = () => {
               {/* Names Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    First Name <span className="text-rose-500">*</span>
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    First Name <span className="text-[#49DC7A]">*</span>
                   </label>
                   <input
                     name="first_name"
@@ -277,15 +277,15 @@ const Register = () => {
                     value={formData.first_name}
                     onChange={handleChange}
                     placeholder="John"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                     required
                   />
-                  {errors.first_name && <p className="text-xs text-rose-500 font-bold">{errors.first_name}</p>}
+                  {errors.first_name && <p className="text-xs text-rose-400 font-bold">{errors.first_name}</p>}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    Last Name <span className="text-rose-500">*</span>
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Last Name <span className="text-[#49DC7A]">*</span>
                   </label>
                   <input
                     name="last_name"
@@ -293,17 +293,17 @@ const Register = () => {
                     value={formData.last_name}
                     onChange={handleChange}
                     placeholder="Doe"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                     required
                   />
-                  {errors.last_name && <p className="text-xs text-rose-500 font-bold">{errors.last_name}</p>}
+                  {errors.last_name && <p className="text-xs text-rose-400 font-bold">{errors.last_name}</p>}
                 </div>
               </div>
 
               {/* Email */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                  Email Address <span className="text-rose-500">*</span>
+                <label className="block text-xs font-black text-white uppercase tracking-wider">
+                  Email Address <span className="text-[#49DC7A]">*</span>
                 </label>
                 <input
                   name="email"
@@ -311,17 +311,17 @@ const Register = () => {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder="name@restaurant.com"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                  className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                   required
                 />
-                {errors.email && <p className="text-xs text-rose-500 font-bold">{errors.email}</p>}
+                {errors.email && <p className="text-xs text-rose-400 font-bold">{errors.email}</p>}
               </div>
 
               {/* Username & Phone */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    Username <span className="text-rose-500">*</span>
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Username <span className="text-[#49DC7A]">*</span>
                   </label>
                   <input
                     name="username"
@@ -329,14 +329,14 @@ const Register = () => {
                     value={formData.username}
                     onChange={handleChange}
                     placeholder="john_doe"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                     required
                   />
-                  {errors.username && <p className="text-xs text-rose-500 font-bold">{errors.username}</p>}
+                  {errors.username && <p className="text-xs text-rose-400 font-bold">{errors.username}</p>}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
                     Phone Number
                   </label>
                   <input
@@ -345,35 +345,35 @@ const Register = () => {
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="+1 555-0198"
-                    className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                   />
                 </div>
               </div>
 
               {/* Account Role Selection */}
               <div className="space-y-1.5">
-                <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                  Account Role <span className="text-rose-500">*</span>
+                <label className="block text-xs font-black text-white uppercase tracking-wider">
+                  Account Role <span className="text-[#49DC7A]">*</span>
                 </label>
                 <select
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 outline-none focus:border-black font-bold cursor-pointer"
+                  className="w-full px-4 py-3 bg-[#040A0A] border border-white/20 rounded-2xl text-xs text-white outline-none focus:border-[#49DC7A] font-bold cursor-pointer"
                 >
-                  <option value="customer">Customer</option>
-                  <option value="owner">Restaurant Owner</option>
-                  <option value="manager">Restaurant Manager</option>
-                  <option value="receptionist">Receptionist / Host</option>
-                  <option value="kitchen_staff">Kitchen Staff</option>
+                  <option value="customer" className="bg-[#040A0A] text-white">Customer</option>
+                  <option value="owner" className="bg-[#040A0A] text-white">Restaurant Owner</option>
+                  <option value="manager" className="bg-[#040A0A] text-white">Restaurant Manager</option>
+                  <option value="receptionist" className="bg-[#040A0A] text-white">Receptionist / Host</option>
+                  <option value="kitchen_staff" className="bg-[#040A0A] text-white">Kitchen Staff</option>
                 </select>
               </div>
 
               {/* Passwords Row */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    Password <span className="text-rose-500">*</span>
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Password <span className="text-[#49DC7A]">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -382,23 +382,23 @@ const Register = () => {
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                      className="w-full pl-4 pr-10 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-black"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white"
                     >
                       {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-xs text-rose-500 font-bold">{errors.password}</p>}
+                  {errors.password && <p className="text-xs text-rose-400 font-bold">{errors.password}</p>}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    Confirm Password <span className="text-rose-500">*</span>
+                  <label className="block text-xs font-black text-white uppercase tracking-wider">
+                    Confirm Password <span className="text-[#49DC7A]">*</span>
                   </label>
                   <div className="relative">
                     <input
@@ -407,18 +407,18 @@ const Register = () => {
                       value={formData.password_confirm}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      className="w-full pl-4 pr-10 py-3 bg-slate-50 border border-slate-300 rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none focus:border-black font-bold"
+                      className="w-full pl-4 pr-10 py-3 bg-white/5 border border-white/20 rounded-2xl text-xs text-white placeholder-slate-400 outline-none focus:border-[#49DC7A] font-bold"
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-black"
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-white"
                     >
                       {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                     </button>
                   </div>
-                  {errors.password_confirm && <p className="text-xs text-rose-500 font-bold">{errors.password_confirm}</p>}
+                  {errors.password_confirm && <p className="text-xs text-rose-400 font-bold">{errors.password_confirm}</p>}
                 </div>
               </div>
 
@@ -426,7 +426,7 @@ const Register = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-black text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_12px_30px_rgba(0,0,0,0.2)] hover:bg-slate-800 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-4"
+                className="w-full py-4 bg-white text-black font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:bg-slate-200 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 mt-4"
               >
                 {loading ? (
                   <span>Initializing Profile...</span>
@@ -439,8 +439,8 @@ const Register = () => {
               </button>
             </form>
 
-            <div className="pt-4 border-t border-slate-200 text-center">
-              <Link to="/" className="text-xs font-extrabold text-slate-700 hover:text-black transition-colors">
+            <div className="pt-4 border-t border-white/15 text-center">
+              <Link to="/" className="text-xs font-extrabold text-slate-300 hover:text-white transition-colors">
                 ← Back to Opening Landing Page
               </Link>
             </div>

@@ -24,14 +24,14 @@ const LeftPanelFeatureCard = ({ icon: Icon, title, desc, delay }) => (
     initial={{ opacity: 0, x: -20 }}
     animate={{ opacity: 1, x: 0 }}
     transition={{ delay, type: 'spring', stiffness: 100 }}
-    className="bg-white border border-slate-200/90 p-4 rounded-2xl flex gap-3.5 shadow-sm hover:shadow-md hover:border-slate-400 transition-all select-none"
+    className="bg-white/10 border border-white/20 p-4 rounded-2xl flex gap-3.5 hover:bg-white/15 hover:border-white/30 transition-all select-none"
   >
-    <span className="w-10 h-10 rounded-xl bg-black text-white flex items-center justify-center shrink-0 shadow-md">
+    <span className="w-10 h-10 rounded-xl bg-white/10 text-[#49DC7A] border border-white/20 flex items-center justify-center shrink-0 shadow-md">
       <Icon size={18} />
     </span>
     <div>
-      <h4 className="text-slate-900 text-xs font-black">{title}</h4>
-      <p className="text-xs text-slate-600 mt-1 leading-normal font-semibold">{desc}</p>
+      <h4 className="text-white text-xs font-bold">{title}</h4>
+      <p className="text-xs text-slate-300 mt-1 leading-normal font-semibold">{desc}</p>
     </div>
   </motion.div>
 );
@@ -132,42 +132,42 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F0F4F8] text-slate-900 flex relative overflow-hidden font-sans selection:bg-black selection:text-white">
+    <div className="dark min-h-screen bg-[#040A0A] text-white flex relative overflow-hidden font-sans selection:bg-[#A3E635] selection:text-black">
       
-      {/* Dynamic Animated Glass Backdrop */}
+      {/* CEO Running Gradient Mesh Backdrop */}
       <FluidGradientBackground />
 
       {/* LEFT PANEL: BRANDING & SYSTEM INSIGHTS */}
-      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-slate-200 bg-white/80 backdrop-blur-2xl">
+      <div className="hidden lg:flex lg:w-1/2 flex-col justify-between p-12 relative z-10 border-r border-white/15 bg-[#040A0A]/80 backdrop-blur-2xl">
         
         {/* Brand Header */}
         <div className="space-y-6">
           <Link to="/" className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-black text-white flex items-center justify-center border border-slate-800 shadow-md">
-              <span className="font-black text-2xl tracking-wider text-white">D</span>
+            <div className="w-11 h-11 rounded-2xl bg-white text-black flex items-center justify-center border border-white/40 shadow-md">
+              <span className="font-black text-2xl tracking-wider">D</span>
             </div>
-            <span className="font-black tracking-tight text-2xl text-slate-900">
-              DineIn <span className="text-slate-600">AI</span>
+            <span className="font-black tracking-tight text-2xl text-white">
+              DineIn <span className="text-[#49DC7A]">AI</span>
             </span>
           </Link>
 
-          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-slate-900 text-white text-xs font-black tracking-widest uppercase shadow-md">
-            <Sparkles size={15} className="animate-pulse text-white" />
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-xs font-black tracking-widest uppercase">
+            <Sparkles size={15} className="animate-pulse text-[#A3E635]" />
             <span>OPERATIONAL ENTERPRISE PORTAL</span>
           </div>
         </div>
 
         {/* Dynamic Typing Headline */}
         <div className="space-y-4 my-auto py-8">
-          <h1 className="text-4xl xl:text-5xl font-black text-slate-900 leading-tight tracking-tight">
+          <h1 className="text-4xl xl:text-5xl font-black text-white leading-tight tracking-tight">
             Next-Gen Platform for <br />
-            <span className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 bg-clip-text text-transparent min-h-[1.2em] inline-block">
+            <span className="bg-gradient-to-r from-white via-[#49DC7A] to-[#A3E635] bg-clip-text text-transparent min-h-[1.2em] inline-block">
               {typingText}
-              <span className="animate-pulse text-black">|</span>
+              <span className="animate-pulse text-[#A3E635]">|</span>
             </span>
           </h1>
 
-          <p className="text-sm text-slate-700 font-bold max-w-md leading-relaxed">
+          <p className="text-sm text-slate-300 font-semibold max-w-md leading-relaxed">
             Authenticate to access branch telemetry, kitchen prep queues, inventory forecasting, and real-time POS analytics.
           </p>
 
@@ -194,14 +194,14 @@ const Login = () => {
         </div>
 
         {/* Footer Security Badge */}
-        <div className="flex items-center gap-2 text-xs text-slate-900 font-extrabold uppercase tracking-widest">
-          <ShieldCheck size={16} className="text-slate-900" />
+        <div className="flex items-center gap-2 text-xs text-slate-300 font-extrabold uppercase tracking-widest">
+          <ShieldCheck size={16} className="text-[#49DC7A]" />
           <span>JWT ENTERPRISE SECURE ● ACTIVE SYSTEM</span>
         </div>
 
       </div>
 
-      {/* RIGHT PANEL: UNIFIED WHITE & BLACK GLASS FORM CARD */}
+      {/* RIGHT PANEL: CEO SPEC GLASS FORM CARD */}
       <div className="w-full lg:w-1/2 flex flex-col justify-center items-center p-6 sm:p-12 relative z-10">
         
         <motion.div
@@ -210,30 +210,30 @@ const Login = () => {
           transition={{ type: 'spring', stiffness: 220, damping: 22 }}
           className="w-full max-w-md"
         >
-          <div className="p-8 sm:p-10 bg-white/95 border border-slate-200 rounded-[32px] shadow-[0_20px_60px_-15px_rgba(15,23,42,0.12)] backdrop-blur-3xl space-y-6 relative overflow-hidden">
+          <div className="p-8 sm:p-10 bg-[#040A0A]/90 border border-white/20 rounded-[32px] shadow-[0_20px_60px_rgba(0,0,0,0.95)] backdrop-blur-3xl space-y-6 relative overflow-hidden">
             
             {/* Top Specular Rim Highlight */}
-            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-black via-slate-700 to-black" />
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#49DC7A] via-white to-[#A3E635]" />
 
             <div className="flex lg:hidden items-center gap-3 justify-center mb-2">
-              <div className="w-10 h-10 rounded-2xl bg-black text-white flex items-center justify-center font-black text-xl shadow-md">
+              <div className="w-10 h-10 rounded-2xl bg-white text-black flex items-center justify-center font-black text-xl shadow-md">
                 D
               </div>
-              <span className="text-slate-900 font-black text-xl">DineIn AI</span>
+              <span className="text-white font-black text-xl">DineIn AI</span>
             </div>
 
             <div className="space-y-2 text-center">
-              <h3 className="text-3xl font-black tracking-tight text-slate-900">Welcome Back</h3>
-              <p className="text-xs text-slate-700 font-bold">
+              <h3 className="text-3xl font-black tracking-tight text-white">Welcome Back</h3>
+              <p className="text-xs text-slate-300 font-bold">
                 Log in to initialize workspace operations or{' '}
-                <Link to="/register" className="text-black font-black underline">
+                <Link to="/register" className="text-[#49DC7A] font-black hover:underline">
                   create an account
                 </Link>.
               </p>
             </div>
 
             {errors.form && (
-              <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 text-xs font-bold text-center">
+              <div className="p-4 rounded-2xl bg-rose-500/20 border border-rose-500/40 text-rose-300 text-xs font-bold text-center">
                 {errors.form}
               </div>
             )}
@@ -243,8 +243,8 @@ const Login = () => {
                 
                 {/* Username / Email Field */}
                 <div className="space-y-2">
-                  <label htmlFor="email" className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                    Email address or Username <span className="text-rose-500">*</span>
+                  <label htmlFor="email" className="block text-xs font-black text-white uppercase tracking-wider">
+                    Email address or Username <span className="text-[#49DC7A]">*</span>
                   </label>
                   <input
                     id="email"
@@ -256,23 +256,23 @@ const Login = () => {
                       if (errors.email) setErrors({ ...errors, email: null });
                     }}
                     placeholder="name@restaurant.com or username"
-                    className={`w-full px-4 py-3.5 bg-slate-50 border ${
-                      errors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-300 focus:border-black focus:ring-black/20'
-                    } rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none transition-all duration-200 focus:ring-2 font-bold`}
+                    className={`w-full px-4 py-3.5 bg-white/5 border ${
+                      errors.email ? 'border-rose-500 focus:ring-rose-500/30' : 'border-white/20 focus:border-[#49DC7A] focus:ring-[#49DC7A]/30'
+                    } rounded-2xl text-xs text-white placeholder-slate-400 outline-none transition-all duration-200 focus:ring-2 font-bold`}
                     required
                   />
-                  {errors.email && <p className="text-xs text-rose-500 font-bold mt-1">{errors.email}</p>}
+                  {errors.email && <p className="text-xs text-rose-400 font-bold mt-1">{errors.email}</p>}
                 </div>
 
                 {/* Password Field */}
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <label htmlFor="password" className="block text-xs font-black text-slate-900 uppercase tracking-wider">
-                      Password <span className="text-rose-500">*</span>
+                    <label htmlFor="password" className="block text-xs font-black text-white uppercase tracking-wider">
+                      Password <span className="text-[#49DC7A]">*</span>
                     </label>
                     <Link 
                       to="/forgot-password" 
-                      className="text-xs text-slate-900 hover:text-black font-black transition-all duration-150 cursor-pointer underline"
+                      className="text-xs text-[#49DC7A] hover:text-[#22F2EF] font-black transition-all duration-150 cursor-pointer hover:underline"
                     >
                       Forgot Password?
                     </Link>
@@ -288,20 +288,20 @@ const Login = () => {
                         if (errors.password) setErrors({ ...errors, password: null });
                       }}
                       placeholder="••••••••"
-                      className={`w-full pl-4 pr-11 py-3.5 bg-slate-50 border ${
-                        errors.password ? 'border-rose-500 focus:ring-rose-500/30' : 'border-slate-300 focus:border-black focus:ring-black/20'
-                      } rounded-2xl text-xs text-slate-900 placeholder-slate-400 outline-none transition-all duration-200 focus:ring-2 font-bold`}
+                      className={`w-full pl-4 pr-11 py-3.5 bg-white/5 border ${
+                        errors.password ? 'border-rose-500 focus:ring-rose-500/30' : 'border-white/20 focus:border-[#49DC7A] focus:ring-[#49DC7A]/30'
+                      } rounded-2xl text-xs text-white placeholder-slate-400 outline-none transition-all duration-200 focus:ring-2 font-bold`}
                       required
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-black transition-colors"
+                      className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-white transition-colors"
                     >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                     </button>
                   </div>
-                  {errors.password && <p className="text-xs text-rose-500 font-bold mt-1">{errors.password}</p>}
+                  {errors.password && <p className="text-xs text-rose-400 font-bold mt-1">{errors.password}</p>}
                 </div>
 
                 {/* Remember Me */}
@@ -319,7 +319,7 @@ const Login = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-4 bg-black text-white font-black text-xs uppercase tracking-wider rounded-full shadow-[0_12px_30px_rgba(0,0,0,0.2)] hover:bg-slate-800 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
+                className="w-full py-4 bg-white text-black font-black text-xs uppercase tracking-wider rounded-full shadow-[0_0_25px_rgba(255,255,255,0.4)] hover:bg-slate-200 hover:scale-[1.02] transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
               >
                 {loading ? (
                   <span>Authenticating...</span>
@@ -332,8 +332,8 @@ const Login = () => {
               </button>
             </form>
 
-            <div className="pt-4 border-t border-slate-200 text-center">
-              <Link to="/" className="text-xs font-extrabold text-slate-700 hover:text-black transition-colors">
+            <div className="pt-4 border-t border-white/15 text-center">
+              <Link to="/" className="text-xs font-extrabold text-slate-300 hover:text-white transition-colors">
                 ← Back to Opening Landing Page
               </Link>
             </div>
